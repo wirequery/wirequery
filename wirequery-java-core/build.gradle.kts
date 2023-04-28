@@ -3,11 +3,28 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
+	`maven-publish`
+	`java-library`
 }
 
 group = "com.wirequery"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            artifactId = "wirequery-java-core"
+            from(components["java"])
+        }
+    }
+}
 
 repositories {
 	mavenCentral()
