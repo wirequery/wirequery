@@ -1,1 +1,1 @@
-rootProject.name = "wirequery-spring-boot-3-starter"
+rootProject.name = "wirequery-spring-boot-2-starter"

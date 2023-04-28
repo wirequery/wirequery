@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.wirequery.springboot2.starter.WireQueryConfig,\
+com.wirequery.springboot2.starter.WireQueryConfigurationProperties

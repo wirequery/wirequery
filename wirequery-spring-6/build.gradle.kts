@@ -4,11 +4,27 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.15.RELEASE"
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
+ 	`maven-publish`
+ 	`java-library`
 }
 
 group = "com.wirequery"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            artifactId = "wirequery-spring-6"
+            from(components["java"])
+        }
+    }
+}
 
 repositories {
 	mavenLocal() // For development purposes.
@@ -16,7 +32,7 @@ repositories {
 }
 
 dependencies {
-	implementation("com.wirequery:wirequery-java-core:0.0.1-SNAPSHOT")
+	api("com.wirequery:wirequery-java-core:0.0.1-SNAPSHOT")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.14.2")
 	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2")
