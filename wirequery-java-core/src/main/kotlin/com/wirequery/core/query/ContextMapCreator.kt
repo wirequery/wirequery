@@ -17,7 +17,8 @@ class ContextMapCreator(
         "requestBody" to intercepted.requestBody,
         "responseBody" to intercepted.responseBody,
         "requestHeaders" to intercepted.requestHeaders,
-        "responseHeaders" to intercepted.responseHeaders
+        "responseHeaders" to intercepted.responseHeaders,
+        "extensions" to intercepted.extensions,
     )
         .filter { it.value != null }
         .map { it.key to it.value!! }
@@ -35,7 +36,8 @@ class ContextMapCreator(
         "requestBody" to intercepted.requestBody?.let(objectMasker::mask),
         "responseBody" to intercepted.responseBody?.let(objectMasker::mask),
         "requestHeaders" to headersMasker.maskRequestHeaders(intercepted.requestHeaders),
-        "responseHeaders" to headersMasker.maskResponseHeaders(intercepted.responseHeaders)
+        "responseHeaders" to headersMasker.maskResponseHeaders(intercepted.responseHeaders),
+        "extensions" to intercepted.extensions
     )
         .filter { it.value != null }
         .map { it.key to it.value!! }

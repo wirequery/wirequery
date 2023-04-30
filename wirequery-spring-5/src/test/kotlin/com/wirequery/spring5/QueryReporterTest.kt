@@ -78,7 +78,8 @@ internal class QueryReporterTest {
             requestBody = "hello",
             requestHeaders = mapOf("Accept" to listOf("application/json")),
             responseBody = "world",
-            responseHeaders = mapOf("Content-Type" to listOf("application/json"))
+            responseHeaders = mapOf("Content-Type" to listOf("application/json")),
+            extensions = mapOf("some-extension" to "some-value")
         )
 
         val result = "some-result"

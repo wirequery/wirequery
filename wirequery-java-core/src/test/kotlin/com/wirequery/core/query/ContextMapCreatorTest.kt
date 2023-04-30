@@ -61,7 +61,8 @@ internal class ContextMapCreatorTest {
             requestBody = "requestBody",
             responseBody = "responseBody",
             requestHeaders = mapOf("c" to listOf("d")),
-            responseHeaders = mapOf("e" to listOf("f"))
+            responseHeaders = mapOf("e" to listOf("f")),
+            extensions = mapOf("a" to "someExtension"),
         )
 
         val SOME_CONTEXT_MAP = mapOf(
@@ -73,7 +74,8 @@ internal class ContextMapCreatorTest {
             "requestBody" to "requestBody",
             "responseBody" to "responseBody",
             "requestHeaders" to mapOf("c" to listOf("d")),
-            "responseHeaders" to mapOf("e" to listOf("f"))
+            "responseHeaders" to mapOf("e" to listOf("f")),
+            "extensions" to mapOf("a" to "someExtension")
         )
 
         val SOME_MASKED_REQUEST_BODY = mock<JsonNode>()
@@ -88,7 +90,8 @@ internal class ContextMapCreatorTest {
             "requestBody" to SOME_MASKED_REQUEST_BODY,
             "responseBody" to SOME_MASKED_RESPONSE_BODY,
             "requestHeaders" to mapOf("c" to listOf(MASKING_LABEL)),
-            "responseHeaders" to mapOf("e" to listOf(MASKING_LABEL))
+            "responseHeaders" to mapOf("e" to listOf(MASKING_LABEL)),
+            "extensions" to mapOf("a" to "someExtension")
         )
     }
 }

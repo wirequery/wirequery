@@ -73,7 +73,8 @@ class QueryEvaluator(
         val requestBody: Any?,
         val requestHeaders: Map<String, List<String>>,
         val responseBody: Any?,
-        val responseHeaders: Map<String, List<String>>
+        val responseHeaders: Map<String, List<String>>,
+        val extensions: Map<String, Any?>
     )
 
 }

@@ -28,6 +28,7 @@ class QueryReporter(
             requestHeaders = extractRequestHeaders(request),
             responseBody = requestData.responseBody,
             responseHeaders = extractResponseHeaders(response),
+            extensions = requestData.extensions
         )
 
         queryLoader.getQueries().forEach { query ->

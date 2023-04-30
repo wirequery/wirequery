@@ -142,7 +142,8 @@ internal class QueryEvaluatorTest {
             requestBody = "",
             responseBody = "",
             requestHeaders = mapOf(),
-            responseHeaders = mapOf()
+            responseHeaders = mapOf(),
+            extensions = mapOf()
         )
 
         val SOME_CONTEXT_MAP = mock<Map<String, Any>>()
