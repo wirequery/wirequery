@@ -1,8 +1,11 @@
 package com.wirequery.core.query
 
+import com.wirequery.core.masking.HeadersMasker
+import com.wirequery.core.masking.ObjectMasker
+
 class ContextMapCreator(
-    private val headersMasker: com.wirequery.core.masking.HeadersMasker,
-    private val objectMasker: com.wirequery.core.masking.ObjectMasker
+    private val headersMasker: HeadersMasker,
+    private val objectMasker: ObjectMasker
 ) {
 
     fun createContextMap(
