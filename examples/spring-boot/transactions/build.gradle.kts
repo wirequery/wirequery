@@ -5,27 +5,11 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.0"
 	kotlin("jvm") version "1.7.22"
 	kotlin("plugin.spring") version "1.7.22"
-	`maven-publish`
-	`java-library`
 }
 
 group = "com.wirequery"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
-
-java {
-	withJavadocJar()
-	withSourcesJar()
-}
-
-publishing {
-	publications {
-		create<MavenPublication>("mavenJava") {
-			artifactId = "wirequery-spring-boot-3-starter"
-			from(components["java"])
-		}
-	}
-}
 
 repositories {
 	mavenLocal()
@@ -33,10 +17,9 @@ repositories {
 }
 
 dependencies {
-	api("com.wirequery:wirequery-spring-6:0.0.1-SNAPSHOT")
-	implementation("com.fasterxml.jackson.core:jackson-databind")
-	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-	implementation("org.springframework.boot:spring-boot-starter")
+	implementation("com.wirequery:wirequery-spring-boot-3-starter:0.0.1-SNAPSHOT")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

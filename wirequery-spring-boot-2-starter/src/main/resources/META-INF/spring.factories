@@ -1,3 +1,9 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.wirequery.springboot2.starter.WireQueryConfig,\
-com.wirequery.springboot2.starter.WireQueryConfigurationProperties
+com.wirequery.springboot2.starter.WireQueryConfigurationProperties,\
+com.wirequery.spring5.AsyncQueriesProcessor,\
+com.wirequery.spring5.InterceptedQueryTrafficProcessor,\
+com.wirequery.spring5.QueryFilter,\
+com.wirequery.spring5.RequestBodyExtractor,\
+com.wirequery.spring5.RequestData,\
+com.wirequery.spring5.ResponseBodyExtractor

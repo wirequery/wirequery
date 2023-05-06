@@ -1,18 +1,14 @@
-package com.wirequery.spring5
+package com.wirequery.spring6
 
-import com.wirequery.core.QueryLoader
-import com.wirequery.core.ResultPublisher
 import com.wirequery.core.query.QueryEvaluator
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import org.springframework.web.util.ContentCachingRequestWrapper
 import org.springframework.web.util.ContentCachingResponseWrapper
 
-@Component
-class QueryReporter(
-    private val queryEvaluator: QueryEvaluator,
-    private val queryLoader: QueryLoader,
-    private val resultPublisher: ResultPublisher,
-    private val requestData: RequestData
+@Service
+class InterceptedQueryTrafficProcessor(
+    private val requestData: RequestData,
+    private val asyncQueriesProcessor: AsyncQueriesProcessor
 ) {
 
     fun processInterceptedTraffic(
@@ -30,12 +26,7 @@ class QueryReporter(
             responseHeaders = extractResponseHeaders(response),
             extensions = requestData.extensions
         )
-
-        queryLoader.getQueries().forEach { query ->
-            queryEvaluator.evaluate(query.compiledQuery, intercepted).forEach { result ->
-                resultPublisher.publishResult(query, result)
-            }
-        }
+        asyncQueriesProcessor.execute(intercepted)
     }
 
     private fun extractRequestHeaders(request: ContentCachingRequestWrapper): Map<String, List<String>> {

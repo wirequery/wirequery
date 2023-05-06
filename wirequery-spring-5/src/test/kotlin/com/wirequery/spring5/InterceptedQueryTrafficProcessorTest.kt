@@ -1,10 +1,8 @@
 package com.wirequery.spring5
 
-import com.wirequery.core.QueryLoader
-import com.wirequery.core.ResultPublisher
-import com.wirequery.core.TraceableQuery
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.wirequery.core.query.QueryEvaluator
-import com.wirequery.core.query.context.CompiledQuery
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
@@ -18,25 +16,19 @@ import org.springframework.web.util.ContentCachingResponseWrapper
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
-internal class QueryReporterTest {
-
-    @Mock
-    private lateinit var queryEvaluator: QueryEvaluator
-
-    @Mock
-    private lateinit var queryLoader: QueryLoader
-
-    @Mock
-    private lateinit var resultPublisher: ResultPublisher
+internal class InterceptedQueryTrafficProcessorTest {
 
     @Mock
     private lateinit var requestData: RequestData
 
+    @Mock
+    private lateinit var asyncQueriesProcessor: AsyncQueriesProcessor
+
     @InjectMocks
-    private lateinit var queryReporter: QueryReporter
+    private lateinit var interceptedQueryTrafficProcessor: InterceptedQueryTrafficProcessor
 
     @Test
-    fun `intercepted traffic is mapped to the WireQuery domain, evaluated and the results published`() {
+    fun `intercepted traffic is mapped to the WireQuery domain, evaluated and sent to the AsyncQueriesProcessor`() {
         val request = mock<ContentCachingRequestWrapper>()
         val response = mock<ContentCachingResponseWrapper>()
 
@@ -63,12 +55,8 @@ internal class QueryReporterTest {
         whenever(requestData.requestBody).thenReturn("hello")
         whenever(requestData.responseBody).thenReturn("world")
 
-        val compiledQuery = mock<CompiledQuery>()
-
-        val traceableQuery = TraceableQuery(name = "some-query", compiledQuery = compiledQuery)
-
-        whenever(queryLoader.getQueries())
-            .thenReturn(listOf(traceableQuery))
+        val someValueNode = mock<JsonNode>()
+        whenever(requestData.extensions).thenReturn(mapOf("some-extension" to someValueNode))
 
         val intercepted = QueryEvaluator.InterceptedRequestResponse(
             method = "GET",
@@ -79,17 +67,12 @@ internal class QueryReporterTest {
             requestHeaders = mapOf("Accept" to listOf("application/json")),
             responseBody = "world",
             responseHeaders = mapOf("Content-Type" to listOf("application/json")),
-            extensions = mapOf("some-extension" to "some-value")
+            extensions = mapOf("some-extension" to someValueNode)
         )
 
-        val result = "some-result"
+        interceptedQueryTrafficProcessor.processInterceptedTraffic(request, response)
 
-        whenever(queryEvaluator.evaluate(compiledQuery, intercepted))
-            .thenReturn(listOf(result))
-
-        queryReporter.processInterceptedTraffic(request, response)
-
-        verify(resultPublisher).publishResult(traceableQuery, result)
+        verify(asyncQueriesProcessor).execute(intercepted)
     }
 
 }

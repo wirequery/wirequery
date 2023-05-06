@@ -1,6 +1,7 @@
 package com.wirequery.springboot2.starter
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.wirequery.core.QueryLoader
 import com.wirequery.core.ResultPublisher
 import com.wirequery.core.TraceableQuery
@@ -14,8 +15,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.scheduling.annotation.EnableAsync
 
 @Configuration
+@EnableAsync
 open class WireQueryConfig {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
@@ -23,7 +26,7 @@ open class WireQueryConfig {
     // We don't provide the ObjectMapper as a bean here, as it may conflict
     // with the consumer's ObjectMapper usage, and because the beans that use the ObjectMapper
     // are trivial and can easily be replaced.
-    private val defaultObjectMapper = ObjectMapper()
+    private val defaultObjectMapper = ObjectMapper().registerModule(JavaTimeModule())
 
     @Bean
     @ConditionalOnMissingBean
@@ -60,12 +63,16 @@ open class WireQueryConfig {
         queryCompiler: QueryCompiler,
         config: WireQueryConfigurationProperties
     ) = object : QueryLoader {
+        val cache = mutableMapOf<String, TraceableQuery>()
+
         override fun getQueries(): List<TraceableQuery> {
             return config.queries.map {
-                TraceableQuery(
-                    name = it.name,
-                    compiledQuery = queryCompiler.compile(queryParser.parse(it.query))
-                )
+                cache.getOrPut(it.name) {
+                    TraceableQuery(
+                        name = it.name,
+                        compiledQuery = queryCompiler.compile(queryParser.parse(it.query))
+                    )
+                }
             }
         }
     }

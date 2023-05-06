@@ -1,4 +1,4 @@
-package com.wirequery.spring6
+package com.wirequery.spring5
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -8,18 +8,18 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
-import jakarta.servlet.FilterChain
-import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
+import javax.servlet.FilterChain
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @ExtendWith(MockitoExtension::class)
-internal class QueryReportingFilterTest {
+internal class QueryFilterTest {
 
     @Mock
-    private lateinit var queryReporter: QueryReporter
+    private lateinit var interceptedQueryTrafficProcessor: InterceptedQueryTrafficProcessor
 
     @InjectMocks
-    private lateinit var queryReportingFilter: QueryReportingFilter
+    private lateinit var queryFilter: QueryFilter
 
     @Test
     fun `the request and response are intercepted and sent to the query reporter`() {
@@ -27,10 +27,10 @@ internal class QueryReportingFilterTest {
         val response = mock<HttpServletResponse>()
         val filterChain = mock<FilterChain>()
 
-        queryReportingFilter.doFilter(request, response, filterChain)
+        queryFilter.doFilter(request, response, filterChain)
 
         verify(filterChain).doFilter(any(), any())
-        verify(queryReporter).processInterceptedTraffic(any(), any())
+        verify(interceptedQueryTrafficProcessor).processInterceptedTraffic(any(), any())
     }
 
 }

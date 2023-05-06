@@ -34,7 +34,8 @@ repositories {
 
 dependencies {
 	api("com.wirequery:wirequery-spring-5:0.0.1-SNAPSHOT")
-	implementation("com.fasterxml.jackson.core:jackson-databind:2.15.0")
+	implementation("com.fasterxml.jackson.core:jackson-databind")
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

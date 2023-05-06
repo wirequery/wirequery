@@ -167,3 +167,9 @@ wirequery:
     responseHeaders:
       - Content-Type
 ```
+
+# Limitations
+
+Current limitations include:
+
+- If the request body is malformed, it cannot be parsed and therefore not intercepted.

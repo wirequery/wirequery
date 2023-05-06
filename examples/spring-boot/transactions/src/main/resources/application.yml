@@ -1,0 +1,4 @@
+wirequery:
+  queries:
+    - name: transactions
+      query: GET /transactions/{accountId} | map x

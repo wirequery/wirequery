@@ -1,16 +1,16 @@
-package com.wirequery.spring5
+package com.wirequery.spring6
 
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.util.ContentCachingRequestWrapper
 import org.springframework.web.util.ContentCachingResponseWrapper
-import javax.servlet.FilterChain
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import jakarta.servlet.FilterChain
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 
 @Component
-class QueryReportingFilter(
-    private val queryReporter: QueryReporter
+class QueryFilter(
+    private val interceptedQueryTrafficProcessor: InterceptedQueryTrafficProcessor
 ): OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -24,7 +24,7 @@ class QueryReportingFilter(
         filterChain.doFilter(wrappedRequest, wrappedResponse)
         wrappedResponse.copyBodyToResponse()
 
-        queryReporter.processInterceptedTraffic(wrappedRequest, wrappedResponse)
+        interceptedQueryTrafficProcessor.processInterceptedTraffic(wrappedRequest, wrappedResponse)
     }
 
 }
