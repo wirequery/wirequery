@@ -10,64 +10,60 @@ class SimpleObjectMasker(
     private val classFieldMaskDeterminer: com.wirequery.core.masking.ClassFieldMaskDeterminer
 ) : com.wirequery.core.masking.ObjectMasker {
 
-    override fun mask(value: Any): JsonNode {
-        return when (val node = objectMapper.valueToTree<JsonNode>(value)) {
+    override fun mask(value: Any): Any? {
+        // We use Jackson here as it makes it easier to traverse the values in an object.
+        // May be taken out at some point to improve performance or reduce how much the project
+        // relies on third-party dependencies.
+        val node = objectMapper.valueToTree<JsonNode>(value)
+        return mask(value, node)
+    }
+
+    private fun mask(value: Any?, node: JsonNode): Any? {
+        if (value == null) {
+            return null
+        }
+        return when (node) {
             is ObjectNode ->
                 return maskObjectNode(value, node)
             is ArrayNode ->
-                return JsonNodeFactory.instance.arrayNode().let { arrayNode ->
+                return mutableListOf<Any?>().also { arrayNode ->
                     arrayNode.addAll(
                         when (value) {
                             is Iterable<*> ->
-                                value.map { subNode -> subNode?.let { mask(it) } }
+                                value.mapIndexed { i, subNode -> subNode?.let { mask(it, node[i]) } }
                             is Array<*> ->
-                                value.map { subNode -> subNode?.let { mask(it) } }
+                                value.mapIndexed { i, subNode -> subNode?.let { mask(it, node[i]) } }
                             else ->
                                 error("Unsupported type for masking: ${value.javaClass.name}")
                         })
                 }
             else ->
-                node
+                value
         }
     }
 
-    private fun mask(value: Any?, node: JsonNode): JsonNode {
-        if (value == null) {
-            return JsonNodeFactory.instance.nullNode()
-        }
-        return when (node) {
-            is ObjectNode ->
-                return maskObjectNode(value, node)
-            else ->
-                node
-        }
-    }
-
-    private fun maskObjectNode(value: Any, node: ObjectNode): ObjectNode {
-        val result = JsonNodeFactory.instance.objectNode()
+    private fun maskObjectNode(value: Any, node: ObjectNode): Map<String, Any?> {
+        val result = mutableMapOf<String, Any?>()
         node.fieldNames().forEach { fieldName ->
-            result.set<JsonNode>(
-                fieldName,
-                when (val subNode = node.get(fieldName)) {
-                    is ArrayNode ->
-                        maskArrayNodeField(value, fieldName, subNode)
-                    is ValueNode ->
-                        maskValueNodeField(subNode, value, fieldName)
-                    is ObjectNode ->
-                        maskObjectNodeField(value, fieldName, subNode)
-                    else ->
-                        error("Unknown type: $fieldName")
-                }
-            )
+            result[fieldName] = when (val subNode = node.get(fieldName)) {
+                is ArrayNode ->
+                    maskArrayNodeField(value, fieldName, subNode)
+                is ValueNode ->
+                    maskValueNodeField(subNode, value, fieldName)
+                is ObjectNode ->
+                    maskObjectNodeField(value, fieldName, subNode)
+                else ->
+                    error("Unknown type: $fieldName")
+            }
         }
-        return result
+        return result.toMap()
     }
 
     private fun maskArrayNodeField(
         value: Any,
         fieldName: String,
         subNode: JsonNode
-    ): ArrayNode = when (val fieldOnObject = findField(value, fieldName)) {
+    ): List<Any?> = when (val fieldOnObject = findField(value, fieldName)) {
         is Iterable<*> ->
             maskIterableArrayNodeField(fieldOnObject, subNode, value, fieldName)
         is Array<*> ->
@@ -81,26 +77,35 @@ class SimpleObjectMasker(
         subNode: JsonNode?,
         value: Any,
         fieldName: String
-    ) = if (subNode is NullNode || classFieldMaskDeterminer.shouldUnmask(value, fieldName)) {
-        subNode
+    ): Any? = if (subNode is NullNode) {
+        null
+    } else if (subNode is TextNode) {
+        subNode.textValue() // TODO add test (e.g. for Enums)
+    } else if (classFieldMaskDeterminer.shouldUnmask(value, fieldName)) {
+        value.javaClass.methods.singleOrNull { it.name == "get" }
+            ?.let { value.javaClass.getMethod("get").invoke(value, fieldName) }
+            ?: value.javaClass.methods.singleOrNull {
+                it.name == "get" + fieldName.replaceFirstChar { c -> c.uppercase() }
+            }?.invoke(value)
+            ?: error("Unable to extract $fieldName") // No getter or get<FieldName>. Simply convert it to a string and hope for the best.
     } else {
-        TextNode(MASKING_LABEL)
+        MASKING_LABEL
     }
 
     private fun maskObjectNodeField(
         value: Any,
         fieldName: String,
         subNode: JsonNode
-    ): JsonNode = when (val fieldOnObject = findField(value, fieldName)) {
+    ): Any? = when (val fieldOnObject = findField(value, fieldName)) {
         is Map<*, *> -> {
             if (classFieldMaskDeterminer.shouldUnmask(value, fieldName)) {
-                JsonNodeFactory.instance.objectNode().also { on ->
+                mutableMapOf<String, Any?>().also { on ->
                     fieldOnObject.forEach { k, v ->
-                        on.set<JsonNode>("$k", mask(v, subNode["$k"]))
+                        on["$k"] = mask(v, subNode["$k"])
                     }
-                }
+                }.toMap()
             } else {
-                TextNode(MASKING_LABEL)
+                MASKING_LABEL
             }
         }
         else ->
@@ -112,10 +117,10 @@ class SimpleObjectMasker(
         subNode: JsonNode,
         value: Any,
         fieldName: String
-    ) = JsonNodeFactory.instance.arrayNode().let { an ->
+    ): List<Any?> = mutableListOf<Any?>().also { an ->
         an.addAll(fieldOnObject.mapIndexed { i, it ->
             if (subNode[i] is ValueNode && !classFieldMaskDeterminer.shouldUnmask(value, fieldName)) {
-                TextNode(MASKING_LABEL)
+                MASKING_LABEL
             } else {
                 mask(it, subNode[i])
             }

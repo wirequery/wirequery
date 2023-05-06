@@ -29,8 +29,7 @@ internal class SimpleObjectMaskerTest {
 
         val actual = simpleObjectMasker.mask(ObjectWithAString(someValue = null))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(objectMapper.writeValueAsString(ObjectWithAString(someValue = null)))
+        assertThat(actual).isEqualTo(mapOf<String, Any?>("someValue" to null))
     }
 
     @Test
@@ -40,8 +39,7 @@ internal class SimpleObjectMaskerTest {
 
         val actual = simpleObjectMasker.mask(ObjectWithAString(someValue = null))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(objectMapper.writeValueAsString(ObjectWithAString(someValue = null)))
+        assertThat(actual).isEqualTo(mapOf<String, Any?>("someValue" to null))
     }
 
     @Test
@@ -51,8 +49,7 @@ internal class SimpleObjectMaskerTest {
 
         val actual = simpleObjectMasker.mask(ObjectWithAString(someValue = "x"))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(objectMapper.writeValueAsString(ObjectWithAString(someValue = MASKING_LABEL)))
+        assertThat(actual).isEqualTo(mapOf("someValue" to MASKING_LABEL))
     }
 
     @Test
@@ -62,8 +59,7 @@ internal class SimpleObjectMaskerTest {
 
         val actual = simpleObjectMasker.mask(arrayOf(ObjectWithAString(someValue = "x")))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(objectMapper.writeValueAsString(arrayOf(ObjectWithAString(someValue = MASKING_LABEL))))
+        assertThat(actual).isEqualTo(listOf(mapOf("someValue" to MASKING_LABEL)))
     }
 
     @Test
@@ -73,8 +69,7 @@ internal class SimpleObjectMaskerTest {
 
         val actual = simpleObjectMasker.mask(listOf(ObjectWithAString(someValue = "x")))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(objectMapper.writeValueAsString(listOf(ObjectWithAString(someValue = MASKING_LABEL))))
+        assertThat(actual).isEqualTo(listOf(mapOf("someValue" to MASKING_LABEL)))
     }
 
     @Test
@@ -84,8 +79,7 @@ internal class SimpleObjectMaskerTest {
 
         val actual = simpleObjectMasker.mask(ObjectWithAString(someValue = "x"))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(objectMapper.writeValueAsString(ObjectWithAString(someValue = "x")))
+        assertThat(actual).isEqualTo(mapOf("someValue" to "x"))
     }
 
     @Test
@@ -95,8 +89,7 @@ internal class SimpleObjectMaskerTest {
 
         val actual = simpleObjectMasker.mask(ObjectWithANumber(someValue = 1))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(objectMapper.writeValueAsString(ObjectWithAString(someValue = MASKING_LABEL)))
+        assertThat(actual).isEqualTo(mapOf("someValue" to MASKING_LABEL))
     }
 
     @Test
@@ -106,8 +99,7 @@ internal class SimpleObjectMaskerTest {
 
         val actual = simpleObjectMasker.mask(ObjectWithANumber(someValue = 1))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(objectMapper.writeValueAsString(ObjectWithANumber(someValue = 1)))
+        assertThat(actual).isEqualTo(mapOf("someValue" to 1))
     }
 
     @Test
@@ -117,16 +109,7 @@ internal class SimpleObjectMaskerTest {
 
         val actual = simpleObjectMasker.mask(ObjectWithSubObject(someObject = ObjectWithAString(someValue = "x")))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(
-                objectMapper.writeValueAsString(
-                    ObjectWithSubObject(
-                        someObject = ObjectWithAString(
-                            someValue = MASKING_LABEL
-                        )
-                    )
-                )
-            )
+        assertThat(actual).isEqualTo(mapOf("someObject" to mapOf("someValue" to MASKING_LABEL)))
     }
 
     @Test
@@ -136,16 +119,7 @@ internal class SimpleObjectMaskerTest {
 
         val actual = simpleObjectMasker.mask(ObjectWithSubObject(someObject = ObjectWithAString(someValue = "x")))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(
-                objectMapper.writeValueAsString(
-                    ObjectWithSubObject(
-                        someObject = ObjectWithAString(
-                            someValue = "x"
-                        )
-                    )
-                )
-            )
+        assertThat(actual).isEqualTo(mapOf("someObject" to mapOf("someValue" to "x")))
     }
 
     @Test
@@ -156,16 +130,7 @@ internal class SimpleObjectMaskerTest {
         val actual = simpleObjectMasker
             .mask(ObjectWithSubObjectArray(someObjects = arrayOf(ObjectWithAString(someValue = "x"))))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(
-                objectMapper.writeValueAsString(
-                    ObjectWithSubObjectArray(
-                        someObjects = arrayOf(
-                            ObjectWithAString(someValue = MASKING_LABEL)
-                        ),
-                    )
-                )
-            )
+        assertThat(actual).isEqualTo(mapOf("someObjects" to listOf(mapOf("someValue" to MASKING_LABEL))))
     }
 
     @Test
@@ -176,14 +141,7 @@ internal class SimpleObjectMaskerTest {
         val actual = simpleObjectMasker
             .mask(ObjectWithSubObjectArray(someObjects = arrayOf(ObjectWithAString(someValue = "x"))))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(
-                objectMapper.writeValueAsString(
-                    ObjectWithSubObjectArray(
-                        someObjects = arrayOf(ObjectWithAString(someValue = "x")),
-                    )
-                )
-            )
+        assertThat(actual).isEqualTo(mapOf("someObjects" to listOf(mapOf("someValue" to "x"))))
     }
 
     @Test
@@ -194,16 +152,7 @@ internal class SimpleObjectMaskerTest {
         val actual = simpleObjectMasker
             .mask(ObjectWithSubObjectList(someObjects = listOf(ObjectWithAString(someValue = "x"))))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(
-                objectMapper.writeValueAsString(
-                    ObjectWithSubObjectList(
-                        someObjects = listOf(
-                            ObjectWithAString(someValue = MASKING_LABEL)
-                        ),
-                    )
-                )
-            )
+        assertThat(actual).isEqualTo(mapOf("someObjects" to listOf(mapOf("someValue" to MASKING_LABEL))))
     }
 
     @Test
@@ -214,14 +163,7 @@ internal class SimpleObjectMaskerTest {
         val actual = simpleObjectMasker
             .mask(ObjectWithSubObjectList(someObjects = listOf(ObjectWithAString(someValue = "x"))))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(
-                objectMapper.writeValueAsString(
-                    ObjectWithSubObjectList(
-                        someObjects = listOf(ObjectWithAString(someValue = "x")),
-                    )
-                )
-            )
+        assertThat(actual).isEqualTo(mapOf("someObjects" to listOf(mapOf("someValue" to "x"))))
     }
 
     @Test
@@ -232,8 +174,7 @@ internal class SimpleObjectMaskerTest {
         val actual = simpleObjectMasker
             .mask(ObjectWithList(someValues = listOf("x")))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(objectMapper.writeValueAsString(ObjectWithList(someValues = listOf(MASKING_LABEL))))
+        assertThat(actual).isEqualTo(mapOf("someValues" to listOf(MASKING_LABEL)))
     }
 
     @Test
@@ -244,8 +185,7 @@ internal class SimpleObjectMaskerTest {
         val actual = simpleObjectMasker
             .mask(ObjectWithList(someValues = listOf("x")))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(objectMapper.writeValueAsString(ObjectWithList(someValues = listOf("x"))))
+        assertThat(actual).isEqualTo(mapOf("someValues" to listOf("x")))
     }
 
     @Test
@@ -256,14 +196,7 @@ internal class SimpleObjectMaskerTest {
         val actual = simpleObjectMasker
             .mask(ObjectWithSubObjectMap(someObjects = mapOf("key" to ObjectWithAString(someValue = "x"))))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(
-                objectMapper.writeValueAsString(
-                    ObjectWithSomeObjectsString(
-                        someObjects = MASKING_LABEL,
-                    )
-                )
-            )
+        assertThat(actual).isEqualTo(mapOf("someObjects" to MASKING_LABEL))
     }
 
     @Test
@@ -279,14 +212,7 @@ internal class SimpleObjectMaskerTest {
         val actual = simpleObjectMasker
             .mask(ObjectWithSubObjectMap(someObjects = mapOf("key" to ObjectWithAString(someValue = "x"))))
 
-        assertThat(objectMapper.writeValueAsString(actual))
-            .isEqualTo(
-                objectMapper.writeValueAsString(
-                    ObjectWithSubObjectMap(
-                        someObjects = mapOf("key" to ObjectWithAString(someValue = "x")),
-                    )
-                )
-            )
+        assertThat(actual).isEqualTo(mapOf("someObjects" to mapOf("key" to mapOf("someValue" to "x"))))
     }
 
     data class ObjectWithANumber(
@@ -315,9 +241,5 @@ internal class SimpleObjectMaskerTest {
 
     data class ObjectWithSubObjectMap(
         val someObjects: Map<String, ObjectWithAString>
-    )
-
-    data class ObjectWithSomeObjectsString(
-        val someObjects: String
     )
 }

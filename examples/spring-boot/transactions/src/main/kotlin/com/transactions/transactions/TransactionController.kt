@@ -12,8 +12,4 @@ class TransactionController(
     fun findByAccount(@PathVariable account: String) =
         transactionRepository.findAll(account)
 
-    @PostMapping
-    fun save(@RequestBody transaction: Transaction) =
-        transactionRepository.save(transaction)
-
 }

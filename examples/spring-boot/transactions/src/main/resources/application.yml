@@ -1,4 +1,10 @@
 wirequery:
   queries:
-    - name: transactions
-      query: GET /transactions/{accountId} | map x
+    - name: debit
+      query: GET /transactions/{accountId} | flatMap it.responseBody | filter it.type == "DEBIT" | map it.amount > 0 | distinct
+    - name: credits
+      query: GET /transactions/{accountId} | flatMap it.responseBody | filter it.type == "CREDIT" | map it.amount > 0 | distinct
+    - name: all
+      query: GET /transactions/{accountId} | flatMap it.responseBody
+    - name: currencies
+      query: GET /transactions/{accountId} | flatMap it.responseBody.map(trx, trx.currency) | distinct
