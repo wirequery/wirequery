@@ -1,7 +1,6 @@
-package com.wirequery.spring5
+package com.wirequery.spring6
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.wirequery.core.query.QueryEvaluator
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
