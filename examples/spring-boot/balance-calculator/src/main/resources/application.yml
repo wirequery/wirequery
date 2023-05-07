@@ -1,4 +1,6 @@
 server.port: 9100
 
 wirequery:
-  queries: []
+  queries:
+    - name: all-balances
+      query: GET /balances

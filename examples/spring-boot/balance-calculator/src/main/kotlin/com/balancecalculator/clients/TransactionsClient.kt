@@ -1,17 +1,30 @@
 package com.balancecalculator.clients
 
+import com.balancecalculator.wqextensions.OutboundTrafficExtender
 import com.wirequery.core.annotations.Unmask
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
+import org.springframework.util.LinkedMultiValueMap
+import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.client.getForEntity
+import org.springframework.web.client.exchange
 
 @Service
-class TransactionsClient {
+class TransactionsClient(
+    private val outboundTrafficExtender: OutboundTrafficExtender
+) {
     private val client = RestTemplate()
 
     fun getTransactions(accountId: String): List<Transaction> {
-        return client.getForEntity<List<Transaction>>("http://localhost:9101/transactions").body
-            ?: listOf()
+        val url = "http://localhost:9101/transactions"
+        val headers: MultiValueMap<String, String> = LinkedMultiValueMap()
+        headers.add("Content-Type", "application/json")
+        headers.add("AccountId", accountId)
+
+        val responseBody = client.exchange<List<Transaction>>(url, HttpMethod.GET, HttpEntity<List<Transaction>>(headers)).body
+        outboundTrafficExtender.addOutboundRequest("transactions", url, null, responseBody)
+        return responseBody ?: listOf()
     }
 
     data class Transaction(

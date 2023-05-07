@@ -79,8 +79,8 @@ class SimpleObjectMasker(
         fieldName: String
     ): Any? = if (subNode is NullNode) {
         null
-    } else if (subNode is TextNode) {
-        subNode.textValue() // TODO add test (e.g. for Enums)
+    } else if (subNode is TextNode && classFieldMaskDeterminer.shouldUnmask(value, fieldName)) {
+        subNode.textValue() // TODO add tests (e.g. for Enums)
     } else if (classFieldMaskDeterminer.shouldUnmask(value, fieldName)) {
         value.javaClass.methods.singleOrNull { it.name == "get" }
             ?.let { value.javaClass.getMethod("get").invoke(value, fieldName) }

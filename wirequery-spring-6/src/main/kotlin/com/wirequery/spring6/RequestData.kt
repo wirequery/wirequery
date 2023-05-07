@@ -1,6 +1,5 @@
 package com.wirequery.spring6
 
-import com.fasterxml.jackson.databind.JsonNode
 import org.springframework.context.annotation.ScopedProxyMode
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
@@ -10,13 +9,13 @@ import org.springframework.web.context.annotation.RequestScope
 class RequestData {
     internal var requestBody: Any? = null
     internal var responseBody: Any? = null
-    internal val extensions: Map<String, JsonNode> = mutableMapOf()
+    val extensions: Map<String, Any> = mutableMapOf()
 
-    fun putExtension(key: String, value: JsonNode) {
+    fun putExtension(key: String, value: Any) {
         if (extensions.containsKey(key)) {
             error("$key is already set")
         }
-        (extensions as MutableMap<String, JsonNode>)[key] = value
+        (extensions as MutableMap<String, Any>)[key] = value
     }
 
 }

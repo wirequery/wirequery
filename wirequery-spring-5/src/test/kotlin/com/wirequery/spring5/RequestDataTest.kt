@@ -1,7 +1,5 @@
 package com.wirequery.spring5
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -33,7 +31,7 @@ internal class RequestDataTest {
     }
 
     private companion object {
-        val SOME_EXTENSION: JsonNode = JsonNodeFactory.instance.textNode("some-extension")
+        const val SOME_EXTENSION = "some-extension"
     }
 
 }

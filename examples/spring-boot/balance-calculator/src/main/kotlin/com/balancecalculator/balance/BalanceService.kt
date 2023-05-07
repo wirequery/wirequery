@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class BalanceService(
-    private val transactionsClient: TransactionsClient
+    private val transactionsClient: TransactionsClient,
 ) {
 
     fun calculateBalance(accountId: String): Balance {
