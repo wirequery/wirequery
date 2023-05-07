@@ -1,0 +1,4 @@
+server.port: 9100
+
+wirequery:
+  queries: []

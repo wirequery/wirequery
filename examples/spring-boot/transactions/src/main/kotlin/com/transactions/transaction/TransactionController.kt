@@ -1,4 +1,4 @@
-package com.transactions.transactions
+package com.transactions.transaction
 
 import org.springframework.web.bind.annotation.*
 
@@ -8,8 +8,8 @@ class TransactionController(
     private val transactionRepository: TransactionRepository
 ) {
 
-    @GetMapping("/{account}")
-    fun findByAccount(@PathVariable account: String) =
-        transactionRepository.findAll(account)
+    @GetMapping
+    fun findByAccount(@RequestHeader accountId: String) =
+        transactionRepository.findAll(accountId)
 
 }

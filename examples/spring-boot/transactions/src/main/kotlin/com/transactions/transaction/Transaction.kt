@@ -1,4 +1,4 @@
-package com.transactions.transactions
+package com.transactions.transaction
 
 import com.wirequery.core.annotations.Unmask
 

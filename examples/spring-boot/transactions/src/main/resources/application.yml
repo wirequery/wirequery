@@ -1,3 +1,5 @@
+server.port: 9101
+
 wirequery:
   queries:
     - name: debit
