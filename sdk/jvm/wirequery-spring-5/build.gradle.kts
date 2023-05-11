@@ -1,4 +1,9 @@
+import com.google.protobuf.gradle.id
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+val protobufVersion by extra("3.22.3")
+val protobufPluginVersion by extra("0.9.2")
+val grpcVersion by extra("1.40.1")
 
 plugins {
 	id("io.spring.dependency-management") version "1.0.15.RELEASE"
@@ -6,6 +11,7 @@ plugins {
 	kotlin("plugin.spring") version "1.6.21"
 	`maven-publish`
 	`java-library`
+	id("com.google.protobuf") version "0.9.2"
 }
 
 group = "com.wirequery"
@@ -47,6 +53,13 @@ dependencies {
 	testImplementation("org.mockito:mockito-junit-jupiter:4.5.1")
 	testImplementation("org.assertj:assertj-core:3.22.0")
 	testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+
+	api("io.grpc:grpc-protobuf:${grpcVersion}")
+	api("io.grpc:grpc-stub:1.54.1")
+	api("io.grpc:grpc-kotlin-stub:1.3.0")
+	api("com.google.protobuf:protobuf-java:$protobufVersion")
 }
 
 tasks.withType<KotlinCompile> {
@@ -58,4 +71,44 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+sourceSets {
+	main {
+		proto {
+			srcDir ("../../../proto")
+		}
+	}
+}
+
+protobuf {
+	// Artifacts not available for Apple Silicon. Therefore fallback to x86_64 arch.
+	protoc {
+		artifact = if (osdetector.os == "osx") {
+			"com.google.protobuf:protoc:${protobufVersion}:osx-x86_64"
+		} else {
+			"com.google.protobuf:protoc:${protobufVersion}"
+		}
+	}
+
+	plugins {
+		id("grpc") {
+			artifact = "io.grpc:protoc-gen-grpc-java:1.54.1"
+		}
+		id("grpckt") {
+			artifact = "io.grpc:protoc-gen-grpc-kotlin:1.3.0:jdk8@jar"
+		}
+	}
+
+	generateProtoTasks {
+		ofSourceSet("main").forEach {
+			it.builtins {
+				java {}
+			}
+			it.plugins {
+				id("grpc")
+				id("grpckt")
+			}
+		}
+	}
 }

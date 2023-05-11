@@ -8,10 +8,17 @@ import org.springframework.stereotype.Component
 class WireQueryConfigurationProperties {
     var queries = listOf<QueryProperty>()
     var maskSettings = MaskSettings()
+    var connection: Connection? = null
 
     class QueryProperty {
         var name = ""
         var query = ""
+    }
+
+    class Connection {
+        var url = ""
+        var appName = ""
+        var apiKey = ""
     }
 
     class MaskSettings {

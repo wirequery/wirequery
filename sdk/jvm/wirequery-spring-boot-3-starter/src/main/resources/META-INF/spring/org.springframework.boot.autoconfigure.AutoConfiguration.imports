@@ -1,8 +1,8 @@
-WireQueryConfig
-WireQueryConfigurationProperties
-AsyncQueriesProcessor
-InterceptedQueryTrafficProcessor
-QueryFilter
-RequestBodyExtractor
-RequestData
-ResponseBodyExtractor
+com.wirequery.springboot3.starter.WireQueryConfig
+com.wirequery.springboot3.starter.WireQueryConfigurationProperties
+com.wirequery.spring6.AsyncQueriesProcessor
+com.wirequery.spring6.InterceptedQueryTrafficProcessor
+com.wirequery.spring6.QueryFilter
+com.wirequery.spring6.RequestBodyExtractor
+com.wirequery.spring6.RequestData
+com.wirequery.spring6.ResponseBodyExtractor

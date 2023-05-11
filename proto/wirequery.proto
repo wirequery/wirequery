@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option go_package = "./wirequerypb";
+
+package wirequerypb;
+
+service WirequeryService {
+  rpc ListenForQueries(ListenForQueriesRequest) returns (stream QueryMutation) {}
+  rpc ReportQueryResults(QueryReports) returns (Empty) {}
+}
+
+message ListenForQueriesRequest {
+  string app_name = 1;
+  string api_key = 2;
+}
+
+message QueryMutation {
+  oneof queryMutationChoice {
+    Query add_query = 1;
+    string remove_query_by_id = 2;
+  }
+}
+
+message Query {
+  string query_id = 1;
+  string app_name = 2;
+  string method = 3;
+  string path = 4;
+  string statusCode = 5;
+  repeated Expression expressions = 6;
+  Expression aggregator_expression = 7;
+}
+
+message Expression {
+  string function = 1;
+  string cel_expression = 2;
+}
+
+message QueryReports {
+  repeated QueryReport query_reports = 1;
+  string api_key = 2;
+  string app_name = 3;
+}
+
+message QueryReport {
+  string query_id = 1;
+  string message = 2;
+}
+
+message Empty {
+}

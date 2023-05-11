@@ -1,12 +1,16 @@
 server.port: 9101
 
 wirequery:
-  queries:
-    - name: debit
-      query: GET /transactions/{accountId} | flatMap it.responseBody | filter it.type == "DEBIT" | map it.amount > 0 | distinct
-    - name: credits
-      query: GET /transactions/{accountId} | flatMap it.responseBody | filter it.type == "CREDIT" | map it.amount > 0 | distinct
-    - name: all
-      query: GET /transactions/{accountId} | flatMap it.responseBody
-    - name: currencies
-      query: GET /transactions/{accountId} | flatMap it.responseBody.map(trx, trx.currency) | distinct
+  connection:
+    url: localhost:9090
+    appName: transactions
+    apiKey: e41888b4-7a33-47b2-8088-7ed219e841ec
+#  queries:
+#    - name: debit
+#      query: GET /transactions/{accountId} | flatMap it.responseBody | filter it.type == "DEBIT" | map it.amount > 0 | distinct
+#    - name: credits
+#      query: GET /transactions/{accountId} | flatMap it.responseBody | filter it.type == "CREDIT" | map it.amount > 0 | distinct
+#    - name: all
+#      query: GET /transactions/{accountId} | flatMap it.responseBody
+#    - name: currencies
+#      query: GET /transactions/{accountId} | flatMap it.responseBody.map(trx, trx.currency) | distinct
