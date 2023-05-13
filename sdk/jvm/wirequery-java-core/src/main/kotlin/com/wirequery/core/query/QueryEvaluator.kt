@@ -11,7 +11,7 @@ class QueryEvaluator(
 
     fun evaluate(compiledQuery: CompiledQuery, intercepted: InterceptedRequestResponse): List<Any> {
         val appHeadEvaluationResult = appHeadEvaluator.evaluate(
-            compiledQuery.appHead,
+            compiledQuery.queryHead,
             intercepted.method,
             intercepted.path,
             intercepted.statusCode

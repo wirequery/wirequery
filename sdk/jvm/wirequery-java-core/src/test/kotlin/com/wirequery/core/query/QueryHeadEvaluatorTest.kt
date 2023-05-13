@@ -1,6 +1,6 @@
 package com.wirequery.core.query
 
-import com.wirequery.core.query.context.AppHead
+import com.wirequery.core.query.context.QueryHead
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -10,7 +10,7 @@ import org.mockito.InjectMocks
 import org.mockito.junit.jupiter.MockitoExtension
 
 @ExtendWith(MockitoExtension::class)
-internal class AppHeadEvaluatorTest {
+internal class QueryHeadEvaluatorTest {
 
     @InjectMocks
     private lateinit var appHeadEvaluator: AppHeadEvaluator
@@ -38,15 +38,15 @@ internal class AppHeadEvaluatorTest {
         statusCode: Int,
         expected: Boolean
     ) {
-        val appHead = AppHead(appHeadMethod, appHeadPath, appHeadStatusCode)
-        val actual = appHeadEvaluator.evaluate(appHead, method, path, statusCode)
+        val queryHead = QueryHead(appHeadMethod, appHeadPath, appHeadStatusCode)
+        val actual = appHeadEvaluator.evaluate(queryHead, method, path, statusCode)
         assertThat(actual.matches).isEqualTo(expected)
     }
 
     @Test
     fun `if paths match, the path variables are set`() {
-        val appHead = AppHead("GET", "/abc/{def}", "")
-        val actual = appHeadEvaluator.evaluate(appHead, "GET", "/abc/xyz", 200)
+        val queryHead = QueryHead("GET", "/abc/{def}", "")
+        val actual = appHeadEvaluator.evaluate(queryHead, "GET", "/abc/xyz", 200)
         assertThat(actual.matches).isEqualTo(true)
         assertThat(actual.pathVariables).isEqualTo(mapOf("def" to "xyz"))
     }

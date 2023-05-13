@@ -5,7 +5,7 @@ import com.wirequery.core.QueryLoader
 import com.wirequery.core.ResultPublisher
 import com.wirequery.core.TraceableQuery
 import com.wirequery.core.query.QueryCompiler
-import com.wirequery.core.query.context.AppHead
+import com.wirequery.core.query.context.QueryHead
 import com.wirequery.core.query.context.Query
 import io.grpc.stub.StreamObserver
 import org.springframework.scheduling.annotation.Scheduled
@@ -81,28 +81,25 @@ class WireQueryAdapter(
             })
     }
 
-    // TODO different terminology used between Proto and us
     private fun createTraceableQuery(q: Wirequery.QueryMutation) = TraceableQuery(
         queryId = q.addQuery.queryId,
         compiledQuery = queryCompiler.compile(Query(
-            appHead = AppHead(
-                method = q.addQuery.method,
-                path = q.addQuery.path,
-                statusCode = q.addQuery.statusCode
+            queryHead = QueryHead(
+                method = q.addQuery.queryHead.method,
+                path = q.addQuery.queryHead.path,
+                statusCode = q.addQuery.queryHead.statusCode
             ),
-            streamOperations = q.addQuery.expressionsList.map {
+            streamOperations = q.addQuery.streamOperationsList.map {
                 Query.Operation(
-                    name = it.function,
-                    celExpression = it.celExpression?.let { ce -> ce.ifBlank { null } }
+                    name = it.name,
+                    celExpression = it.celExpression
                 )
             },
-            aggregatorOperation = q.addQuery.aggregatorExpression?.let {
-                if (it.function.isNotBlank()) {
-                    Query.Operation(
-                        name = it.function,
-                        celExpression = it.celExpression?.let { ce -> ce.ifBlank { null } }
-                    )
-                } else null
+            aggregatorOperation = q.addQuery.aggregatorOperation?.let {
+                Query.Operation(
+                    name = it.name,
+                    celExpression = it.celExpression
+                )
             }
         ))
     )

@@ -1,7 +1,7 @@
 package com.wirequery.core.query.context
 
 data class Query(
-    val appHead: AppHead,
+    val queryHead: QueryHead,
     val streamOperations: List<Operation>,
     val aggregatorOperation: Operation?
 ) {

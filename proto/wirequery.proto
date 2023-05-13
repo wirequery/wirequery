@@ -24,15 +24,19 @@ message QueryMutation {
 message Query {
   string query_id = 1;
   string app_name = 2;
-  string method = 3;
-  string path = 4;
-  string statusCode = 5;
-  repeated Expression expressions = 6;
-  Expression aggregator_expression = 7;
+  QueryHead queryHead = 3;
+  repeated Operation stream_operations = 4;
+  Operation aggregator_operation = 5;
 }
 
-message Expression {
-  string function = 1;
+message QueryHead {
+  string method = 1;
+  string path = 2;
+  string statusCode = 3;
+}
+
+message Operation {
+  string name = 1;
   string cel_expression = 2;
 }
 

@@ -9,7 +9,7 @@ class QueryCompiler(
 
     fun compile(query: Query): CompiledQuery {
         return CompiledQuery(
-            appHead = query.appHead,
+            queryHead = query.queryHead,
             streamOperations = query.streamOperations.map(::compileOperation),
             aggregatorOperation = query.aggregatorOperation?.let(::compileOperation)
         )

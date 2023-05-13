@@ -3,7 +3,7 @@ package com.wirequery.core.query.context
 import org.projectnessie.cel.tools.Script
 
 data class CompiledQuery(
-    val appHead: AppHead,
+    val queryHead: QueryHead,
     val streamOperations: List<CompiledOperation>,
     val aggregatorOperation: CompiledOperation?
 ) {

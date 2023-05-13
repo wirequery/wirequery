@@ -3,7 +3,7 @@ package com.wirequery.spring5
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.wirequery.core.TraceableQuery
 import com.wirequery.core.query.QueryCompiler
-import com.wirequery.core.query.context.AppHead
+import com.wirequery.core.query.context.QueryHead
 import com.wirequery.core.query.context.CompiledQuery
 import com.wirequery.core.query.context.Query
 import com.wirequery.core.query.context.Query.Operation
@@ -350,9 +350,9 @@ internal class WireQueryAdapterTest {
         const val SOME_API_KEY = "some-app-key"
         const val SOME_QUERY_ID_1 = "some-query-id-1"
         const val SOME_QUERY_ID_2 = "some-query-id-2"
-        const val SOME_FUNCTION_1 = "some-aggregator-expression-1"
+        const val SOME_NAME_1 = "some-name-1"
+        const val SOME_NAME_2 = "some-name-2"
         const val SOME_CEL_EXPRESSION_1 = "some-cel-expression-1"
-        const val SOME_FUNCTION_2 = "some-aggregator-expression-2"
         const val SOME_CEL_EXPRESSION_2 = "some-cel-expression-2"
         const val SOME_METHOD = "some-method"
         const val SOME_PATH = "some-path"
@@ -363,32 +363,36 @@ internal class WireQueryAdapterTest {
         const val SOME_ERROR_MESSAGE = "some-error-message"
 
         val SOME_QUERY = Query(
-            AppHead(
+            QueryHead(
                 method = SOME_METHOD,
                 path = SOME_PATH,
                 statusCode = SOME_STATUS_CODE
             ),
-            streamOperations = listOf(Operation(name = SOME_FUNCTION_1, celExpression = SOME_CEL_EXPRESSION_1)),
-            aggregatorOperation = Operation(name = SOME_FUNCTION_2, celExpression = SOME_CEL_EXPRESSION_2)
+            streamOperations = listOf(Operation(name = SOME_NAME_1, celExpression = SOME_CEL_EXPRESSION_1)),
+            aggregatorOperation = Operation(name = SOME_NAME_2, celExpression = SOME_CEL_EXPRESSION_2)
         )
 
         val SOME_PROTO_ADD_NEW_QUERY: QueryMutation = QueryMutation.newBuilder()
             .setAddQuery(
                 Wirequery.Query.newBuilder()
-                    .setMethod(SOME_METHOD)
-                    .setPath(SOME_PATH)
-                    .setStatusCode(SOME_STATUS_CODE)
                     .setQueryId(SOME_QUERY_ID_1)
                     .setAppName(SOME_APP_NAME)
-                    .addExpressions(
-                        Expression.newBuilder()
-                            .setFunction(SOME_FUNCTION_1)
+                    .setQueryHead(
+                        Wirequery.QueryHead.newBuilder()
+                            .setMethod(SOME_METHOD)
+                            .setPath(SOME_PATH)
+                            .setStatusCode(SOME_STATUS_CODE)
+                            .build()
+                    )
+                    .addStreamOperations(
+                        Wirequery.Operation.newBuilder()
+                            .setName(SOME_NAME_1)
                             .setCelExpression(SOME_CEL_EXPRESSION_1)
                             .build()
                     )
-                    .setAggregatorExpression(
-                        Expression.newBuilder()
-                            .setFunction(SOME_FUNCTION_2)
+                    .setAggregatorOperation(
+                        Wirequery.Operation.newBuilder()
+                            .setName(SOME_NAME_2)
                             .setCelExpression(SOME_CEL_EXPRESSION_2)
                             .build()
                     )

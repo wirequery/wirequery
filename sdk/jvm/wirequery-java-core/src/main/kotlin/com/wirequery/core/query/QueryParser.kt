@@ -1,7 +1,7 @@
 package com.wirequery.core.query
 
 import com.wirequery.core.query.context.Query.Operation
-import com.wirequery.core.query.context.AppHead
+import com.wirequery.core.query.context.QueryHead
 import com.wirequery.core.query.context.Query
 
 class QueryParser {
@@ -19,7 +19,7 @@ class QueryParser {
     private fun splitExpressionIntoStreamParts(expression: String) =
         QUERY_PARTS_PATTERN.findAll(expression).map { it.value }
 
-    private fun createAppHead(value: String): AppHead {
+    private fun createAppHead(value: String): QueryHead {
         var method = ""
         var path = ""
         var statusCode = ""
@@ -33,7 +33,7 @@ class QueryParser {
                     errorIfNonBlankString("Status code", statusCode).also { statusCode = part }
             }
         }
-        return AppHead(
+        return QueryHead(
             method = method,
             path = path,
             statusCode = statusCode,
@@ -56,20 +56,20 @@ class QueryParser {
             .let { Operation(it[0], it.getOrNull(1)) }
     }
 
-    private fun createQueryWithAggregatorOperation(appHead: AppHead, operations: List<Operation>): Query {
+    private fun createQueryWithAggregatorOperation(queryHead: QueryHead, operations: List<Operation>): Query {
         val streamOperations = operations.dropLast(1)
         streamOperations.forEach { check(isStreamOperation(it)) }
         return Query(
-            appHead = appHead,
+            queryHead = queryHead,
             streamOperations = streamOperations,
             aggregatorOperation = operations.last()
         )
     }
 
-    private fun createQueryWithoutAggregatorOperation(appHead: AppHead, operations: List<Operation>): Query {
+    private fun createQueryWithoutAggregatorOperation(queryHead: QueryHead, operations: List<Operation>): Query {
         operations.forEach { if (!isStreamOperation(it)) error("${it.name} is not a known stream operation") }
         return Query(
-            appHead = appHead,
+            queryHead = queryHead,
             streamOperations = operations,
             aggregatorOperation = null
         )

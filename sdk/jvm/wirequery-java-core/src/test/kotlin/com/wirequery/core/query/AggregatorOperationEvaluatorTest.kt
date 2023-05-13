@@ -18,7 +18,7 @@ internal class AggregatorOperationEvaluatorTest {
     @Test
     fun `empty aggregator returns input`() {
         val compiledQuery = CompiledQuery(
-            appHead = mock(),
+            queryHead = mock(),
             streamOperations = listOf(),
             aggregatorOperation = CompiledQuery.CompiledOperation(
                 name = "distinct",
@@ -32,7 +32,7 @@ internal class AggregatorOperationEvaluatorTest {
     @Test
     fun `unknown aggregator throws error`() {
         val compiledQuery = CompiledQuery(
-            appHead = mock(),
+            queryHead = mock(),
             streamOperations = listOf(),
             aggregatorOperation = CompiledQuery.CompiledOperation(
                 name = "iDontExist",
@@ -48,7 +48,7 @@ internal class AggregatorOperationEvaluatorTest {
     @Test
     fun `distinct only returns elements that did not occur before`() {
         val compiledQuery = CompiledQuery(
-            appHead = mock(),
+            queryHead = mock(),
             streamOperations = listOf(),
             aggregatorOperation = CompiledQuery.CompiledOperation(
                 name = "distinct",
@@ -70,7 +70,7 @@ internal class AggregatorOperationEvaluatorTest {
     @Test
     fun `distinct does not support a celExpression`() {
         val compiledQuery = CompiledQuery(
-            appHead = mock(),
+            queryHead = mock(),
             streamOperations = listOf(),
             aggregatorOperation = CompiledQuery.CompiledOperation(
                 name = "distinct",

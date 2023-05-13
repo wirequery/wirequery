@@ -1,18 +1,18 @@
 package com.wirequery.core.query
 
-import com.wirequery.core.query.context.AppHead
+import com.wirequery.core.query.context.QueryHead
 
 class AppHeadEvaluator {
 
-    fun evaluate(appHead: AppHead, method: String, path: String, statusCode: Int): AppHeadEvaluationResult {
-        if (appHead.method.isNotEmpty() && appHead.method.lowercase() != method.lowercase()) {
+    fun evaluate(queryHead: QueryHead, method: String, path: String, statusCode: Int): AppHeadEvaluationResult {
+        if (queryHead.method.isNotEmpty() && queryHead.method.lowercase() != method.lowercase()) {
             return AppHeadEvaluationResult(false, mapOf())
         }
-        val pathMatchResult = matchPaths(appHead.path, path)
-        if (appHead.path.isNotEmpty() && pathMatchResult == null) {
+        val pathMatchResult = matchPaths(queryHead.path, path)
+        if (queryHead.path.isNotEmpty() && pathMatchResult == null) {
             return AppHeadEvaluationResult(false, mapOf())
         }
-        if (appHead.statusCode.isNotEmpty() && !statusCodeMatches(appHead.statusCode, statusCode)) {
+        if (queryHead.statusCode.isNotEmpty() && !statusCodeMatches(queryHead.statusCode, statusCode)) {
             return AppHeadEvaluationResult(false, mapOf())
         }
         return AppHeadEvaluationResult(true, pathMatchResult ?: mapOf())

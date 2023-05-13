@@ -1,6 +1,6 @@
 package com.wirequery.core.query
 
-import com.wirequery.core.query.context.AppHead
+import com.wirequery.core.query.context.QueryHead
 import com.wirequery.core.query.context.CompiledQuery
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -28,7 +28,7 @@ internal class QueryEvaluatorTest {
         whenever(contextMapCreator.createMaskedContextMap(any(), any()))
             .thenReturn(SOME_CONTEXT_MAP)
 
-        whenever(appHeadEvaluator.evaluate(SOME_COMPILED_QUERY.appHead, "GET", "/abc", 200))
+        whenever(appHeadEvaluator.evaluate(SOME_COMPILED_QUERY.queryHead, "GET", "/abc", 200))
             .thenReturn(AppHeadEvaluator.AppHeadEvaluationResult(true, mapOf("a" to "b")))
 
         val actual = queryEvaluator.evaluate(SOME_COMPILED_QUERY, SOME_INTERCEPTED)
@@ -38,7 +38,7 @@ internal class QueryEvaluatorTest {
 
     @Test
     fun `if the app head evaluator does not match, return nothing`() {
-        whenever(appHeadEvaluator.evaluate(SOME_COMPILED_QUERY.appHead, "GET", "/abc", 200))
+        whenever(appHeadEvaluator.evaluate(SOME_COMPILED_QUERY.queryHead, "GET", "/abc", 200))
             .thenReturn(AppHeadEvaluator.AppHeadEvaluationResult(false, mapOf()))
 
         val actual = queryEvaluator.evaluate(SOME_COMPILED_QUERY, SOME_INTERCEPTED)
@@ -49,7 +49,7 @@ internal class QueryEvaluatorTest {
     fun `'it' and 'context' are passed to the first operation`() {
         whenever(contextMapCreator.createMaskedContextMap(any(), any()))
             .thenReturn(SOME_CONTEXT_MAP)
-        whenever(appHeadEvaluator.evaluate(SOME_COMPILED_QUERY.appHead, "GET", "/abc", 200))
+        whenever(appHeadEvaluator.evaluate(SOME_COMPILED_QUERY.queryHead, "GET", "/abc", 200))
             .thenReturn(AppHeadEvaluator.AppHeadEvaluationResult(true, mapOf()))
 
         val operationMock = mock<CompiledQuery.CompiledOperation>()
@@ -69,7 +69,7 @@ internal class QueryEvaluatorTest {
     fun `the result of one operation is passed into the next through 'it'`() {
         whenever(contextMapCreator.createMaskedContextMap(any(), any()))
             .thenReturn(SOME_CONTEXT_MAP)
-        whenever(appHeadEvaluator.evaluate(SOME_COMPILED_QUERY.appHead, "GET", "/abc", 200))
+        whenever(appHeadEvaluator.evaluate(SOME_COMPILED_QUERY.queryHead, "GET", "/abc", 200))
             .thenReturn(AppHeadEvaluator.AppHeadEvaluationResult(true, mapOf()))
 
         val operationMock = mock<CompiledQuery.CompiledOperation>()
@@ -96,7 +96,7 @@ internal class QueryEvaluatorTest {
     fun `the result of all operations is passed into the aggregator operation evaluator`() {
         whenever(contextMapCreator.createMaskedContextMap(any(), any()))
             .thenReturn(SOME_CONTEXT_MAP)
-        whenever(appHeadEvaluator.evaluate(SOME_COMPILED_QUERY.appHead, "GET", "/abc", 200))
+        whenever(appHeadEvaluator.evaluate(SOME_COMPILED_QUERY.queryHead, "GET", "/abc", 200))
             .thenReturn(AppHeadEvaluator.AppHeadEvaluationResult(true, mapOf()))
 
         val operationMock = mock<CompiledQuery.CompiledOperation>()
@@ -125,7 +125,7 @@ internal class QueryEvaluatorTest {
 
     private companion object {
         val SOME_COMPILED_QUERY = CompiledQuery(
-            appHead = AppHead(
+            queryHead = QueryHead(
                 method = "GET",
                 path = "/abc",
                 statusCode = "2xx"

@@ -1,6 +1,6 @@
 package com.wirequery.core.query
 
-import com.wirequery.core.query.context.AppHead
+import com.wirequery.core.query.context.QueryHead
 import com.wirequery.core.query.context.CompiledQuery
 import com.wirequery.core.query.context.Query
 import org.assertj.core.api.Assertions.assertThat
@@ -25,7 +25,7 @@ internal class QueryCompilerTest {
     @Test
     fun `uncompiled queries are compiled for non-compilable queries`() {
         val query = Query(
-            appHead = AppHead(
+            queryHead = QueryHead(
                 method = "GET",
                 path = "/abc",
                 statusCode = "123"
@@ -34,7 +34,7 @@ internal class QueryCompilerTest {
             aggregatorOperation = null
         )
         val expected = CompiledQuery(
-            AppHead(
+            QueryHead(
                 method = "GET",
                 path = "/abc",
                 statusCode = "123"
@@ -52,7 +52,7 @@ internal class QueryCompilerTest {
         whenever(expressionCompiler.compile("1 + 1"))
             .thenReturn(scriptMock)
         val query = Query(
-            appHead = SOME_APP_HEAD,
+            queryHead = SOME_APP_HEAD,
             streamOperations = listOf(
                 Query.Operation("map", "1 + 1")
             ),
@@ -69,7 +69,7 @@ internal class QueryCompilerTest {
         whenever(expressionCompiler.compile("1 + 1"))
             .thenReturn(scriptMock)
         val query = Query(
-            appHead = SOME_APP_HEAD,
+            queryHead = SOME_APP_HEAD,
             streamOperations = listOf(),
             aggregatorOperation = Query.Operation("distinctBy", "1 + 1")
         )
@@ -79,7 +79,7 @@ internal class QueryCompilerTest {
     }
 
     private companion object {
-        val SOME_APP_HEAD = AppHead(
+        val SOME_APP_HEAD = QueryHead(
             method = "GET",
             path = "/abc",
             statusCode = "123"

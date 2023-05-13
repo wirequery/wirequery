@@ -40,9 +40,9 @@ class QueryParserServiceTest {
         expression2: String?
     ) {
         val result = queryParserService.parse(expression)
-        assertThat(result.appHead.method).isEqualTo(method ?: "")
-        assertThat(result.appHead.statusCode).isEqualTo(statusCode ?: "")
-        assertThat(result.appHead.path).isEqualTo(path ?: "")
+        assertThat(result.queryHead.method).isEqualTo(method ?: "")
+        assertThat(result.queryHead.statusCode).isEqualTo(statusCode ?: "")
+        assertThat(result.queryHead.path).isEqualTo(path ?: "")
         assertThat(result.streamOperations.getOrNull(0)?.name ?: "").isEqualTo(function1 ?: "")
         assertThat(result.streamOperations.getOrNull(0)?.celExpression ?: "").isEqualTo(expression1 ?: "")
         assertThat(result.streamOperations.getOrNull(1)?.name ?: "").isEqualTo(function2 ?: "")
