@@ -17,8 +17,12 @@ class AsyncQueriesProcessor(
     @Async
     fun execute(intercepted: InterceptedRequestResponse) {
         queryLoader.getQueries().forEach { query ->
-            queryEvaluator.evaluate(query.compiledQuery, intercepted).forEach { result ->
-                resultPublisher.publishResult(query, result)
+            try {
+                queryEvaluator.evaluate(query.compiledQuery, intercepted).forEach { result ->
+                    resultPublisher.publishResult(query, result)
+                }
+            } catch (e: Exception) {
+                resultPublisher.publishError(query.queryId, "" + e.message)
             }
         }
     }

@@ -2,7 +2,7 @@ server.port: 9101
 
 wirequery:
   connection:
-    url: localhost:9090
+    host: localhost:9090
     appName: transactions
     apiKey: e41888b4-7a33-47b2-8088-7ed219e841ec
 #  queries:

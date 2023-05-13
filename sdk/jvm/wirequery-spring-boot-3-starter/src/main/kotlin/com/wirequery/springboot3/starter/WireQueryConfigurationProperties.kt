@@ -11,12 +11,12 @@ class WireQueryConfigurationProperties {
     var connection: Connection? = null
 
     class QueryProperty {
-        var name = ""
+        var id = ""
         var query = ""
     }
 
     class Connection {
-        var url = ""
+        var host = ""
         var appName = ""
         var apiKey = ""
     }

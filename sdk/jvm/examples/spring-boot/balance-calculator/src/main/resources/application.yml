@@ -2,6 +2,6 @@ server.port: 9100
 
 wirequery:
   connection:
-    url: localhost:9090
+    host: localhost:9090
     appName: balance-calculator
     apiKey: f9758a52-3483-41e6-86c9-6c1bf907549f    # Usually this should be injected as an environment variable

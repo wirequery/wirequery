@@ -1,0 +1,404 @@
+package com.wirequery.spring5
+
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.wirequery.core.TraceableQuery
+import com.wirequery.core.query.QueryCompiler
+import com.wirequery.core.query.context.AppHead
+import com.wirequery.core.query.context.CompiledQuery
+import com.wirequery.core.query.context.Query
+import com.wirequery.core.query.context.Query.Operation
+import io.grpc.stub.StreamObserver
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.*
+import wirequerypb.Wirequery
+import wirequerypb.Wirequery.*
+import wirequerypb.WirequeryServiceGrpc
+
+@ExtendWith(MockitoExtension::class)
+internal class WireQueryAdapterTest {
+
+    // TODO add cases for mapping
+    // TODO add cases for error while creating traceable query
+
+    @Mock
+    private lateinit var wireQueryStub: WirequeryServiceGrpc.WirequeryServiceStub
+
+    @Mock
+    private lateinit var bridgeSettings: WireQueryAdapter.BridgeSettings
+
+    @Mock
+    private lateinit var objectMapper: ObjectMapper
+
+    @Mock
+    private lateinit var queryCompiler: QueryCompiler
+
+    @Mock
+    private lateinit var logger: Logger
+
+    @Mock
+    private lateinit var sleeper: Sleeper
+
+    @InjectMocks
+    private lateinit var wireQueryAdapter: WireQueryAdapter
+
+    @Test
+    fun `init will start listening for queries`() {
+        whenever(bridgeSettings.appName)
+            .thenReturn(SOME_APP_NAME)
+
+        whenever(bridgeSettings.apiKey)
+            .thenReturn(SOME_API_KEY)
+
+        wireQueryAdapter.init()
+
+        verify(wireQueryStub)
+            .listenForQueries(
+                eq(
+                    ListenForQueriesRequest.newBuilder()
+                        .setAppName(bridgeSettings.appName)
+                        .setApiKey(bridgeSettings.apiKey)
+                        .build()
+                ), any()
+            )
+    }
+
+    @Test
+    fun `when listening for queries and a new query comes in, it is added to the list of queries after mapping`() {
+        val captor = argumentCaptor<StreamObserver<QueryMutation>>()
+        val compiledQuery = mock<CompiledQuery>()
+
+        whenever(bridgeSettings.appName)
+            .thenReturn(SOME_APP_NAME)
+
+        whenever(bridgeSettings.apiKey)
+            .thenReturn(SOME_API_KEY)
+
+        wireQueryAdapter.init()
+
+        verify(wireQueryStub).listenForQueries(any(), captor.capture())
+
+        whenever(queryCompiler.compile(SOME_QUERY))
+            .thenReturn(compiledQuery)
+
+        captor.firstValue.onNext(SOME_PROTO_ADD_NEW_QUERY)
+
+        assertThat(wireQueryAdapter.getQueries())
+            .isEqualTo(listOf(TraceableQuery(queryId = SOME_QUERY_ID_1, compiledQuery = compiledQuery)))
+    }
+
+    @Test
+    fun `queries are deleted for remove query by id`() {
+        val captor = argumentCaptor<StreamObserver<QueryMutation>>()
+        val compiledQuery = mock<CompiledQuery>()
+
+        whenever(bridgeSettings.appName)
+            .thenReturn(SOME_APP_NAME)
+
+        whenever(bridgeSettings.apiKey)
+            .thenReturn(SOME_API_KEY)
+
+        wireQueryAdapter.init()
+
+        verify(wireQueryStub).listenForQueries(any(), captor.capture())
+
+        whenever(queryCompiler.compile(SOME_QUERY))
+            .thenReturn(compiledQuery)
+
+        captor.firstValue.onNext(SOME_PROTO_ADD_NEW_QUERY)
+
+        captor.firstValue.onNext(SOME_PROTO_REMOVE_QUERY_BY_ID)
+
+        assertThat(wireQueryAdapter.getQueries())
+            .isEqualTo(emptyList<TraceableQuery>())
+    }
+
+    @Test
+    fun `listening starts again 5 seconds after an error`() {
+        val captor = argumentCaptor<StreamObserver<QueryMutation>>()
+
+        whenever(bridgeSettings.appName)
+            .thenReturn(SOME_APP_NAME)
+
+        whenever(bridgeSettings.apiKey)
+            .thenReturn(SOME_API_KEY)
+
+        wireQueryAdapter.init()
+
+        verify(wireQueryStub).listenForQueries(any(), captor.capture())
+
+        captor.firstValue.onError(RuntimeException("ERROR"))
+
+        verify(sleeper).sleep(5000)
+
+        verify(wireQueryStub, times(2)).listenForQueries(any(), any())
+    }
+
+    @Test
+    fun `listening starts again 5 seconds after a completion`() {
+        val captor = argumentCaptor<StreamObserver<QueryMutation>>()
+
+        whenever(bridgeSettings.appName)
+            .thenReturn(SOME_APP_NAME)
+
+        whenever(bridgeSettings.apiKey)
+            .thenReturn(SOME_API_KEY)
+
+        wireQueryAdapter.init()
+
+        verify(wireQueryStub).listenForQueries(any(), captor.capture())
+
+        captor.firstValue.onCompleted()
+
+        verify(sleeper).sleep(5000)
+
+        verify(wireQueryStub, times(2)).listenForQueries(any(), any())
+    }
+
+    @Test
+    fun `published results are not published when publishResult is called, but not schedulePublishing`() {
+        whenever(objectMapper.writeValueAsString(mapOf("result" to SOME_RESULT)))
+            .thenReturn(SOME_MESSAGE)
+
+        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT)
+
+        verify(wireQueryStub, times(0))
+            .reportQueryResults(any(), any())
+    }
+
+    @Test
+    fun `published errors are not published when publishResult is called, but not schedulePublishing`() {
+        whenever(objectMapper.writeValueAsString(mapOf("error" to SOME_ERROR)))
+            .thenReturn(SOME_MESSAGE)
+
+        wireQueryAdapter.publishError(SOME_QUERY_ID_1, SOME_ERROR)
+
+        verify(wireQueryStub, times(0))
+            .reportQueryResults(any(), any())
+    }
+
+    @Test
+    fun `published results and errors are published when schedulePublishing is called`() {
+        whenever(bridgeSettings.appName)
+            .thenReturn(SOME_APP_NAME)
+
+        whenever(bridgeSettings.apiKey)
+            .thenReturn(SOME_API_KEY)
+
+        whenever(objectMapper.writeValueAsString(mapOf("result" to SOME_RESULT)))
+            .thenReturn(SOME_MESSAGE)
+
+        whenever(objectMapper.writeValueAsString(mapOf("error" to SOME_ERROR)))
+            .thenReturn(SOME_ERROR_MESSAGE)
+
+        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT)
+        wireQueryAdapter.publishError(SOME_QUERY_ID_2, SOME_ERROR)
+
+        wireQueryAdapter.schedulePublishing()
+
+        val resultQueryReport = QueryReport.newBuilder()
+            .setQueryId(SOME_QUERY_ID_1)
+            .setMessage(SOME_MESSAGE)
+            .build()
+
+        val errorQueryReport = QueryReport.newBuilder()
+            .setQueryId(SOME_QUERY_ID_2)
+            .setMessage(SOME_ERROR_MESSAGE)
+            .build()
+
+        verify(wireQueryStub)
+            .reportQueryResults(
+                eq(
+                    QueryReports.newBuilder()
+                        .setApiKey(SOME_API_KEY)
+                        .setAppName(SOME_APP_NAME)
+                        .addQueryReports(resultQueryReport)
+                        .addQueryReports(errorQueryReport)
+                        .build()
+                ),
+                any()
+            )
+    }
+
+    @Test
+    fun `schedulePublishing will publish zero times when called with empty values`() {
+        wireQueryAdapter.schedulePublishing()
+
+        verify(wireQueryStub, times(0))
+            .reportQueryResults(any(), any())
+    }
+
+    @Test
+    fun `schedulePublishing will publish once when calling with no published messages and then with one directly afterwards`() {
+        whenever(bridgeSettings.appName)
+            .thenReturn(SOME_APP_NAME)
+
+        whenever(bridgeSettings.apiKey)
+            .thenReturn(SOME_API_KEY)
+
+        whenever(objectMapper.writeValueAsString(mapOf("result" to SOME_RESULT)))
+            .thenReturn(SOME_MESSAGE)
+
+        wireQueryAdapter.schedulePublishing()
+
+        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT)
+        wireQueryAdapter.schedulePublishing()
+
+        val resultQueryReport = QueryReport.newBuilder()
+            .setQueryId(SOME_QUERY_ID_1)
+            .setMessage(SOME_MESSAGE)
+            .build()
+
+        verify(wireQueryStub)
+            .reportQueryResults(
+                eq(
+                    QueryReports.newBuilder()
+                        .setApiKey(SOME_API_KEY)
+                        .setAppName(SOME_APP_NAME)
+                        .addQueryReports(resultQueryReport)
+                        .build()
+                ),
+                any()
+            )
+    }
+
+
+    @Test
+    fun `schedulePublishing will publish once when called four times`() {
+        whenever(bridgeSettings.appName)
+            .thenReturn(SOME_APP_NAME)
+
+        whenever(bridgeSettings.apiKey)
+            .thenReturn(SOME_API_KEY)
+
+        whenever(objectMapper.writeValueAsString(mapOf("result" to SOME_RESULT)))
+            .thenReturn(SOME_MESSAGE)
+
+        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT)
+        wireQueryAdapter.schedulePublishing()
+
+        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT)
+        wireQueryAdapter.schedulePublishing()
+
+        wireQueryAdapter.schedulePublishing()
+        wireQueryAdapter.schedulePublishing()
+
+        val queryReport = QueryReport.newBuilder()
+            .setQueryId(SOME_QUERY_ID_1)
+            .setMessage(SOME_MESSAGE)
+            .build()
+
+        verify(wireQueryStub, times(1))
+            .reportQueryResults(
+                eq(
+                    QueryReports.newBuilder()
+                        .setApiKey(SOME_API_KEY)
+                        .setAppName(SOME_APP_NAME)
+                        .addQueryReports(queryReport)
+                        .build()
+                ),
+                any()
+            )
+    }
+
+    @Test
+    fun `schedulePublishing will publish twice when called five times`() {
+        whenever(bridgeSettings.appName)
+            .thenReturn(SOME_APP_NAME)
+
+        whenever(bridgeSettings.apiKey)
+            .thenReturn(SOME_API_KEY)
+
+        whenever(objectMapper.writeValueAsString(mapOf("result" to SOME_RESULT)))
+            .thenReturn(SOME_MESSAGE)
+
+        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT)
+        wireQueryAdapter.schedulePublishing()
+
+        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT)
+        wireQueryAdapter.schedulePublishing()
+
+        wireQueryAdapter.schedulePublishing()
+        wireQueryAdapter.schedulePublishing()
+        wireQueryAdapter.schedulePublishing()
+
+        val queryReport = QueryReport.newBuilder()
+            .setQueryId(SOME_QUERY_ID_1)
+            .setMessage(SOME_MESSAGE)
+            .build()
+
+        verify(wireQueryStub, times(2))
+            .reportQueryResults(
+                eq(
+                    QueryReports.newBuilder()
+                        .setApiKey(SOME_API_KEY)
+                        .setAppName(SOME_APP_NAME)
+                        .addQueryReports(queryReport)
+                        .build()
+                ),
+                any()
+            )
+    }
+
+    private companion object {
+        const val SOME_APP_NAME = "some-app-name"
+        const val SOME_API_KEY = "some-app-key"
+        const val SOME_QUERY_ID_1 = "some-query-id-1"
+        const val SOME_QUERY_ID_2 = "some-query-id-2"
+        const val SOME_FUNCTION_1 = "some-aggregator-expression-1"
+        const val SOME_CEL_EXPRESSION_1 = "some-cel-expression-1"
+        const val SOME_FUNCTION_2 = "some-aggregator-expression-2"
+        const val SOME_CEL_EXPRESSION_2 = "some-cel-expression-2"
+        const val SOME_METHOD = "some-method"
+        const val SOME_PATH = "some-path"
+        const val SOME_STATUS_CODE = "some-status-code"
+        const val SOME_RESULT = "some-result"
+        const val SOME_ERROR = "some-error"
+        const val SOME_MESSAGE = "some-message"
+        const val SOME_ERROR_MESSAGE = "some-error-message"
+
+        val SOME_QUERY = Query(
+            AppHead(
+                method = SOME_METHOD,
+                path = SOME_PATH,
+                statusCode = SOME_STATUS_CODE
+            ),
+            streamOperations = listOf(Operation(name = SOME_FUNCTION_1, celExpression = SOME_CEL_EXPRESSION_1)),
+            aggregatorOperation = Operation(name = SOME_FUNCTION_2, celExpression = SOME_CEL_EXPRESSION_2)
+        )
+
+        val SOME_PROTO_ADD_NEW_QUERY: QueryMutation = QueryMutation.newBuilder()
+            .setAddQuery(
+                Wirequery.Query.newBuilder()
+                    .setMethod(SOME_METHOD)
+                    .setPath(SOME_PATH)
+                    .setStatusCode(SOME_STATUS_CODE)
+                    .setQueryId(SOME_QUERY_ID_1)
+                    .setAppName(SOME_APP_NAME)
+                    .addExpressions(
+                        Expression.newBuilder()
+                            .setFunction(SOME_FUNCTION_1)
+                            .setCelExpression(SOME_CEL_EXPRESSION_1)
+                            .build()
+                    )
+                    .setAggregatorExpression(
+                        Expression.newBuilder()
+                            .setFunction(SOME_FUNCTION_2)
+                            .setCelExpression(SOME_CEL_EXPRESSION_2)
+                            .build()
+                    )
+                    .build()
+            )
+            .build()
+
+        val SOME_PROTO_REMOVE_QUERY_BY_ID: QueryMutation = QueryMutation.newBuilder()
+            .setRemoveQueryById(SOME_QUERY_ID_1)
+            .build()
+    }
+
+}

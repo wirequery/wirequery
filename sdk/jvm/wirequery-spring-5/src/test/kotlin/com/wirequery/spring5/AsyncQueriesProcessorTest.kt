@@ -33,12 +33,12 @@ internal class AsyncQueriesProcessorTest {
     fun `execute will get the queries, evaluate them and publish results based on the intercepted traffic`() {
         val intercepted = mock<QueryEvaluator.InterceptedRequestResponse>()
         val compiledQuery = mock<CompiledQuery>()
-        val traceableQuery = TraceableQuery(name = "some-query", compiledQuery = compiledQuery)
+        val traceableQuery = TraceableQuery(queryId = SOME_QUERY_ID, compiledQuery = compiledQuery)
 
         whenever(queryLoader.getQueries())
             .thenReturn(listOf(traceableQuery))
 
-        val result = "some-result"
+        val result = SOME_RESULT
 
         whenever(queryEvaluator.evaluate(compiledQuery, intercepted))
             .thenReturn(listOf(result))
@@ -46,6 +46,31 @@ internal class AsyncQueriesProcessorTest {
         asyncQueriesProcessor.execute(intercepted)
 
         verify(resultPublisher).publishResult(traceableQuery, result)
+    }
+
+    @Test
+    fun `execute publish error when an error occurs`() {
+        val intercepted = mock<QueryEvaluator.InterceptedRequestResponse>()
+        val compiledQuery = mock<CompiledQuery>()
+        val traceableQuery = TraceableQuery(queryId = SOME_QUERY_ID, compiledQuery = compiledQuery)
+
+        whenever(queryLoader.getQueries())
+            .thenReturn(listOf(traceableQuery))
+
+        val exception = RuntimeException(SOME_ERROR_MESSAGE)
+
+        whenever(queryEvaluator.evaluate(compiledQuery, intercepted))
+            .thenThrow(exception)
+
+        asyncQueriesProcessor.execute(intercepted)
+
+        verify(resultPublisher).publishError(SOME_QUERY_ID, SOME_ERROR_MESSAGE)
+    }
+
+    private companion object {
+        const val SOME_QUERY_ID = "some-query"
+        const val SOME_RESULT = "some-result"
+        const val SOME_ERROR_MESSAGE = "some-error"
     }
 
 }

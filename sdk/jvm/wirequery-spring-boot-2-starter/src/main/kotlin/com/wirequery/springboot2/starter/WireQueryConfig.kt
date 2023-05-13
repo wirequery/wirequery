@@ -11,8 +11,9 @@ import com.wirequery.core.masking.impl.SettingsBasedHeaderMaskDeterminer
 import com.wirequery.core.masking.impl.SimpleHeadersMasker
 import com.wirequery.core.masking.impl.SimpleObjectMasker
 import com.wirequery.core.query.*
+import com.wirequery.spring5.Logger
 import com.wirequery.spring5.WireQueryAdapter
-import io.grpc.ManagedChannel
+import com.wirequery.spring5.Sleeper
 import io.grpc.ManagedChannelBuilder
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -26,7 +27,7 @@ import wirequerypb.WirequeryServiceGrpc
 @Configuration
 @EnableAsync
 @EnableScheduling
-open class WireQueryConfig {
+class WireQueryConfig {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -37,17 +38,17 @@ open class WireQueryConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    open fun queryParser(): QueryParser {
+    fun queryParser(): QueryParser {
         return QueryParser()
     }
 
     @Bean
     @ConditionalOnMissingBean
-    open fun queryCompiler() = QueryCompiler(ExpressionCompiler())
+    fun queryCompiler() = QueryCompiler(ExpressionCompiler())
 
     @Bean
     @ConditionalOnMissingBean
-    open fun queryEvaluator(objectMasker: ObjectMasker, config: WireQueryConfigurationProperties) = QueryEvaluator(
+    fun queryEvaluator(objectMasker: ObjectMasker, config: WireQueryConfigurationProperties) = QueryEvaluator(
         AppHeadEvaluator(),
         StreamOperationEvaluator(),
         AggregatorOperationEvaluator(),
@@ -68,7 +69,7 @@ open class WireQueryConfig {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "wirequery.connection",  havingValue = "true", name = ["local"])
-    open fun staticQueryLoader(
+    fun staticQueryLoader(
         queryParser: QueryParser,
         queryCompiler: QueryCompiler,
         config: WireQueryConfigurationProperties
@@ -77,9 +78,9 @@ open class WireQueryConfig {
 
         override fun getQueries(): List<TraceableQuery> {
             return config.queries.map {
-                cache.getOrPut(it.name) {
+                cache.getOrPut(it.id) {
                     TraceableQuery(
-                        name = it.name,
+                        queryId = it.id,
                         compiledQuery = queryCompiler.compile(queryParser.parse(it.query))
                     )
                 }
@@ -90,37 +91,54 @@ open class WireQueryConfig {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "wirequery.connection",  havingValue = "true", name = ["enable"])
-    open fun staticResultPublisher() = object : ResultPublisher {
+    fun staticResultPublisher() = object : ResultPublisher {
+        override fun publishError(queryId: String, message: String) {
+            logger.error("WireQuery Error Report ($queryId): $message")
+        }
+
         override fun publishResult(query: TraceableQuery, results: Any) {
             val resultsStr = defaultObjectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(results)
-            logger.info("WireQuery Report (${query.name}): " + resultsStr)
+            logger.info("WireQuery Report (${query.queryId}): $resultsStr")
         }
     }
 
     @Bean
     @ConditionalOnMissingBean
-    open fun simpleObjectMasker(
+    fun simpleObjectMasker(
         config: WireQueryConfigurationProperties
     ): ObjectMasker = SimpleObjectMasker(
         defaultObjectMapper,
         ClassAnalyzingMaskDeterminer(unmaskByDefault = config.maskSettings.unmaskByDefault)
     )
 
+    @Bean fun logger() = object : Logger {
+        override fun info(message: String) = logger.info(message)
+        override fun warn(message: String) = logger.warn(message)
+        override fun error(message: String) = logger.error(message)
+        override fun debug(message: String) = logger.debug(message)
+    }
+
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "wirequery.connection",  havingValue = "false", name = ["local"], matchIfMissing = true)
-    open fun wireQueryAdapter(
+    fun wireQueryAdapter(
         queryCompiler: QueryCompiler,
-        config: WireQueryConfigurationProperties
+        config: WireQueryConfigurationProperties,
+        logger: Logger
     ): WireQueryAdapter = config.connection?.let { conn ->
         WireQueryAdapter(
-            wireQueryStub = WirequeryServiceGrpc.newStub(ManagedChannelBuilder.forTarget(conn.url).usePlaintext().build()),
+            wireQueryStub = WirequeryServiceGrpc.newStub(
+                ManagedChannelBuilder.forTarget(conn.host)
+                    .usePlaintext()
+                    .build()),
             bridgeSettings = WireQueryAdapter.BridgeSettings(
                 appName = conn.appName,
                 apiKey = conn.apiKey
             ),
             objectMapper = defaultObjectMapper,
             queryCompiler = queryCompiler,
+            logger = logger,
+            sleeper = Sleeper()
         )
     } ?: error("No connection specified for WireQuery.")
 }

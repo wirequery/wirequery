@@ -18,7 +18,7 @@ class AggregatorOperationEvaluator {
         }
     }
 
-    private fun handleDistinct(compiledQuery: CompiledQuery, it: Any?): List<Any> {
+    private fun handleDistinct(compiledQuery: CompiledQuery, previousResult: Any?): List<Any> {
         if (compiledQuery.aggregatorOperation?.celExpression != null) {
             error("Cel expression not allowed for 'distinct'")
         }
@@ -28,12 +28,12 @@ class AggregatorOperationEvaluator {
         val mem = compiledQuery.aggregatorMemory as DistinctAggregatorMemory
 
         // TODO replace with proper hashing function
-        val hash = it.hashCode()
+        val hash = previousResult.hashCode()
         if (hash in mem.previouslyOccurredHashCodes) {
             return emptyList()
         }
         mem.previouslyOccurredHashCodes += hash
-        return it?.let(::listOf) ?: listOf()
+        return previousResult?.let(::listOf) ?: listOf()
     }
 
     data class DistinctAggregatorMemory(
