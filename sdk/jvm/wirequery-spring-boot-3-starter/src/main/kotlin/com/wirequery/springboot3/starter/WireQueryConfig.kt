@@ -128,9 +128,13 @@ class WireQueryConfig {
     ): WireQueryAdapter = config.connection?.let { conn ->
         WireQueryAdapter(
             wireQueryStub = WirequeryServiceGrpc.newStub(
-                ManagedChannelBuilder.forTarget(conn.host)
-                    .usePlaintext()
-                    .build()),
+                ManagedChannelBuilder.forTarget(conn.host).let {
+                    if (conn.secure) {
+                        it.useTransportSecurity().build()
+                    } else {
+                        it.usePlaintext().build()
+                    }
+                }),
             bridgeSettings = WireQueryAdapter.BridgeSettings(
                 appName = conn.appName,
                 apiKey = conn.apiKey

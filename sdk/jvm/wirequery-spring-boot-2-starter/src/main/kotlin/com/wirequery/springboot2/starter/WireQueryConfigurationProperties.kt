@@ -19,6 +19,7 @@ class WireQueryConfigurationProperties {
         var host = ""
         var appName = ""
         var apiKey = ""
+        var secure = true
     }
 
     class MaskSettings {
