@@ -142,6 +142,30 @@ internal class WireQueryAdapterTest {
     }
 
     @Test
+    fun `when the function name is not set, aggregatorOperation is set to null`() {
+        val captor = argumentCaptor<StreamObserver<QueryMutation>>()
+        val compiledQuery = mock<CompiledQuery>()
+
+        whenever(bridgeSettings.appName)
+            .thenReturn(SOME_APP_NAME)
+
+        whenever(bridgeSettings.apiKey)
+            .thenReturn(SOME_API_KEY)
+
+        wireQueryAdapter.init()
+
+        verify(wireQueryStub).listenForQueries(any(), captor.capture())
+
+        whenever(queryCompiler.compile(SOME_QUERY_WITH_BLANK_AGGREGATOR))
+            .thenReturn(compiledQuery)
+
+        captor.firstValue.onNext(SOME_PROTO_ADD_NEW_QUERY_BLANK_AGGREGATOR)
+
+        assertThat(wireQueryAdapter.getQueries())
+            .isEqualTo(listOf(TraceableQuery(queryId = SOME_QUERY_ID_1, compiledQuery = compiledQuery)))
+    }
+
+    @Test
     fun `queries are deleted for remove query by id`() {
         val captor = argumentCaptor<StreamObserver<QueryMutation>>()
         val compiledQuery = mock<CompiledQuery>()
@@ -431,6 +455,16 @@ internal class WireQueryAdapterTest {
             aggregatorOperation = Operation(name = SOME_NAME_2, celExpression = null)
         )
 
+        val SOME_QUERY_WITH_BLANK_AGGREGATOR = Query(
+            QueryHead(
+                method = SOME_METHOD,
+                path = SOME_PATH,
+                statusCode = SOME_STATUS_CODE
+            ),
+            streamOperations = listOf(),
+            aggregatorOperation = null
+        )
+
         val SOME_PROTO_ADD_NEW_QUERY: QueryMutation = QueryMutation.newBuilder()
             .setAddQuery(
                 Wirequery.Query.newBuilder()
@@ -481,6 +515,22 @@ internal class WireQueryAdapterTest {
                         Wirequery.Operation.newBuilder()
                             .setName(SOME_NAME_2)
                             .setCelExpression(" ")
+                            .build()
+                    )
+                    .build()
+            )
+            .build()
+
+        val SOME_PROTO_ADD_NEW_QUERY_BLANK_AGGREGATOR: QueryMutation = QueryMutation.newBuilder()
+            .setAddQuery(
+                Wirequery.Query.newBuilder()
+                    .setQueryId(SOME_QUERY_ID_1)
+                    .setQueryHead(
+                        Wirequery.QueryHead.newBuilder()
+                            .setAppName(SOME_APP_NAME)
+                            .setMethod(SOME_METHOD)
+                            .setPath(SOME_PATH)
+                            .setStatusCode(SOME_STATUS_CODE)
                             .build()
                     )
                     .build()

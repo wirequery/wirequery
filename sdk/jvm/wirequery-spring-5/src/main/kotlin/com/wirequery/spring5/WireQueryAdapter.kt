@@ -92,14 +92,17 @@ class WireQueryAdapter(
             streamOperations = q.addQuery.streamOperationsList.map {
                 Query.Operation(
                     name = it.name,
-                    celExpression = it.celExpression
+                    celExpression = it.celExpression.ifBlank { null }
                 )
             },
             aggregatorOperation = q.addQuery.aggregatorOperation?.let {
-                Query.Operation(
-                    name = it.name,
-                    celExpression = it.celExpression
-                )
+                if (it.name.isBlank())
+                    null
+                else
+                    Query.Operation(
+                        name = it.name,
+                        celExpression = it.celExpression.ifBlank { null }
+                    )
             }
         ))
     )

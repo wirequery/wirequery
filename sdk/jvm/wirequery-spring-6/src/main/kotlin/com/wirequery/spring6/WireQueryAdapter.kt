@@ -96,10 +96,13 @@ class WireQueryAdapter(
                 )
             },
             aggregatorOperation = q.addQuery.aggregatorOperation?.let {
-                Query.Operation(
-                    name = it.name,
-                    celExpression = it.celExpression.ifBlank { null }
-                )
+                if (it.name.isBlank())
+                    null
+                else
+                    Query.Operation(
+                        name = it.name,
+                        celExpression = it.celExpression.ifBlank { null }
+                    )
             }
         ))
     )
