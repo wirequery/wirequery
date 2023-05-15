@@ -25,7 +25,7 @@ internal class WireQueryAdapterTest {
     @Mock
     private lateinit var wireQueryStub: WirequeryServiceGrpc.WirequeryServiceStub
     @Mock
-    private lateinit var bridgeSettings: WireQueryAdapter.BridgeSettings
+    private lateinit var connectionSettings: WireQueryAdapter.ConnectionSettings
     @Mock
     private lateinit var objectMapper: ObjectMapper
     @Mock
@@ -39,10 +39,10 @@ internal class WireQueryAdapterTest {
 
     @Test
     fun `init will start listening for queries`() {
-        whenever(bridgeSettings.appName)
+        whenever(connectionSettings.appName)
             .thenReturn(SOME_APP_NAME)
 
-        whenever(bridgeSettings.apiKey)
+        whenever(connectionSettings.apiKey)
             .thenReturn(SOME_API_KEY)
 
         wireQueryAdapter.init()
@@ -51,8 +51,8 @@ internal class WireQueryAdapterTest {
             .listenForQueries(
                 eq(
                     ListenForQueriesRequest.newBuilder()
-                        .setAppName(bridgeSettings.appName)
-                        .setApiKey(bridgeSettings.apiKey)
+                        .setAppName(connectionSettings.appName)
+                        .setApiKey(connectionSettings.apiKey)
                         .build()
                 ), any()
             )
@@ -63,10 +63,10 @@ internal class WireQueryAdapterTest {
         val captor = argumentCaptor<StreamObserver<QueryMutation>>()
         val compiledQuery = mock<CompiledQuery>()
 
-        whenever(bridgeSettings.appName)
+        whenever(connectionSettings.appName)
             .thenReturn(SOME_APP_NAME)
 
-        whenever(bridgeSettings.apiKey)
+        whenever(connectionSettings.apiKey)
             .thenReturn(SOME_API_KEY)
 
         wireQueryAdapter.init()
@@ -86,10 +86,10 @@ internal class WireQueryAdapterTest {
     fun `when an error occurs while listening for queries, the error is reported`() {
         val captor = argumentCaptor<StreamObserver<QueryMutation>>()
 
-        whenever(bridgeSettings.appName)
+        whenever(connectionSettings.appName)
             .thenReturn(SOME_APP_NAME)
 
-        whenever(bridgeSettings.apiKey)
+        whenever(connectionSettings.apiKey)
             .thenReturn(SOME_API_KEY)
 
         wireQueryAdapter.init()
@@ -122,10 +122,10 @@ internal class WireQueryAdapterTest {
         val captor = argumentCaptor<StreamObserver<QueryMutation>>()
         val compiledQuery = mock<CompiledQuery>()
 
-        whenever(bridgeSettings.appName)
+        whenever(connectionSettings.appName)
             .thenReturn(SOME_APP_NAME)
 
-        whenever(bridgeSettings.apiKey)
+        whenever(connectionSettings.apiKey)
             .thenReturn(SOME_API_KEY)
 
         wireQueryAdapter.init()
@@ -146,10 +146,10 @@ internal class WireQueryAdapterTest {
         val captor = argumentCaptor<StreamObserver<QueryMutation>>()
         val compiledQuery = mock<CompiledQuery>()
 
-        whenever(bridgeSettings.appName)
+        whenever(connectionSettings.appName)
             .thenReturn(SOME_APP_NAME)
 
-        whenever(bridgeSettings.apiKey)
+        whenever(connectionSettings.apiKey)
             .thenReturn(SOME_API_KEY)
 
         wireQueryAdapter.init()
@@ -170,10 +170,10 @@ internal class WireQueryAdapterTest {
         val captor = argumentCaptor<StreamObserver<QueryMutation>>()
         val compiledQuery = mock<CompiledQuery>()
 
-        whenever(bridgeSettings.appName)
+        whenever(connectionSettings.appName)
             .thenReturn(SOME_APP_NAME)
 
-        whenever(bridgeSettings.apiKey)
+        whenever(connectionSettings.apiKey)
             .thenReturn(SOME_API_KEY)
 
         wireQueryAdapter.init()
@@ -195,10 +195,10 @@ internal class WireQueryAdapterTest {
     fun `listening starts again 5 seconds after an error`() {
         val captor = argumentCaptor<StreamObserver<QueryMutation>>()
 
-        whenever(bridgeSettings.appName)
+        whenever(connectionSettings.appName)
             .thenReturn(SOME_APP_NAME)
 
-        whenever(bridgeSettings.apiKey)
+        whenever(connectionSettings.apiKey)
             .thenReturn(SOME_API_KEY)
 
         wireQueryAdapter.init()
@@ -216,10 +216,10 @@ internal class WireQueryAdapterTest {
     fun `listening starts again 5 seconds after a completion`() {
         val captor = argumentCaptor<StreamObserver<QueryMutation>>()
 
-        whenever(bridgeSettings.appName)
+        whenever(connectionSettings.appName)
             .thenReturn(SOME_APP_NAME)
 
-        whenever(bridgeSettings.apiKey)
+        whenever(connectionSettings.apiKey)
             .thenReturn(SOME_API_KEY)
 
         wireQueryAdapter.init()
@@ -257,10 +257,10 @@ internal class WireQueryAdapterTest {
 
     @Test
     fun `published results and errors are published when schedulePublishing is called`() {
-        whenever(bridgeSettings.appName)
+        whenever(connectionSettings.appName)
             .thenReturn(SOME_APP_NAME)
 
-        whenever(bridgeSettings.apiKey)
+        whenever(connectionSettings.apiKey)
             .thenReturn(SOME_API_KEY)
 
         whenever(objectMapper.writeValueAsString(mapOf("result" to SOME_RESULT)))
@@ -308,10 +308,10 @@ internal class WireQueryAdapterTest {
 
     @Test
     fun `schedulePublishing will publish once when calling with no published messages and then with one directly afterwards`() {
-        whenever(bridgeSettings.appName)
+        whenever(connectionSettings.appName)
             .thenReturn(SOME_APP_NAME)
 
-        whenever(bridgeSettings.apiKey)
+        whenever(connectionSettings.apiKey)
             .thenReturn(SOME_API_KEY)
 
         whenever(objectMapper.writeValueAsString(mapOf("result" to SOME_RESULT)))
@@ -343,10 +343,10 @@ internal class WireQueryAdapterTest {
 
     @Test
     fun `schedulePublishing will publish once when called four times`() {
-        whenever(bridgeSettings.appName)
+        whenever(connectionSettings.appName)
             .thenReturn(SOME_APP_NAME)
 
-        whenever(bridgeSettings.apiKey)
+        whenever(connectionSettings.apiKey)
             .thenReturn(SOME_API_KEY)
 
         whenever(objectMapper.writeValueAsString(mapOf("result" to SOME_RESULT)))
@@ -381,10 +381,10 @@ internal class WireQueryAdapterTest {
 
     @Test
     fun `schedulePublishing will publish twice when called five times`() {
-        whenever(bridgeSettings.appName)
+        whenever(connectionSettings.appName)
             .thenReturn(SOME_APP_NAME)
 
-        whenever(bridgeSettings.apiKey)
+        whenever(connectionSettings.apiKey)
             .thenReturn(SOME_API_KEY)
 
         whenever(objectMapper.writeValueAsString(mapOf("result" to SOME_RESULT)))

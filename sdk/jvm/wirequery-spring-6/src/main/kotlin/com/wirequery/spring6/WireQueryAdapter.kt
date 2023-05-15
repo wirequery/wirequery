@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct
 
 class WireQueryAdapter(
     private val wireQueryStub: WirequeryServiceGrpc.WirequeryServiceStub,
-    private val bridgeSettings: BridgeSettings,
+    private val connectionSettings: ConnectionSettings,
     private val objectMapper: ObjectMapper,
     private val queryCompiler: QueryCompiler,
     private val logger: Logger,
@@ -44,8 +44,8 @@ class WireQueryAdapter(
         logger.debug("Listening for queries...")
         wireQueryStub.listenForQueries(
             Wirequery.ListenForQueriesRequest.newBuilder()
-                .setAppName(bridgeSettings.appName)
-                .setApiKey(bridgeSettings.apiKey)
+                .setAppName(connectionSettings.appName)
+                .setApiKey(connectionSettings.apiKey)
                 .build(),
             object : StreamObserver<Wirequery.QueryMutation> {
                 override fun onNext(q: Wirequery.QueryMutation) {
@@ -142,8 +142,8 @@ class WireQueryAdapter(
             logger.info("Publish ${toPublish.size} reports...")
             wireQueryStub.reportQueryResults(
                 Wirequery.QueryReports.newBuilder()
-                    .setApiKey(bridgeSettings.apiKey)
-                    .setAppName(bridgeSettings.appName)
+                    .setApiKey(connectionSettings.apiKey)
+                    .setAppName(connectionSettings.appName)
                     .addAllQueryReports(toPublish)
                     .build(),
                 object : StreamObserver<Wirequery.Empty> {
@@ -160,7 +160,7 @@ class WireQueryAdapter(
         }
     }
 
-    data class BridgeSettings(
+    data class ConnectionSettings(
         val appName: String,
         val apiKey: String,
     )

@@ -8,6 +8,7 @@ import com.wirequery.core.TraceableQuery
 import com.wirequery.core.masking.ObjectMasker
 import com.wirequery.core.masking.impl.ClassAnalyzingMaskDeterminer
 import com.wirequery.core.masking.impl.SettingsBasedHeaderMaskDeterminer
+import com.wirequery.core.masking.impl.SettingsBasedHeaderMaskDeterminer.MaskSettings
 import com.wirequery.core.masking.impl.SimpleHeadersMasker
 import com.wirequery.core.masking.impl.SimpleObjectMasker
 import com.wirequery.core.query.*
@@ -55,7 +56,7 @@ class WireQueryConfig {
         ContextMapCreator(
             SimpleHeadersMasker(
                 SettingsBasedHeaderMaskDeterminer(
-                    SettingsBasedHeaderMaskDeterminer.MaskSettings(
+                    MaskSettings(
                         unmaskByDefault = config.maskSettings.unmaskByDefault,
                         requestHeaders = config.maskSettings.requestHeaders.toSet(),
                         responseHeaders = config.maskSettings.responseHeaders.toSet(),
@@ -68,7 +69,7 @@ class WireQueryConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "wirequery.connection",  havingValue = "true", name = ["local"])
+    @ConditionalOnProperty(prefix = "wirequery.connection", havingValue = "true", name = ["local"])
     fun staticQueryLoader(
         queryParser: QueryParser,
         queryCompiler: QueryCompiler,
@@ -90,7 +91,7 @@ class WireQueryConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "wirequery.connection",  havingValue = "true", name = ["enable"])
+    @ConditionalOnProperty(prefix = "wirequery.connection", havingValue = "true", name = ["enable"])
     fun staticResultPublisher() = object : ResultPublisher {
         override fun publishError(queryId: String, message: String) {
             logger.error("WireQuery Error Report ($queryId): $message")
@@ -108,10 +109,25 @@ class WireQueryConfig {
         config: WireQueryConfigurationProperties
     ): ObjectMasker = SimpleObjectMasker(
         defaultObjectMapper,
-        ClassAnalyzingMaskDeterminer(unmaskByDefault = config.maskSettings.unmaskByDefault)
+        ClassAnalyzingMaskDeterminer(
+            unmaskByDefault = config.maskSettings.unmaskByDefault,
+            additionalClasses = config.maskSettings.classes.associate { clazz ->
+                clazz.name to ClassAnalyzingMaskDeterminer.AdditionalClass(
+                    mask = clazz.mask,
+                    unmask = clazz.unmask,
+                    fields = clazz.fields.associate { field ->
+                        field.name to ClassAnalyzingMaskDeterminer.AdditionalField(
+                            mask = field.mask,
+                            unmask = field.unmask
+                        )
+                    }
+                )
+            }
+        )
     )
 
-    @Bean fun logger() = object : Logger {
+    @Bean
+    fun logger() = object : Logger {
         override fun info(message: String) = logger.info(message)
         override fun warn(message: String) = logger.warn(message)
         override fun error(message: String) = logger.error(message)
@@ -120,7 +136,12 @@ class WireQueryConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "wirequery.connection",  havingValue = "false", name = ["local"], matchIfMissing = true)
+    @ConditionalOnProperty(
+        prefix = "wirequery.connection",
+        havingValue = "false",
+        name = ["local"],
+        matchIfMissing = true
+    )
     fun wireQueryAdapter(
         queryCompiler: QueryCompiler,
         config: WireQueryConfigurationProperties,
@@ -135,7 +156,7 @@ class WireQueryConfig {
                         it.usePlaintext().build()
                     }
                 }),
-            bridgeSettings = WireQueryAdapter.BridgeSettings(
+            connectionSettings = WireQueryAdapter.ConnectionSettings(
                 appName = conn.appName,
                 apiKey = conn.apiKey
             ),
