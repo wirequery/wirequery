@@ -6,3 +6,14 @@ wirequery:
     host: localhost:9090
     appName: transactions
     apiKey: e41888b4-7a33-47b2-8088-7ed219e841ec
+#  allowedResources:
+#    - path: /transactions
+#      methods:
+#        - GET
+#  maskSettings:
+#    classes:
+#      - unmask: true
+#        name: com.transactions.transaction.Transaction
+#        fields:
+#          - name: description
+#            mask: true

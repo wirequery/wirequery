@@ -8,32 +8,53 @@ class ClassAnalyzingMaskDeterminer(
     private val unmaskByDefault: Boolean,
     private val additionalClasses: Map<String, AdditionalClass>
 ) : ClassFieldMaskDeterminer {
+
     override fun shouldUnmask(value: Any, fieldName: String): Boolean {
-        val clazz = value.javaClass
-        if (clazz.annotations.any { it is Mask }) {
-            if (clazz.annotations.any { it is Unmask }) {
-                error("Both @Mask and @Unmask annotations present on class ${clazz.name}")
-            }
-        }
-        var unmaskIfNoAnnotations = unmaskByDefault
-        if (clazz.annotations.any { it is Unmask }) {
-            unmaskIfNoAnnotations = true
-        }
-        if (clazz.annotations.any { it is Mask }) {
-            unmaskIfNoAnnotations = false
-        }
-        val annotations = getAnnotationsByFieldName(fieldName, clazz)
-        if (annotations.any { it is Mask }) {
-            if (annotations.any { it is Unmask }) {
-                error("Both @Mask and @Unmask annotations present on field $fieldName")
-            }
-        }
-        if (annotations.any { it is Unmask }) {
-            return true
-        }
-        if (annotations.any { it is Mask }) {
-            return false
-        }
+        val fieldAnnotations = getAnnotationsByFieldName(fieldName, value.javaClass)
+
+        verifyAnnotationsSetCorrectly(value.javaClass, fieldAnnotations, fieldName)
+        verifyAdditionalClassesSetCorrectly(value, fieldName)
+
+        return determineShouldUnmaskUsingAdditionalClasses(value, fieldName)
+            ?: determineShouldUnmaskUsingAnnotations(fieldAnnotations, value.javaClass)
+            ?: unmaskByDefault
+    }
+
+    private fun determineShouldUnmaskUsingAdditionalClasses(value: Any, fieldName: String) = when {
+        additionalClasses[value::class.java.name]?.fields?.get(fieldName)?.unmask == true ->
+            true
+
+        additionalClasses[value::class.java.name]?.fields?.get(fieldName)?.mask == true ->
+            false
+
+        additionalClasses[value::class.java.name]?.unmask == true ->
+            true
+
+        additionalClasses[value::class.java.name]?.mask == true ->
+            false
+
+        else ->
+            null
+    }
+
+    private fun determineShouldUnmaskUsingAnnotations(fieldAnnotations: Set<Annotation>, clazz: Class<Any>) = when {
+        fieldAnnotations.any { it is Unmask } ->
+            true
+
+        fieldAnnotations.any { it is Mask } ->
+            false
+
+        clazz.annotations.any { it is Unmask } ->
+            true
+
+        clazz.annotations.any { it is Mask } ->
+            false
+
+        else ->
+            null
+    }
+
+    private fun verifyAdditionalClassesSetCorrectly(value: Any, fieldName: String) {
         if (additionalClasses[value::class.java.name]?.unmask != null) {
             if (additionalClasses[value::class.java.name]?.mask != null) {
                 error("Class both masked and unmasked")
@@ -44,19 +65,19 @@ class ClassAnalyzingMaskDeterminer(
                 error("Field both masked and unmasked")
             }
         }
-        if (additionalClasses[value::class.java.name]?.fields?.get(fieldName)?.unmask == true) {
-            return true
+    }
+
+    private fun verifyAnnotationsSetCorrectly(clazz: Class<Any>, annotations: Set<Annotation>, fieldName: String) {
+        if (clazz.annotations.any { it is Mask }) {
+            if (clazz.annotations.any { it is Unmask }) {
+                error("Both @Mask and @Unmask annotations present on class ${clazz.name}")
+            }
         }
-        if (additionalClasses[value::class.java.name]?.fields?.get(fieldName)?.mask == true) {
-            return false
+        if (annotations.any { it is Mask }) {
+            if (annotations.any { it is Unmask }) {
+                error("Both @Mask and @Unmask annotations present on field $fieldName")
+            }
         }
-        if (additionalClasses[value::class.java.name]?.unmask == true) {
-            return true
-        }
-        if (additionalClasses[value::class.java.name]?.mask == true) {
-            return false
-        }
-        return unmaskIfNoAnnotations
     }
 
     private fun getAnnotationsByFieldName(

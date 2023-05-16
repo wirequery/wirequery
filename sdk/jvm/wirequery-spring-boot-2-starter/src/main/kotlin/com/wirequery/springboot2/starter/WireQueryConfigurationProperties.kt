@@ -9,8 +9,8 @@ class WireQueryConfigurationProperties {
     var queries = listOf<QueryProperty>()
     var maskSettings = MaskSettings()
     var connection: Connection? = null
-    var allowedPaths: List<PathSetting>? = null
-    var unallowedPaths: List<PathSetting>? = null
+    var allowedResources: List<ResourceAuthorizationSetting>? = null
+    var unallowedResources: List<ResourceAuthorizationSetting>? = null
 
     class QueryProperty {
         var id = ""
@@ -24,9 +24,9 @@ class WireQueryConfigurationProperties {
         var secure = true
     }
 
-    class PathSetting {
-        var method: String? = null
+    class ResourceAuthorizationSetting {
         var path: String = ""
+        var methods: List<String>? = null
     }
 
     class MaskSettings {

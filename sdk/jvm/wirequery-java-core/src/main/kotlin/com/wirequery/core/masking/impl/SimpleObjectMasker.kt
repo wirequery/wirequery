@@ -69,7 +69,7 @@ class SimpleObjectMasker(
         is Array<*> ->
             maskIterableArrayNodeField(fieldOnObject.toList(), subNode, value, fieldName)
         else -> {
-            error("Unable to find object that serialized to a list for field $fieldName.")
+            error("Unable to find object that serialized to a list for field $fieldName")
         }
     }
 

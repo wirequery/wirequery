@@ -70,6 +70,21 @@ internal class ClassAnalyzingMaskDeterminerTest {
     }
 
     @Test
+    fun `shouldUnmask prioritizes additionalClasses over annotations`() {
+        val determiner = ClassAnalyzingMaskDeterminer(
+            unmaskByDefault = false,
+            additionalClasses = mapOf(
+                ShouldUnmaskCase4::class.java.name to AdditionalClass(
+                    mask = true,
+                    fields = mapOf()
+                )
+            )
+        )
+        assertThat(determiner.shouldUnmask(shouldUnmaskCase4, "field"))
+            .isEqualTo(false)
+    }
+
+    @Test
     fun `shouldUnmask should mask if unmaskByDefault is set to true but the class is annotated with Mask`() {
         assertThat(determinerUnmaskByDefault.shouldUnmask(shouldMaskCase5, "field"))
             .isEqualTo(false)

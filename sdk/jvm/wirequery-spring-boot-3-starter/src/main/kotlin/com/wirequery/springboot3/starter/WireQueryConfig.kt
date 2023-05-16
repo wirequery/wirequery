@@ -45,7 +45,22 @@ class WireQueryConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    fun queryCompiler() = QueryCompiler(ExpressionCompiler())
+    fun queryCompiler(config: WireQueryConfigurationProperties) = QueryCompiler(
+        ExpressionCompiler(),
+        QueryAuthorizer(
+            allowedResources = config.allowedResources?.let(::mapResourceAuthorizationSettings)?.toSet(),
+            unallowedResources = config.unallowedResources?.let(::mapResourceAuthorizationSettings)?.toSet(),
+        )
+    )
+
+    private fun mapResourceAuthorizationSettings(resourceAuthorizationSettings: List<WireQueryConfigurationProperties.ResourceAuthorizationSetting>): List<QueryAuthorizer.ResourceAuthorizationSetting> {
+        return resourceAuthorizationSettings.map {
+            QueryAuthorizer.ResourceAuthorizationSetting(
+                path = it.path,
+                methods = it.methods?.toSet()
+            )
+        }
+    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -165,5 +180,5 @@ class WireQueryConfig {
             logger = logger,
             sleeper = Sleeper()
         )
-    } ?: error("No connection specified for WireQuery.")
+    } ?: error("No connection specified for WireQuery")
 }
