@@ -5,4 +5,4 @@ wirequery:
     secure: false
     host: localhost:9090
     appName: balance-calculator
-    apiKey: f9758a52-3483-41e6-86c9-6c1bf907549f    # Usually this should be injected as an environment variable
+    apiKey: 0396a1f2-4ac7-4367-bad4-b2a3558a420f    # Usually this should be injected as an environment variable

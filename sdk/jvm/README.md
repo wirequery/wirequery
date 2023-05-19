@@ -1,53 +1,26 @@
 # Getting Started
 
-The fastest way to get started is to add a Spring Boot Starter to your Spring Boot project. Depending on your version of
-Spring Boot, you can use one of two starters:
+## Adding Dependencies
+
+In case you are using Spring Boot in your application, The easiest way to get started with WireQuery is to add a Spring
+Boot Starter to your project. Depending on your version of Spring Boot, you can use one of two starters:
 
 | Technology    | Group Id      | Artifact Id                     |
 |---------------|---------------|---------------------------------|
 | Spring Boot 2 | com.wirequery | wirequery-spring-boot-2-starter |
 | Spring Boot 3 | com.wirequery | wirequery-spring-boot-3-starter |
 
-This will automatically configure WireQuery for WebMVC, logging all requests using the logger mechanisms provided by
-Spring Boot.
+(**Note:** If you're not using Spring Boot, you can depend on either the Spring 5 or Spring 6 dependencies, or the Java
+Core dependency if you are not using Spring at all. Setting up WireQuery will take a bit more time, but the Spring Boot
+starters may act as a source of inspiration on how to set it up in your project. The rest of the article will assume
+that you are using one of the Spring Boot Starters.)
 
-While adding the WireQuery SDK into your project, it may be useful to try out certain queries on your local machine
-before connecting to WireQuery.
+## Setting up the Connection
 
-As such, the next step is to define queries that you would like to monitor. For example, if you have an endpoint that
-retrieves all users and you want to log information about them, you can use the `wirequery.queries` property for it:
+Next, add the following properties to your `application.yml`:
 
 ```
 wirequery:
-  queries:
-    - name: zero-order-amounts
-      query: GET 2xx /orders | filter it.responseBody.amount == 0
-```
-
-If you run your program, however, you will notice that everything is masked. By default, every field in the headers,
-request and response body are masked to ensure privacy. This may be controlled by applying `@Mask` and `@Unmask` onto
-request / response objects and their fields. For example, one could define:
-
-```
-import Mask
-import Unmask
-
-@Mask // Not necessary, unless unmaskByDefault is set to true.
-class User {
-    @Unmask
-    String username;
-    String password;
-}
-```
-
-Now that we have successfully implemented the WireQuery SDK, let's connect to WireQuery.
-
-First, either remove the `queries` part from the `application.yml` configuration file or move it to
-e.g. `application-dev.yml`, so you have a separate profile that still uses the manually defined queries.
-
-Next, add the following properties under `wirequery:`:
-
-```
   connection:
     secure: <secure>
     host: <host>
@@ -57,19 +30,35 @@ Next, add the following properties under `wirequery:`:
 
 Here:
 
-- `<secure>` (true by default) needs to be set to false when connecting to an instance of WireQuery over http (e.g. when
-  WireQuery is running locally).
+- `<secure>` (`true` by default) needs to be set to `false` when connecting to an instance of WireQuery over http (e.g.
+  when WireQuery is running locally).
 - `<host>` is the path to WireQuery
 - `<appName>` is the identifying name of your application
-- `<appName>` is the app's api key
+- `<apiKey>` is the app's API key
 
-That's it, you have now successfully connected your app to WireQuery!
+## Masking
+
+If you run your program, however, you will notice that everything is masked. By default, every field in the headers,
+request and response body are masked to ensure privacy. This may be controlled by applying `@Mask` and `@Unmask` onto
+request / response objects and their fields. For example, one could define:
+
+```
+import com.wirequery.core.annotations.Mask;
+import com.wirequery.core.annotations.Unmask;
+
+@Unmask
+public class User {
+    String username;
+    @Mask
+    String password;
+    
+    // ...
+}
+```
 
 # Additional Configuration
 
-In some cases, additional configuration may be needed for WireQuery.
-
-## Masking using application config
+## Masking using Application Config
 
 Besides `@Mask` and `@Unmask`, you can also mask and unmask fields using the `wirequery.maskSettings.classes` property.
 This property takes a list of objects containing:
@@ -87,6 +76,8 @@ Here, `mask` and `unmask` cannot be used at the same time.
 For example, the following example would unmask every field in the `Transaction` class, except for `description`:
 
 ```
+wirequery:
+  ...
   maskSettings:
     classes:
       - unmask: true
@@ -121,9 +112,9 @@ wirequery:
 
 ## Extending WireQuery
 
-WireQuery can be extended to provide more information than only the incoming request and response, using extensions. In
-the Spring variant of WireQuery, one can achieve this using the `RequestData` object, which can be injected into a bean.
-The `RequestData` object, then, contains a method for setting an extension. For example:
+WireQuery can be extended to provide more information than only the incoming request and response using extensions.
+You can extend WireQuery by using the `RequestData` object, which can be injected into a bean. The `RequestData` object,
+then, contains a method for setting an extension. For example:
 
 ```
 requestData.putExtension("outgoingRequests", outgoingRequests);
@@ -149,7 +140,6 @@ The following settings can be used to configure WireQuery in your `application.y
 
 | Property Name                          | Sub fields                 | Default | Description                                                                                           |
 |----------------------------------------|----------------------------|---------|-------------------------------------------------------------------------------------------------------|
-| wirequery.queries                      | name, query                | []      | List of queries by name and query                                                                     |
 | wirequery.maskSettings.unmaskByDefault |                            | false   | If set to true, unmask everything by default                                                          |
 | wirequery.maskSettings.requestHeaders  |                            | []      | List of request headers to be masked or unmasked depending on whether `unmaskByDefault` is set        |
 | wirequery.maskSettings.responseHeaders |                            | []      | List of response headers to be masked or unmasked depending on whether `unmaskByDefault` is set       |
@@ -157,23 +147,15 @@ The following settings can be used to configure WireQuery in your `application.y
 | wirequery.allowedResources             | path, methods              | null    | Determines which resources are allowed to be accessed.                                                |
 | wirequery.unallowedResources           | path, methods              | null    | Determines which resources are allowed to be accessed.                                                |
 
-Example:
-
-```
-wirequery:
-  queries:
-    - name: zero-order-amounts
-      query: GET 2xx /orders | filter it.responseBody.amount == 0
-  maskSettings:
-    unmaskByDefault: false
-    requestHeaders:
-      - Accept
-    responseHeaders:
-      - Content-Type
-```
-
 # Limitations
 
 Current limitations include:
 
-- If the request body is malformed, it cannot be parsed and therefore not intercepted.
+- If the request body is malformed, it cannot be parsed and therefore not intercepted. As such, it will end up as `null` in the `context`.
+
+# Examples
+
+Two examples may exemplify how WireQuery can be used in a Spring Boot project.
+
+- [Transaction Service](examples/spring-boot/transactions) - simulates a financial system that can create and retrieve transactions.
+- [Balance Calculator](examples/spring-boot/balance-calculator) - calculates a user's balance based on the transactions from the `transactions` service. Exemplifies how to use `extensions`.
