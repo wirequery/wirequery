@@ -74,7 +74,10 @@ class QueryEvaluator(
         val requestHeaders: Map<String, List<String>>,
         val responseBody: Any?,
         val responseHeaders: Map<String, List<String>>,
-        val extensions: Map<String, Any?>
+        val extensions: Map<String, Any?>,
+        val startTime: Long,
+        val endTime: Long,
+        val traceId: String?,
     )
 
 }

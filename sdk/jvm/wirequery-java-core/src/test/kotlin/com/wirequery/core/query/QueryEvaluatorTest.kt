@@ -143,7 +143,10 @@ internal class QueryEvaluatorTest {
             responseBody = "",
             requestHeaders = mapOf(),
             responseHeaders = mapOf(),
-            extensions = mapOf()
+            extensions = mapOf(),
+            startTime = 0,
+            endTime = 0,
+            traceId = ""
         )
 
         val SOME_CONTEXT_MAP = mock<Map<String, Any>>()

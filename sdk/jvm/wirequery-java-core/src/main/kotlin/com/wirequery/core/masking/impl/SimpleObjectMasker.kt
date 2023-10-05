@@ -3,12 +3,14 @@ package com.wirequery.core.masking.impl
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.*
+import com.wirequery.core.masking.ClassFieldMaskDeterminer
 import com.wirequery.core.masking.MaskingConstants.MASKING_LABEL
+import com.wirequery.core.masking.ObjectMasker
 
 class SimpleObjectMasker(
     private val objectMapper: ObjectMapper,
-    private val classFieldMaskDeterminer: com.wirequery.core.masking.ClassFieldMaskDeterminer
-) : com.wirequery.core.masking.ObjectMasker {
+    private val classFieldMaskDeterminer: ClassFieldMaskDeterminer
+) : ObjectMasker {
 
     override fun mask(value: Any): Any? {
         // We use Jackson here as it makes it easier to traverse the values in an object.
@@ -25,18 +27,22 @@ class SimpleObjectMasker(
         return when (node) {
             is ObjectNode ->
                 return maskObjectNode(value, node)
+
             is ArrayNode ->
                 return mutableListOf<Any?>().also { arrayNode ->
                     arrayNode.addAll(
                         when (value) {
                             is Iterable<*> ->
                                 value.mapIndexed { i, subNode -> subNode?.let { mask(it, node[i]) } }
+
                             is Array<*> ->
                                 value.mapIndexed { i, subNode -> subNode?.let { mask(it, node[i]) } }
+
                             else ->
                                 error("Unsupported type for masking: ${value.javaClass.name}")
                         })
                 }
+
             else ->
                 value
         }
@@ -48,10 +54,13 @@ class SimpleObjectMasker(
             result[fieldName] = when (val subNode = node.get(fieldName)) {
                 is ArrayNode ->
                     maskArrayNodeField(value, fieldName, subNode)
+
                 is ValueNode ->
                     maskValueNodeField(subNode, value, fieldName)
+
                 is ObjectNode ->
                     maskObjectNodeField(value, fieldName, subNode)
+
                 else ->
                     error("Unknown type: $fieldName")
             }
@@ -66,8 +75,10 @@ class SimpleObjectMasker(
     ): List<Any?> = when (val fieldOnObject = findField(value, fieldName)) {
         is Iterable<*> ->
             maskIterableArrayNodeField(fieldOnObject, subNode, value, fieldName)
+
         is Array<*> ->
             maskIterableArrayNodeField(fieldOnObject.toList(), subNode, value, fieldName)
+
         else -> {
             error("Unable to find object that serialized to a list for field $fieldName")
         }
@@ -87,7 +98,7 @@ class SimpleObjectMasker(
             ?: value.javaClass.methods.singleOrNull {
                 it.name == "get" + fieldName.replaceFirstChar { c -> c.uppercase() }
             }?.invoke(value)
-            ?: error("Unable to extract $fieldName") // No getter or get<FieldName>. Simply convert it to a string and hope for the best.
+            ?: error("Unable to extract $fieldName")
     } else {
         MASKING_LABEL
     }
@@ -108,6 +119,7 @@ class SimpleObjectMasker(
                 MASKING_LABEL
             }
         }
+
         else ->
             mask(findField(value, fieldName), subNode)
     }

@@ -20,22 +20,25 @@ class ClassAnalyzingMaskDeterminer(
             ?: unmaskByDefault
     }
 
-    private fun determineShouldUnmaskUsingAdditionalClasses(value: Any, fieldName: String) = when {
-        additionalClasses[value::class.java.name]?.fields?.get(fieldName)?.unmask == true ->
-            true
+    private fun determineShouldUnmaskUsingAdditionalClasses(value: Any, fieldName: String) =
+        additionalClasses[value::class.java.name]?.let { additionalClass ->
+            when {
+                additionalClass.fields[fieldName]?.unmask == true ->
+                    true
 
-        additionalClasses[value::class.java.name]?.fields?.get(fieldName)?.mask == true ->
-            false
+                additionalClass.fields[fieldName]?.mask == true ->
+                    false
 
-        additionalClasses[value::class.java.name]?.unmask == true ->
-            true
+                additionalClass.unmask == true ->
+                    true
 
-        additionalClasses[value::class.java.name]?.mask == true ->
-            false
+                additionalClass.mask == true ->
+                    false
 
-        else ->
-            null
-    }
+                else ->
+                    null
+            }
+        }
 
     private fun determineShouldUnmaskUsingAnnotations(fieldAnnotations: Set<Annotation>, clazz: Class<Any>) = when {
         fieldAnnotations.any { it is Unmask } ->

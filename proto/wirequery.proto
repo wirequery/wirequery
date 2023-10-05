@@ -49,6 +49,9 @@ message QueryReports {
 message QueryReport {
   string query_id = 1;
   string message = 2;
+  int64 start_time = 3;
+  int64 end_time = 4;
+  string trace_id = 5;
 }
 
 message Empty {

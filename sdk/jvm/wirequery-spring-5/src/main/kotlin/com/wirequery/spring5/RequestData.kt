@@ -9,6 +9,8 @@ import org.springframework.web.context.annotation.RequestScope
 class RequestData {
     internal var requestBody: Any? = null
     internal var responseBody: Any? = null
+    internal var startTime: Long = 0
+
     val extensions: Map<String, Any> = mutableMapOf()
 
     fun putExtension(key: String, value: Any) {

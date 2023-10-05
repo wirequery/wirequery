@@ -1,9 +1,9 @@
-# Introduction
-
 Capture, explore, and analyze data flowing in and out of your applications, without compromising privacy.
 
-WireQuery captures HTTP requests and responses based on the provided query in the WireQuery UI. Masking is done
-in the application itself, so that sensitive data won't leave your servers.
+WireQuery is an open source product that captures HTTP requests and responses based on the provided query in the
+WireQuery UI. Masking is done in the application itself, so that sensitive data won't leave your servers.
+
+# How It Works
 
 # Variants
 

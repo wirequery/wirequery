@@ -45,7 +45,7 @@ internal class AsyncQueriesProcessorTest {
 
         asyncQueriesProcessor.execute(intercepted)
 
-        verify(resultPublisher).publishResult(traceableQuery, result)
+        verify(resultPublisher).publishResult(traceableQuery, result, 0, 0, null)
     }
 
     @Test
@@ -64,7 +64,7 @@ internal class AsyncQueriesProcessorTest {
 
         asyncQueriesProcessor.execute(intercepted)
 
-        verify(resultPublisher).publishError(SOME_QUERY_ID, SOME_ERROR_MESSAGE)
+        verify(resultPublisher).publishError(SOME_QUERY_ID, SOME_ERROR_MESSAGE, 0, 0, null)
     }
 
     private companion object {

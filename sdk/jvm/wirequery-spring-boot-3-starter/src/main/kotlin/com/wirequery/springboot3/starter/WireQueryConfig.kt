@@ -106,20 +106,6 @@ class WireQueryConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "wirequery.connection", havingValue = "true", name = ["enable"])
-    fun staticResultPublisher() = object : ResultPublisher {
-        override fun publishError(queryId: String, message: String) {
-            logger.error("WireQuery Error Report ($queryId): $message")
-        }
-
-        override fun publishResult(query: TraceableQuery, results: Any) {
-            val resultsStr = defaultObjectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(results)
-            logger.info("WireQuery Report (${query.queryId}): $resultsStr")
-        }
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     fun simpleObjectMasker(
         config: WireQueryConfigurationProperties
     ): ObjectMasker = SimpleObjectMasker(

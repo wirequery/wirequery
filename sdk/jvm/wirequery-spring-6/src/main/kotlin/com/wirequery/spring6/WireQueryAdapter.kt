@@ -55,7 +55,7 @@ class WireQueryAdapter(
                                 try {
                                     queries = queries + createTraceableQuery(q)
                                 } catch (e: Exception) {
-                                    publishError(q.addQuery.queryId, "" + e.message)
+                                    publishError(q.addQuery.queryId, "" + e.message, 0, 0, "")
                                 }
 
                             q.hasRemoveQueryById() ->
@@ -111,17 +111,23 @@ class WireQueryAdapter(
         return queries
     }
 
-    override fun publishResult(query: TraceableQuery, results: Any) {
+    override fun publishResult(query: TraceableQuery, results: Any, startTime: Long, endTime: Long, traceId: String?) {
         messageQueue += Wirequery.QueryReport.newBuilder()
             .setMessage(objectMapper.writeValueAsString(mapOf("result" to results)))
             .setQueryId(query.queryId)
+            .setStartTime(startTime)
+            .setEndTime(endTime)
+            .let { if (traceId != null) it.setTraceId(traceId) else it }
             .build()
     }
 
-    override fun publishError(queryId: String, message: String) {
+    override fun publishError(queryId: String, message: String, startTime: Long, endTime: Long, traceId: String?) {
         messageQueue += Wirequery.QueryReport.newBuilder()
             .setMessage(objectMapper.writeValueAsString(mapOf("error" to message)))
             .setQueryId(queryId)
+            .setStartTime(startTime)
+            .setEndTime(endTime)
+            .let { if (traceId != null) it.setTraceId(traceId) else it }
             .build()
     }
 

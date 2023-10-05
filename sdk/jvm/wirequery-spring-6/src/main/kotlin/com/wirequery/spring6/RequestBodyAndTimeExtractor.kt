@@ -6,11 +6,14 @@ import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice
 import java.lang.reflect.Type
+import java.time.Clock
 
 @ControllerAdvice
-class RequestBodyExtractor(
+class RequestBodyAndTimeExtractor(
     private val requestData: RequestData
 ) : RequestBodyAdvice {
+
+    internal var clock = Clock.systemDefaultZone()
 
     override fun supports(
         methodParameter: MethodParameter,
@@ -26,6 +29,7 @@ class RequestBodyExtractor(
         targetType: Type,
         converterType: Class<out HttpMessageConverter<*>>
     ): HttpInputMessage {
+        requestData.startTime = clock.millis()
         return inputMessage
     }
 
@@ -47,6 +51,7 @@ class RequestBodyExtractor(
         targetType: Type,
         converterType: Class<out HttpMessageConverter<*>>
     ): Any? {
+        requestData.startTime = clock.millis()
         return body
     }
 }

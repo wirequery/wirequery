@@ -4,12 +4,15 @@ import com.wirequery.core.query.QueryEvaluator
 import org.springframework.stereotype.Service
 import org.springframework.web.util.ContentCachingRequestWrapper
 import org.springframework.web.util.ContentCachingResponseWrapper
+import java.time.Clock
 
 @Service
 class InterceptedQueryTrafficProcessor(
     private val requestData: RequestData,
     private val asyncQueriesProcessor: AsyncQueriesProcessor
 ) {
+
+    internal var clock = Clock.systemDefaultZone()
 
     fun processInterceptedTraffic(
         request: ContentCachingRequestWrapper,
@@ -24,9 +27,26 @@ class InterceptedQueryTrafficProcessor(
             requestHeaders = extractRequestHeaders(request),
             responseBody = requestData.responseBody,
             responseHeaders = extractResponseHeaders(response),
-            extensions = requestData.extensions
+            extensions = requestData.extensions,
+            startTime = requestData.startTime,
+            endTime = clock.millis(),
+            traceId = extractTraceId(request)
         )
         asyncQueriesProcessor.execute(intercepted)
+    }
+
+    private fun extractTraceId(request: ContentCachingRequestWrapper): String? {
+        return request.getHeader("traceparent")
+            ?.split("-")
+            ?.let {
+                if (it.size != 3) {
+                    return null
+                }
+                if (it[0] != "00") {
+                    return null
+                }
+                return it[1]
+            }
     }
 
     private fun extractRequestHeaders(request: ContentCachingRequestWrapper): Map<String, List<String>> {
