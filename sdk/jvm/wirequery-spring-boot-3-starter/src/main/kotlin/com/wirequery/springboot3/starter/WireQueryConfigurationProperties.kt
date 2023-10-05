@@ -6,16 +6,10 @@ import org.springframework.stereotype.Component
 @Component
 @ConfigurationProperties(prefix = "wirequery")
 class WireQueryConfigurationProperties {
-    var queries = listOf<QueryProperty>()
     var maskSettings = MaskSettings()
     var connection: Connection? = null
     var allowedResources: List<ResourceAuthorizationSetting>? = null
     var unallowedResources: List<ResourceAuthorizationSetting>? = null
-
-    class QueryProperty {
-        var id = ""
-        var query = ""
-    }
 
     class Connection {
         var host = ""

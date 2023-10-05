@@ -1,4 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
+tasks.getByName<BootJar>("bootJar") {
+	enabled = false
+}
 
 plugins {
 	id("org.springframework.boot") version "3.0.6"

@@ -84,28 +84,6 @@ class WireQueryConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "wirequery.connection", havingValue = "true", name = ["local"])
-    fun staticQueryLoader(
-        queryParser: QueryParser,
-        queryCompiler: QueryCompiler,
-        config: WireQueryConfigurationProperties
-    ) = object : QueryLoader {
-        val cache = mutableMapOf<String, TraceableQuery>()
-
-        override fun getQueries(): List<TraceableQuery> {
-            return config.queries.map {
-                cache.getOrPut(it.id) {
-                    TraceableQuery(
-                        queryId = it.id,
-                        compiledQuery = queryCompiler.compile(queryParser.parse(it.query))
-                    )
-                }
-            }
-        }
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     fun simpleObjectMasker(
         config: WireQueryConfigurationProperties
     ): ObjectMasker = SimpleObjectMasker(
