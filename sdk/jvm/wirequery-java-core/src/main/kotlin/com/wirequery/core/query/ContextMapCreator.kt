@@ -22,8 +22,7 @@ class ContextMapCreator(
         "requestHeaders" to intercepted.requestHeaders,
         "responseHeaders" to intercepted.responseHeaders,
         "extensions" to intercepted.extensions,
-        "startTime" to intercepted.startTime,
-        "endTime" to intercepted.endTime,
+        "took" to intercepted.endTime - intercepted.startTime,
         "traceId" to intercepted.traceId,
     )
         .filter { it.value != null }
@@ -44,8 +43,7 @@ class ContextMapCreator(
         "requestHeaders" to headersMasker.maskRequestHeaders(intercepted.requestHeaders),
         "responseHeaders" to headersMasker.maskResponseHeaders(intercepted.responseHeaders),
         "extensions" to intercepted.extensions,
-        "startTime" to intercepted.startTime,
-        "endTime" to intercepted.endTime,
+        "took" to intercepted.endTime - intercepted.startTime,
         "traceId" to intercepted.traceId,
     )
         .filter { it.value != null }

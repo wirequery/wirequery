@@ -9,7 +9,7 @@ import java.lang.reflect.Type
 import java.time.Clock
 
 @ControllerAdvice
-class RequestBodyAndTimeExtractor(
+class RequestBodyExtractor(
     private val requestData: RequestData
 ) : RequestBodyAdvice {
 
@@ -29,7 +29,6 @@ class RequestBodyAndTimeExtractor(
         targetType: Type,
         converterType: Class<out HttpMessageConverter<*>>
     ): HttpInputMessage {
-        requestData.startTime = clock.millis()
         return inputMessage
     }
 
@@ -51,7 +50,6 @@ class RequestBodyAndTimeExtractor(
         targetType: Type,
         converterType: Class<out HttpMessageConverter<*>>
     ): Any? {
-        requestData.startTime = clock.millis()
         return body
     }
 }

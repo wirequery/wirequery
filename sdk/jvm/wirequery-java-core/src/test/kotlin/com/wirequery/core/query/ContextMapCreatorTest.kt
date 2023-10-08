@@ -79,8 +79,7 @@ internal class ContextMapCreatorTest {
             "requestHeaders" to mapOf("c" to listOf("d")),
             "responseHeaders" to mapOf("e" to listOf("f")),
             "extensions" to mapOf("a" to "someExtension"),
-            "startTime" to 10L,
-            "endTime" to 20L,
+            "took" to 10L,
             "traceId" to "abc"
         )
 
@@ -98,8 +97,7 @@ internal class ContextMapCreatorTest {
             "requestHeaders" to mapOf("c" to listOf(MASKING_LABEL)),
             "responseHeaders" to mapOf("e" to listOf(MASKING_LABEL)),
             "extensions" to mapOf("a" to "someExtension"),
-            "startTime" to 10L,
-            "endTime" to 20L,
+            "took" to 10L,
             "traceId" to "abc"
         )
     }
