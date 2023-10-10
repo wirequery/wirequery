@@ -18,6 +18,7 @@ message QueryMutation {
   oneof queryMutationChoice {
     Query add_query = 1;
     string remove_query_by_id = 2;
+    QueryOneTrace query_one_trace = 3;
   }
 }
 
@@ -26,6 +27,11 @@ message Query {
   QueryHead queryHead = 2;
   repeated Operation stream_operations = 3;
   Operation aggregator_operation = 4;
+}
+
+message QueryOneTrace {
+  string query_id = 1;
+  string trace_id = 2;
 }
 
 message QueryHead {

@@ -9,7 +9,9 @@ import java.time.Clock
 @Service
 class InterceptedQueryTrafficProcessor(
     private val requestData: RequestData,
-    private val asyncQueriesProcessor: AsyncQueriesProcessor
+    private val asyncQueriesProcessor: AsyncQueriesProcessor,
+    private val traceCache: TraceCache,
+    private val traceProvider: TraceProvider
 ) {
 
     internal var clock = Clock.systemDefaultZone()
@@ -30,23 +32,10 @@ class InterceptedQueryTrafficProcessor(
             extensions = requestData.extensions,
             startTime = requestData.startTime,
             endTime = clock.millis(),
-            traceId = extractTraceId(request)
+            traceId = traceProvider.traceId()
         )
+        traceCache.store(intercepted)
         asyncQueriesProcessor.execute(intercepted)
-    }
-
-    private fun extractTraceId(request: ContentCachingRequestWrapper): String? {
-        return request.getHeader("traceparent")
-            ?.split("-")
-            ?.let {
-                if (it.size != 3) {
-                    return null
-                }
-                if (it[0] != "00") {
-                    return null
-                }
-                return it[1]
-            }
     }
 
     private fun extractRequestHeaders(request: ContentCachingRequestWrapper): Map<String, List<String>> {

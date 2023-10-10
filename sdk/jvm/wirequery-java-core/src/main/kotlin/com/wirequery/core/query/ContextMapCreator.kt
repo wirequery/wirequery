@@ -31,11 +31,11 @@ class ContextMapCreator(
 
     fun createMaskedContextMap(
         intercepted: QueryEvaluator.InterceptedRequestResponse,
-        appHeadEvaluationResult: AppHeadEvaluator.AppHeadEvaluationResult
+        appHeadEvaluationResult: AppHeadEvaluator.AppHeadEvaluationResult? = null
     ) = mapOf(
         "method" to intercepted.method,
         "path" to intercepted.path,
-        "pathVariables" to appHeadEvaluationResult.pathVariables,
+        "pathVariables" to appHeadEvaluationResult?.pathVariables,
         "statusCode" to intercepted.statusCode,
         "queryParameters" to intercepted.queryParameters,
         "requestBody" to intercepted.requestBody?.let(objectMasker::mask),

@@ -28,6 +28,12 @@ internal class InterceptedQueryTrafficProcessorTest {
     @Mock
     private lateinit var asyncQueriesProcessor: AsyncQueriesProcessor
 
+    @Mock
+    private lateinit var traceCache: TraceCache
+
+    @Mock
+    private lateinit var traceProvider: TraceProvider
+
     @InjectMocks
     private lateinit var interceptedQueryTrafficProcessor: InterceptedQueryTrafficProcessor
 
@@ -41,6 +47,9 @@ internal class InterceptedQueryTrafficProcessorTest {
         val request = mock<ContentCachingRequestWrapper>()
         val response = mock<ContentCachingResponseWrapper>()
 
+        whenever(traceProvider.traceId())
+            .thenReturn("abc")
+
         whenever(request.method).thenReturn("GET")
         whenever(request.requestURI).thenReturn("/abc")
 
@@ -52,9 +61,6 @@ internal class InterceptedQueryTrafficProcessorTest {
 
         doReturn(Collections.enumeration(listOf("00-abc-def")))
             .whenever(request).getHeaders("traceparent")
-
-        whenever(request.getHeader("traceparent"))
-            .thenReturn("00-abc-def")
 
         whenever(response.headerNames)
             .thenReturn(listOf("Content-Type"))
@@ -91,6 +97,7 @@ internal class InterceptedQueryTrafficProcessorTest {
 
         interceptedQueryTrafficProcessor.processInterceptedTraffic(request, response)
 
+        verify(traceCache).store(intercepted)
         verify(asyncQueriesProcessor).execute(intercepted)
     }
 

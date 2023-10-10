@@ -2,7 +2,15 @@ server.port: 9101
 
 wirequery:
   connection:
-    secure: true
-    host: grpc.wirequery.io:443
-    appName: wqexample
-    apiKey: 1/98c3be1d-6aa5-4948-80c2-754396153cf0
+    secure: false
+    host: localhost:9090
+    appName: goku
+    apiKey: 1/2aa87c77-7f21-4796-a417-dd12a8d4500f
+
+
+    #wirequery:
+  #connection:
+    #secure: true
+    #host: grpc.wirequery.io:443
+    #appName: wqexample
+    #apiKey: 1/98c3be1d-6aa5-4948-80c2-754396153cf0

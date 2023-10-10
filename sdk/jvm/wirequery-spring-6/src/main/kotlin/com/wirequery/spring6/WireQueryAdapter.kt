@@ -4,12 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.wirequery.core.QueryLoader
 import com.wirequery.core.ResultPublisher
 import com.wirequery.core.TraceableQuery
+import com.wirequery.core.query.ContextMapCreator
 import com.wirequery.core.query.QueryCompiler
-import com.wirequery.core.query.context.QueryHead
 import com.wirequery.core.query.context.Query
+import com.wirequery.core.query.context.QueryHead
 import io.grpc.stub.StreamObserver
 import org.springframework.scheduling.annotation.Scheduled
 import wirequerypb.Wirequery
+import wirequerypb.Wirequery.QueryReport
+import wirequerypb.Wirequery.QueryReports
 import wirequerypb.WirequeryServiceGrpc
 import javax.annotation.PostConstruct
 
@@ -19,14 +22,16 @@ class WireQueryAdapter(
     private val objectMapper: ObjectMapper,
     private val queryCompiler: QueryCompiler,
     private val logger: Logger,
-    private val sleeper: Sleeper
+    private val traceCache: TraceCache,
+    private val sleeper: Sleeper,
+    private val contextMapCreator: ContextMapCreator
 ) : QueryLoader, ResultPublisher {
 
     private var waitForNextMessageCycles = 0
 
     val lock = Any()
 
-    private var messageQueue = mutableListOf<Wirequery.QueryReport>()
+    private var messageQueue = mutableListOf<QueryReport>()
     private var queries = listOf<TraceableQuery>()
 
     @PostConstruct
@@ -60,6 +65,9 @@ class WireQueryAdapter(
 
                             q.hasRemoveQueryById() ->
                                 queries = queries.filterNot { it.queryId == q.removeQueryById }
+
+                            q.hasQueryOneTrace() ->
+                                respondWithReportsByTrace(q)
 
                             else ->
                                 error("Unknown query mutation")
@@ -107,12 +115,43 @@ class WireQueryAdapter(
         ))
     )
 
+    private fun respondWithReportsByTrace(q: Wirequery.QueryMutation) {
+        traceCache.findByTraceId(q.queryOneTrace.traceId)?.let {
+            val maskedContextMap = contextMapCreator.createMaskedContextMap(it)
+            val message = objectMapper.writeValueAsString(mapOf("result" to maskedContextMap))
+            wireQueryStub.reportQueryResults(
+                QueryReports.newBuilder()
+                    .setApiKey(connectionSettings.apiKey)
+                    .setAppName(connectionSettings.appName)
+                    .addQueryReports(
+                        QueryReport.newBuilder()
+                            .setQueryId(q.queryOneTrace.queryId)
+                            .setStartTime(it.startTime)
+                            .setEndTime(it.endTime)
+                            .setTraceId(it.traceId)
+                            .setMessage(message)
+                            .build()
+                    )
+                    .build(), object : StreamObserver<Wirequery.Empty> {
+                    override fun onNext(value: Wirequery.Empty) {
+                    }
+
+                    override fun onError(t: Throwable) {
+                        logger.warn("An error occurred while reporting query results: $t. Dropping...")
+                    }
+
+                    override fun onCompleted() {
+                    }
+                })
+        }
+    }
+
     override fun getQueries(): List<TraceableQuery> {
         return queries
     }
 
     override fun publishResult(query: TraceableQuery, results: Any, startTime: Long, endTime: Long, traceId: String?) {
-        messageQueue += Wirequery.QueryReport.newBuilder()
+        messageQueue += QueryReport.newBuilder()
             .setMessage(objectMapper.writeValueAsString(mapOf("result" to results)))
             .setQueryId(query.queryId)
             .setStartTime(startTime)
@@ -122,7 +161,7 @@ class WireQueryAdapter(
     }
 
     override fun publishError(queryId: String, message: String, startTime: Long, endTime: Long, traceId: String?) {
-        messageQueue += Wirequery.QueryReport.newBuilder()
+        messageQueue += QueryReport.newBuilder()
             .setMessage(objectMapper.writeValueAsString(mapOf("error" to message)))
             .setQueryId(queryId)
             .setStartTime(startTime)
@@ -138,7 +177,7 @@ class WireQueryAdapter(
             return
         }
 
-        val toPublish = mutableListOf<Wirequery.QueryReport>()
+        val toPublish = mutableListOf<QueryReport>()
         synchronized(lock) {
             toPublish.addAll(messageQueue)
             messageQueue.clear()
@@ -147,7 +186,7 @@ class WireQueryAdapter(
             waitForNextMessageCycles = 3 // We will now send a message, so wait a while until we send the next one.
             logger.info("Publish ${toPublish.size} reports...")
             wireQueryStub.reportQueryResults(
-                Wirequery.QueryReports.newBuilder()
+                QueryReports.newBuilder()
                     .setApiKey(connectionSettings.apiKey)
                     .setAppName(connectionSettings.appName)
                     .addAllQueryReports(toPublish)

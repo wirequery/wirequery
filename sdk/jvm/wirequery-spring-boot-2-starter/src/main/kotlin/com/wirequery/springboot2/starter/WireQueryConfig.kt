@@ -15,6 +15,7 @@ import com.wirequery.core.query.*
 import com.wirequery.spring5.Logger
 import com.wirequery.spring5.WireQueryAdapter
 import com.wirequery.spring5.Sleeper
+import com.wirequery.spring5.TraceCache
 import io.grpc.ManagedChannelBuilder
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -63,12 +64,7 @@ class WireQueryConfig {
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    fun queryEvaluator(objectMasker: ObjectMasker, config: WireQueryConfigurationProperties) = QueryEvaluator(
-        AppHeadEvaluator(),
-        StreamOperationEvaluator(),
-        AggregatorOperationEvaluator(),
-        ContextMapCreator(
+    fun contextMapCreator(objectMasker: ObjectMasker, config: WireQueryConfigurationProperties) = ContextMapCreator(
             SimpleHeadersMasker(
                 SettingsBasedHeaderMaskDeterminer(
                     MaskSettings(
@@ -80,6 +76,14 @@ class WireQueryConfig {
             ),
             objectMasker
         )
+
+    @Bean
+    @ConditionalOnMissingBean
+    fun queryEvaluator(config: WireQueryConfigurationProperties, contextMapCreator: ContextMapCreator) = QueryEvaluator(
+        AppHeadEvaluator(),
+        StreamOperationEvaluator(),
+        AggregatorOperationEvaluator(),
+        contextMapCreator
     )
 
     @Bean
@@ -114,6 +118,9 @@ class WireQueryConfig {
     }
 
     @Bean
+    fun traceCache() = TraceCache()
+
+    @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(
         prefix = "wirequery.connection",
@@ -124,7 +131,9 @@ class WireQueryConfig {
     fun wireQueryAdapter(
         queryCompiler: QueryCompiler,
         config: WireQueryConfigurationProperties,
-        logger: Logger
+        logger: Logger,
+        contextMapCreator: ContextMapCreator,
+        traceCache: TraceCache
     ): WireQueryAdapter = config.connection?.let { conn ->
         WireQueryAdapter(
             wireQueryStub = WirequeryServiceGrpc.newStub(
@@ -142,7 +151,9 @@ class WireQueryConfig {
             objectMapper = defaultObjectMapper,
             queryCompiler = queryCompiler,
             logger = logger,
-            sleeper = Sleeper()
+            sleeper = Sleeper(),
+            traceCache = traceCache,
+            contextMapCreator = contextMapCreator
         )
     } ?: error("No connection specified for WireQuery")
 }

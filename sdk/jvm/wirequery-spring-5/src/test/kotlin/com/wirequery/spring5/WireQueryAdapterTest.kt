@@ -2,7 +2,9 @@ package com.wirequery.spring5
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.wirequery.core.TraceableQuery
+import com.wirequery.core.query.ContextMapCreator
 import com.wirequery.core.query.QueryCompiler
+import com.wirequery.core.query.QueryEvaluator
 import com.wirequery.core.query.context.CompiledQuery
 import com.wirequery.core.query.context.Query
 import com.wirequery.core.query.context.Query.Operation
@@ -36,6 +38,12 @@ internal class WireQueryAdapterTest {
 
     @Mock
     private lateinit var logger: Logger
+
+    @Mock
+    private lateinit var traceCache: TraceCache
+
+    @Mock
+    private lateinit var contextMapCreator: ContextMapCreator
 
     @Mock
     private lateinit var sleeper: Sleeper
@@ -200,6 +208,79 @@ internal class WireQueryAdapterTest {
 
         assertThat(wireQueryAdapter.getQueries())
             .isEqualTo(emptyList<TraceableQuery>())
+    }
+
+
+    @Test
+    fun `results are not sent back by trace id if nothing by trace id is found`() {
+        val captor = argumentCaptor<StreamObserver<QueryMutation>>()
+
+        whenever(connectionSettings.appName)
+            .thenReturn(SOME_APP_NAME)
+
+        whenever(connectionSettings.apiKey)
+            .thenReturn(SOME_API_KEY)
+
+        wireQueryAdapter.init()
+
+        verify(wireQueryStub).listenForQueries(any(), captor.capture())
+
+        captor.firstValue.onNext(SOME_PROTO_QUERY_ONE_TRACE)
+
+        verify(wireQueryStub, times(0))
+            .reportQueryResults(any(), any())
+    }
+
+    @Test
+    fun `results are sent back by trace id when requesting results by trace id`() {
+        val captor = argumentCaptor<StreamObserver<QueryMutation>>()
+
+        whenever(connectionSettings.appName)
+            .thenReturn(SOME_APP_NAME)
+
+        whenever(connectionSettings.apiKey)
+            .thenReturn(SOME_API_KEY)
+
+        wireQueryAdapter.init()
+
+        verify(wireQueryStub).listenForQueries(any(), captor.capture())
+
+        val mockInterceptedRequestResponse = mock<QueryEvaluator.InterceptedRequestResponse>()
+        whenever(mockInterceptedRequestResponse.startTime)
+            .thenReturn(10)
+
+        whenever(mockInterceptedRequestResponse.endTime)
+            .thenReturn(20)
+
+        whenever(mockInterceptedRequestResponse.traceId)
+            .thenReturn(SOME_TRACE_ID)
+
+        whenever(contextMapCreator.createMaskedContextMap(mockInterceptedRequestResponse))
+            .thenReturn(mapOf("something" to SOME_RESULT))
+
+        whenever(objectMapper.writeValueAsString(mapOf("result" to mapOf("something" to SOME_RESULT))))
+            .thenReturn(SOME_MESSAGE)
+
+        whenever(traceCache.findByTraceId(SOME_TRACE_ID))
+            .thenReturn(mockInterceptedRequestResponse)
+
+        captor.firstValue.onNext(SOME_PROTO_QUERY_ONE_TRACE)
+
+        verify(wireQueryStub)
+            .reportQueryResults(
+                eq(QueryReports.newBuilder()
+                    .setApiKey(SOME_API_KEY)
+                    .setAppName(SOME_APP_NAME)
+                    .addQueryReports(
+                        QueryReport.newBuilder()
+                            .setQueryId(SOME_QUERY_ID_1)
+                            .setStartTime(10)
+                            .setEndTime(20)
+                            .setTraceId(SOME_TRACE_ID)
+                            .setMessage(SOME_MESSAGE)
+                            .build())
+                    .build()),
+                any())
     }
 
     @Test
@@ -436,6 +517,7 @@ internal class WireQueryAdapterTest {
         const val SOME_QUERY_ID_2 = "some-query-id-2"
         const val SOME_NAME_1 = "some-name-1"
         const val SOME_NAME_2 = "some-name-2"
+        const val SOME_TRACE_ID = "some-trace-id"
         const val SOME_CEL_EXPRESSION_1 = "some-cel-expression-1"
         const val SOME_CEL_EXPRESSION_2 = "some-cel-expression-2"
         const val SOME_METHOD = "some-method"
@@ -550,6 +632,13 @@ internal class WireQueryAdapterTest {
 
         val SOME_PROTO_REMOVE_QUERY_BY_ID: QueryMutation = QueryMutation.newBuilder()
             .setRemoveQueryById(SOME_QUERY_ID_1)
+            .build()
+
+        val SOME_PROTO_QUERY_ONE_TRACE: QueryMutation = QueryMutation.newBuilder()
+            .setQueryOneTrace(QueryOneTrace.newBuilder()
+                .setQueryId(SOME_QUERY_ID_1)
+                .setTraceId(SOME_TRACE_ID)
+                .build())
             .build()
     }
 
