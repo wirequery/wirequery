@@ -2,15 +2,20 @@ server.port: 9101
 
 wirequery:
   connection:
-    secure: false
-    host: localhost:9090
-    appName: goku
-    apiKey: 1/2aa87c77-7f21-4796-a417-dd12a8d4500f
+    secure: true
+    host: grpc.wirequery.io:443
+    appName: transactions
+    apiKey: 1/0df82d0b-8dca-4002-8f47-0d210ab1c734
+  maskSettings:
+    requestHeaders:
+      - accountid
 
-
-    #wirequery:
-  #connection:
-    #secure: true
-    #host: grpc.wirequery.io:443
-    #appName: wqexample
-    #apiKey: 1/98c3be1d-6aa5-4948-80c2-754396153cf0
+#wirequery:
+#  connection:
+#    secure: false
+#    host: localhost:9090
+#    appName: transactions
+#    apiKey: 1/8229b356-8055-4cd1-9399-be4122f1c9aa # Usually this should be injected as an environment variable
+#  maskSettings:
+#    requestHeaders:
+#      - accountid

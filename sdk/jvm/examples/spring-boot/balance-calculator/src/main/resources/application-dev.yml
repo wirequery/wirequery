@@ -1,7 +1,0 @@
-server.port: 9100
-
-wirequery:
-  local: true
-  queries:
-    - name: all-balances
-      query: GET /balances

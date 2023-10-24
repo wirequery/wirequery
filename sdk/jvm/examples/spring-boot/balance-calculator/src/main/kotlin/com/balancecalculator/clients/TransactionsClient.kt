@@ -2,6 +2,7 @@ package com.balancecalculator.clients
 
 import com.balancecalculator.wqextensions.OutboundTrafficExtender
 import com.wirequery.core.annotations.Unmask
+import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
@@ -12,11 +13,12 @@ import org.springframework.web.client.exchange
 
 @Service
 class TransactionsClient(
-    private val outboundTrafficExtender: OutboundTrafficExtender
+    private val outboundTrafficExtender: OutboundTrafficExtender,
+    private val restTemplateBuilder: RestTemplateBuilder
 ) {
-    private val client = RestTemplate()
 
     fun getTransactions(accountId: String): List<Transaction> {
+        val client = restTemplateBuilder.build()
         val url = "http://localhost:9101/transactions"
         val headers: MultiValueMap<String, String> = LinkedMultiValueMap()
         headers.add("Content-Type", "application/json")

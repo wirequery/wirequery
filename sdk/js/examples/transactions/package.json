@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@next/font": "13.5.5",
+    "@rrweb/types": "^2.0.0-alpha.11",
     "@types/node": "20.8.7",
     "@types/react": "18.2.29",
     "@types/react-dom": "18.2.14",
@@ -18,6 +19,9 @@
     "next": "13.5.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "rrweb": "^2.0.0-alpha.11",
+    "rrweb-snapshot": "^2.0.0-alpha.11",
+    "swr": "^2.2.4",
     "typescript": "5.2.2"
   }
 }

@@ -2,6 +2,7 @@ package com.balancecalculator.balance
 
 import org.springframework.web.bind.annotation.*
 
+@CrossOrigin
 @RequestMapping("/balances")
 @RestController
 class BalanceController(
