@@ -1,3 +1,4 @@
+import { Affix, Loader, Modal, rem } from "@mantine/core";
 import { useState } from "react";
 import { record, getRecordConsolePlugin } from "rrweb";
 import { useSWRConfig } from "swr";
@@ -5,13 +6,15 @@ import { useSWRConfig } from "swr";
 const events: any = [];
 
 export const Recorder = () => {
+  const [isRecordingModalOpen, setIsRecordingModalOpen] = useState(false);
   const { mutate } = useSWRConfig()
 
   const clearCache = () => mutate(() => true, undefined, { revalidate: true })
 
-  const [recording, setRecording] = useState<any | undefined>([]);
+  const [recording, setRecording] = useState<any | undefined>(undefined);
 
   const start = () => {
+    setIsRecordingModalOpen(true)
     console.log("effect");
     const destructor = startRecording();
     return () => {
@@ -35,12 +38,15 @@ export const Recorder = () => {
         timeoutSecs: 30,
       }),
     }).then((res) => res.json().then((json) => {
+      console.log(json)
       setRecording(json);
-      clearCache(); // Trigger all calls once more
+      setTimeout(() => {
+        clearCache()
+        setIsRecordingModalOpen(false)
+      }, 1000) // Trigger all calls once more
     }));
     return record({
       emit: (event) => {
-        console.log(event);
         events.push(event);
       },
       plugins: [getRecordConsolePlugin()],
@@ -49,7 +55,7 @@ export const Recorder = () => {
 
   const send = () => {
     if (recording) {
-      console.log(events);
+      setRecording(undefined);
       fetch(`https://demo.wirequery.io/api/v1/recordings/${recording.id}/finish`, {
         method: "POST",
         headers: {
@@ -65,10 +71,22 @@ export const Recorder = () => {
   };
 
   return (
-    <div>
-      <button onClick={start}>Start</button>
-      <button onClick={send}>Send</button>
-      <button onClick={() => console.log('log test')}>Log</button>
-    </div>
+    <>
+      <Affix position={{ bottom: 0, right: rem(20) }}>
+        {recording
+          ? <button onClick={send}>Done</button>
+          : <button onClick={start}>Start Recording</button>}
+      </Affix>
+      <Modal
+        title="Initializing Recording..."
+        onClose={() => { }}
+        opened={isRecordingModalOpen}
+        closeButtonProps={{ display: 'none' }}
+        closeOnClickOutside={false}
+        closeOnEscape={false}
+      >
+        <Loader color="blue" />
+      </Modal>
+    </>
   );
 };

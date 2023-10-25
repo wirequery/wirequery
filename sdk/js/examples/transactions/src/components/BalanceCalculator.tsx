@@ -1,3 +1,4 @@
+import { Button } from "@mantine/core";
 import { useState } from "react";
 
 interface Balance {
@@ -18,7 +19,7 @@ export const BalanceCalculator = (props: BalanceCalculatorProps) => {
       Total balance: {props.data?.balance}
     </div>
     <div>
-      <button onClick={() => setShowDetails(!showDetails)}>{showDetails ? 'Hide' : 'Show'} details</button>
+      <Button onClick={() => setShowDetails(!showDetails)}>{showDetails ? 'Hide' : 'Show'} details</Button>
     </div>
 
     {showDetails &&

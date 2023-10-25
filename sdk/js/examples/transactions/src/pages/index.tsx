@@ -1,6 +1,7 @@
 import { BalanceCalculator } from "@/components/BalanceCalculator";
 import { Recorder } from "@/components/Recorder";
 import { Transactions } from "@/components/Transactions";
+import { Container } from "@mantine/core";
 import useSWR from "swr";
 
 const fetchWithAccountId = (url: string, fetchArgs: any = {}): Promise<Response> => {
@@ -23,15 +24,14 @@ export default function Home() {
     { revalidateOnFocus: false }
   );
   return (
-    <>
-      <h1>Transactions - NL69FAKE8085990849</h1>
-      <h2>Balance Summary</h2>
+    <Container>
+      <h1>NL69FAKE8085990849</h1>
       <BalanceCalculator data={balanceCalculator?.data as any} />
 
-      <h2>List of Transactions</h2>
+      <h2>Transactions</h2>
       <Transactions data={transactions?.data as any} />
 
       <Recorder />
-    </>
+    </Container>
   );
 }

@@ -15,7 +15,7 @@ class TransactionRepository {
             type = DEBIT,
             fromAccount = "NL69FAKE8085990849",
             toAccount = "13719713158835300",
-            description = "some transaction"
+            description = "Car repairs with some ducktape"
         ),
         Transaction(
             id = 2,
@@ -24,8 +24,8 @@ class TransactionRepository {
             currency = "EUR",
             type = CREDIT,
             fromAccount = "NL69FAKE8085990849",
-            toAccount = "13719713158835300",
-            description = "some transaction 2"
+            toAccount = "NL96FAKE8599084908",
+            description = "Allowance"
         ),
     )
 

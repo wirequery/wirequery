@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mantine/core": "^7.1.5",
+    "@mantine/hooks": "^7.1.5",
     "@next/font": "13.5.5",
     "@rrweb/types": "^2.0.0-alpha.11",
     "@types/node": "20.8.7",
@@ -23,5 +25,10 @@
     "rrweb-snapshot": "^2.0.0-alpha.11",
     "swr": "^2.2.4",
     "typescript": "5.2.2"
+  },
+  "devDependencies": {
+    "postcss": "^8.4.31",
+    "postcss-preset-mantine": "^1.9.0",
+    "postcss-simple-vars": "^7.0.1"
   }
 }
