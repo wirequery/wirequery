@@ -76,7 +76,7 @@ class WireQueryAdapter(
                 }
 
                 override fun onError(t: Throwable) {
-                    logger.warn("An error occured while listening for queries: $t. Reconnecting in 5 seconds...")
+                    logger.warn("An error occured while listening for queries. Reconnecting in 5 seconds...")
                     sleeper.sleep(5000)
                     listenForQueries()
                 }

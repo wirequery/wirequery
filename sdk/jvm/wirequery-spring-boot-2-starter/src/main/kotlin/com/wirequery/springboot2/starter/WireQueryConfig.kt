@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.annotation.EnableScheduling
 import wirequerypb.WirequeryServiceGrpc
+import java.util.concurrent.TimeUnit
 
 @Configuration
 @EnableAsync
@@ -138,6 +139,7 @@ class WireQueryConfig {
         WireQueryAdapter(
             wireQueryStub = WirequeryServiceGrpc.newStub(
                 ManagedChannelBuilder.forTarget(conn.host).let {
+                    it.keepAliveTime(60, TimeUnit.SECONDS)
                     if (conn.secure) {
                         it.useTransportSecurity().build()
                     } else {
