@@ -1,0 +1,47 @@
+sourceUrl = "ssh://git@github.com/wirequery/wirequery.git"
+destinationUrl = "ssh://git@github.com/wirequery/wirequery-ee.git"
+
+files = glob(["**"], exclude = ["**/ee/**", "copy.bara.sky"])
+
+core.workflow(
+    name = "pull",
+    origin = git.origin(
+        url = sourceUrl,
+        ref = "main",
+    ),
+    destination = git.github_pr_destination(
+        url = destinationUrl,
+        destination_ref = "main",
+        pr_branch = "from_public_repo",
+        title = "Synchronize with Public Repo",
+        body = "Synchronize with Public Repo",
+        integrates = [],
+    ),
+    destination_files = files,
+    authoring = authoring.pass_thru("Wouter Nederhof <wouter.nederhof@gmail.com>"),
+    transformations = [
+        #core.move("", "external"),
+    ],
+)
+
+core.workflow(
+    name = "push",
+    origin = git.origin(
+        url = destinationUrl,
+        ref = "main",
+    ),
+    destination = git.github_pr_destination(
+        url = sourceUrl,
+        destination_ref = "main",
+        pr_branch = "from_monorepo",
+        title = "Synchronize with Private Repo",
+        body = "Synchronize with Private Repo",
+        integrates = [],
+    ),
+    origin_files = files,
+    authoring = authoring.pass_thru("Wouter Nederhof <wouter.nederhof@gmail.com>"),
+    transformations = [
+        #core.move("external", ""),
+    ],
+)
+
