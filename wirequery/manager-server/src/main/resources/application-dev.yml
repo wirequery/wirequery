@@ -1,0 +1,5 @@
+# The dev profile disables CORS so that it can run alongside the Next.js dev server.
+wirequery:
+  admin:
+    enabled: true
+  tenant-id: 1

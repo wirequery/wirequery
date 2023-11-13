@@ -1,0 +1,53 @@
+extend type Query {
+    templateQuery(id: ID!): TemplateQuery
+    templateQuerys(filter: TemplateQueryFilter): [TemplateQuery!]!
+}
+
+extend type Mutation {
+    createTemplateQuery(input: CreateTemplateQueryInput!): TemplateQuery!
+    updateTemplateQuery(id: ID!, input: UpdateTemplateQueryInput!): TemplateQuery
+    deleteTemplateQuery(id: ID!): Boolean!
+}
+
+extend type Template {
+    templateQuerys: [TemplateQuery!]!
+}
+
+extend type Application {
+    templateQuerys: [TemplateQuery!]!
+}
+
+type TemplateQuery {
+    id: ID!
+    templateId: Int!
+    applicationId: Int!
+    nameTemplate: String!
+    queryTemplate: String!
+    queryLimit: Int!
+    template: Template
+    application: Application
+    createdAt: DateTime!
+    updatedAt: DateTime
+    createdBy: String
+    updatedBy: String
+}
+
+input TemplateQueryFilter { 
+    templateId: Int
+    applicationId: Int
+}
+
+input CreateTemplateQueryInput { 
+    templateId: Int!
+    nameTemplate: String!
+    queryTemplate: String!
+    queryLimit: Int!
+}
+
+input UpdateTemplateQueryInput { 
+    templateId: Int
+    applicationId: Int
+    nameTemplate: String
+    queryTemplate: String!
+    queryLimit: Int
+}

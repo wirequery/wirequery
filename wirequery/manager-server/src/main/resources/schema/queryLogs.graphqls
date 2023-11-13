@@ -1,0 +1,28 @@
+extend type Query {
+    queryLogs(filter: QueryLogFilter!): [QueryLog!]!
+    queryLogByTrace(filter: TraceFilterInput): [QueryLog!]!
+}
+
+extend type StoredQuery {
+    queryLogs: [QueryLog!]!
+}
+
+type QueryLog {
+    storedQueryId: Int!
+    message: String!
+    storedQuery: StoredQuery
+    createdAt: DateTime!
+    startTime: Float! # Floats in DGS handle ANY big number
+    endTime: Float! # Floats in DGS handle ANY big number
+    appName: String!
+    traceId: String
+}
+
+input QueryLogFilter { 
+    storedQueryId: Int!
+}
+
+input TraceFilterInput {
+    storedQueryId: Int!
+    traceId: String!
+}

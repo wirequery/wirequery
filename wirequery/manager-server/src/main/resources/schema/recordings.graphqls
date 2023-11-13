@@ -1,0 +1,27 @@
+extend type Query {
+    recordings(filter: RecordingFilter): [Recording!]!
+}
+
+extend type Session {
+    recordings: [Recording!]!
+}
+
+extend type Template {
+    recordings: [Recording!]!
+}
+
+type Recording {
+    id: ID!
+    sessionId: Int!
+    templateId: Int
+    recording: String!
+    session: Session
+    template: Template
+    createdAt: DateTime!
+    updatedAt: DateTime
+}
+
+input RecordingFilter { 
+    sessionId: Int
+    templateId: Int
+}

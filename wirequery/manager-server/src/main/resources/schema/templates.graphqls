@@ -1,0 +1,62 @@
+extend type Query {
+    template(id: ID!): Template
+    templates: [Template!]!
+}
+
+extend type Mutation {
+    createTemplate(input: CreateTemplateInput!): Template!
+    updateTemplate(id: ID!, input: UpdateTemplateInput!): Template
+    deleteTemplate(id: ID!): Boolean!
+}
+
+type Template {
+    id: ID!
+    name: String!
+    description: String!
+    fields: [TemplateField!]!
+    nameTemplate: String!
+    descriptionTemplate: String!
+    allowUserInitiation: Boolean!
+    createdAt: DateTime!
+    updatedAt: DateTime
+    createdBy: String
+    updatedBy: String
+}
+
+type TemplateField {
+    key: String!
+    label: String!
+    type: FieldType!
+}
+
+input CreateTemplateInput { 
+    name: String!
+    description: String!
+    fields: [TemplateFieldInput!]!
+    nameTemplate: String!
+    descriptionTemplate: String!
+    allowUserInitiation: Boolean!
+}
+
+input UpdateTemplateInput { 
+    name: String
+    description: String
+    fields: [TemplateFieldInput!]
+    nameTemplate: String
+    descriptionTemplate: String
+    allowUserInitiation: Boolean
+}
+
+input TemplateFieldInput {
+    key: String!
+    label: String!
+    type: FieldType!
+}
+
+enum FieldType {
+    TEXT
+    TEXTAREA
+    INTEGER
+    FLOAT
+    BOOLEAN
+}

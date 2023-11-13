@@ -1,0 +1,1 @@
+ALTER TABLE recordings ALTER COLUMN template_id DROP NOT NULL;

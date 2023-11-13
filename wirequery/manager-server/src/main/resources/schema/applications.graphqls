@@ -1,0 +1,38 @@
+extend type Query {
+    application(id: ID!): Application
+    applications: [Application!]!
+}
+
+extend type Mutation {
+    updateApplication(id: ID!, input: UpdateApplicationInput!): Application
+    unquarantineApplication(id: ID!, input: UnquarantineApplicationInput!): Application
+    deleteApplication(id: ID!): Boolean!
+    revealApiKey(id: ID!): String!
+}
+
+type Application {
+    id: ID!
+    name: String!
+    description: String!
+    inQuarantine: Boolean!
+    quarantineRule: String
+    quarantineReason: String
+    createdAt: DateTime!
+    updatedAt: DateTime
+    createdBy: String
+    updatedBy: String
+}
+
+input CreateApplicationInput {
+    name: String!
+    description: String!
+    groupId: Int!
+}
+
+input UpdateApplicationInput {
+    description: String
+}
+
+input UnquarantineApplicationInput {
+    reason: String!
+}

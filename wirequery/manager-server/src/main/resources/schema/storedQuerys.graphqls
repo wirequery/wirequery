@@ -1,0 +1,52 @@
+extend type Query {
+    storedQuery(id: ID!): StoredQuery
+    storedQuerys(filter: StoredQueryFilter): [StoredQuery!]!
+}
+
+extend type Mutation {
+    createStoredQuery(input: CreateStoredQueryInput!): StoredQuery!
+    deleteStoredQuery(id: ID!): Boolean!
+}
+
+extend type Application {
+    storedQuerys: [StoredQuery!]!
+}
+
+extend type Session {
+    storedQuerys: [StoredQuery!]!
+}
+
+type StoredQuery {
+    id: ID!
+    sessionId: Int
+    applicationId: Int!
+    name: String!
+    type: QueryType!
+    query: String!
+    queryLimit: Int!
+    endDate: DateTime
+    session: Session
+    application: Application
+    createdAt: DateTime!
+    updatedAt: DateTime
+    createdBy: String
+    updatedBy: String
+}
+
+input StoredQueryFilter {
+    sessionId: Int
+    applicationId: Int
+    hasSessionId: Boolean
+}
+
+input CreateStoredQueryInput { 
+    name: String!
+    type: QueryType!
+    query: String!
+    queryLimit: Int!
+    endDate: DateTime
+}
+
+enum QueryType {
+    TAPPING
+}

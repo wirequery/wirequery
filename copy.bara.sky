@@ -17,6 +17,7 @@ core.workflow(
         body = "Synchronize with Public Repo",
         integrates = [],
     ),
+    origin_files = files,
     destination_files = files,
     authoring = authoring.pass_thru("Wouter Nederhof <wouter.nederhof@gmail.com>"),
     transformations = [
@@ -39,6 +40,7 @@ core.workflow(
         integrates = [],
     ),
     origin_files = files,
+    destination_files = files,
     authoring = authoring.pass_thru("Wouter Nederhof <wouter.nederhof@gmail.com>"),
     transformations = [
         #core.move("external", ""),

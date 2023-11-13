@@ -1,0 +1,36 @@
+:root {
+  --rr-player-wq-primary: rgb(106, 91, 210);
+}
+
+.mantine-Modal-root .mantine-MultiSelect-dropdown {
+  position: static !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+.yaxis-font {
+  text-decoration: underline;
+}
+
+/* TODO update other purple colors as well (hover buttons). */
+
+.rr-player-wq .rr-player {
+  box-shadow: none;
+}
+
+.rr-player-wq .rr-controller__btns button.active {
+  background: var(--rr-player-wq-primary) !important;
+}
+
+.rr-player-wq .rr-progress__handler {
+  background: var(--rr-player-wq-primary) !important;
+}
+
+.rr-player-wq .switch label::before {
+  background: var(--rr-player-wq-primary) !important;
+}
+
+.rr-player-wq .rr-progress__step {
+  background: var(--rr-player-wq-primary) !important;
+}

@@ -1,0 +1,48 @@
+extend type Query {
+    currentUser: User
+    user(id: ID!): User
+    users: [User!]!
+}
+
+extend type Mutation {
+    login(input: LoginInput!): User
+    logout: Boolean!
+    register(input: RegisterInput!): User!
+    updateUser(id: ID!, input: UpdateUserInput!): User
+    updateCurrentUser(input: UpdateCurrentUserInput!): User
+    deleteUser(id: ID!): Boolean!
+}
+
+type User {
+    id: ID!
+    username: String!
+    enabled: Boolean!
+    roles: String!
+    authorisationNames: [String!]!
+    createdAt: Date!
+    updatedAt: Date
+    createdBy: String
+    updatedBy: String
+}
+
+input LoginInput {
+    username: String!
+    password: String!
+}
+
+input RegisterInput {
+    username: String!
+    password: String!
+    enabled: Boolean!
+    roles: String!
+}
+
+input UpdateUserInput {
+    password: String
+    enabled: Boolean
+    roles: String
+}
+
+input UpdateCurrentUserInput {
+    password: String
+}

@@ -1,0 +1,30 @@
+extend type Query {
+    session(id: ID!): Session
+    sessions: [Session!]!
+}
+
+extend type Mutation {
+    createSession(input: CreateSessionInput!): Session!
+    deleteSession(id: ID!): Boolean!
+}
+
+type Session {
+    id: ID!
+    name: String!
+    description: String!
+    createdAt: DateTime!
+    updatedAt: DateTime
+    createdBy: String
+    updatedBy: String
+}
+
+input CreateSessionInput {
+    templateId: Int!
+    variables: [CreateSessionInputFieldValue!]!
+    endDate: DateTime!
+}
+
+input CreateSessionInputFieldValue {
+    key: String!
+    value: String
+}

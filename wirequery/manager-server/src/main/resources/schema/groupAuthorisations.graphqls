@@ -1,0 +1,13 @@
+extend type Query {
+    groupAuthorisations: [GroupAuthorisation!]!
+}
+
+extend type GroupRole {
+    groupAuthorisations: [GroupAuthorisation!]!
+}
+
+type GroupAuthorisation {
+    name: ID!
+    label: String!
+    description: String!
+}

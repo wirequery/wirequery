@@ -1,0 +1,16 @@
+extend type Subscription {
+    query(expression: String): QueryReportOrHeartbeat
+}
+
+type QueryReportOrHeartbeat {
+    queryReport: QueryReport
+}
+
+type QueryReport {
+    appName: String!
+    queryId: String!
+    message: String!
+    startTime: Float!
+    endTime: Float!
+    traceId: String
+}

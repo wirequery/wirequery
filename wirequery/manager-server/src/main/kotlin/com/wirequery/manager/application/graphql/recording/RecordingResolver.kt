@@ -1,0 +1,19 @@
+package com.wirequery.manager.application.graphql.recording
+
+import com.netflix.graphql.dgs.*
+import com.wirequery.manager.domain.recording.Recording
+import com.wirequery.manager.domain.recording.RecordingService
+import com.wirequery.manager.domain.recording.RecordingService.RecordingFilterInput
+import org.springframework.security.access.prepost.PreAuthorize
+
+@DgsComponent
+@PreAuthorize("isAuthenticated()")
+class RecordingResolver(
+    private val recordingService: RecordingService,
+) {
+    @DgsQuery
+    @PreAuthorize("hasAuthority(T(com.wirequery.manager.domain.authorisation.AuthorisationEnum).VIEW_SESSIONS.name())")
+    fun recordings(filter: RecordingFilterInput): Iterable<Recording> {
+        return recordingService.findAll(filter)
+    }
+}

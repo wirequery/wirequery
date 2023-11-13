@@ -1,0 +1,10 @@
+grpc.server.port: -1
+
+spring:
+  cache:
+    type: NONE
+  session:
+    store-type: none
+    timeout: 240m
+  profiles:
+    active: test

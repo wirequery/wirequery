@@ -1,0 +1,31 @@
+graphql.servlet.websocket.enabled: false
+
+security:
+  jwt-secret: this-needs-to-be-changed
+  jwt-issuer: this-needs-to-be-changed
+
+spring:
+  session:
+    store-type: redis
+    timeout: 240m
+  flyway:
+    user: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:15432/postgres
+
+# This user is used with special multi-tenancy rights
+# TODO ensure that the app cannot be started up if those rights are not in place.
+wirequery:
+  db:
+    user: wirequery
+    password: wirequery
+    url: jdbc:postgresql://localhost:15432/postgres
+  redis:
+    hostName: localhost
+    port: 6379
+
+server:
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+    min-response-size: 860

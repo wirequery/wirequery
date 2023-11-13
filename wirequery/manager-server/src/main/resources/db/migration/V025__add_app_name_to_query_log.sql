@@ -1,0 +1,1 @@
+ALTER TABLE query_logs ADD COLUMN app_name VARCHAR(255) NOT NULL DEFAULT '';
