@@ -1,0 +1,20 @@
+repos:
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.4
+    hooks:
+      - id: insert-license
+        files: '^wirequery/manager-server/src/.*\.kt$'
+        exclude: '^(ee|.+/ee)/.*$'
+        args:
+          - --license-filepath
+          - license-headers/AGPL.txt
+          - --comment-style
+          - //
+      - id: insert-license
+        files: '^sdk/jvm/.*\.kt$'
+        exclude: '^(ee|.+/ee)/.*$'
+        args:
+          - --license-filepath
+          - license-headers/MIT.txt
+          - --comment-style
+          - //
