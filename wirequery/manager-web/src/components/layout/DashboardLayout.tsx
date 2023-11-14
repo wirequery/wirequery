@@ -229,7 +229,7 @@ export function NavbarSimpleColored({
       visible: authorisations['VIEW_APPLICATIONS'],
     },
     {
-      link: '/groups',
+      link: '/ee/groups',
       label: 'Groups',
       icon: IconBoxMultiple,
       visible: authorisations['VIEW_GROUPS'],
@@ -247,13 +247,13 @@ export function NavbarSimpleColored({
         authorisations['VIEW_AUDIT_LOGS'],
     },
     {
-      link: '/quarantine-groups',
+      link: '/ee/quarantine-groups',
       label: 'Quarantine',
       icon: IconReportMedical,
       visible: authorisations['MANAGE_QUARANTINE_RULES'],
     },
     {
-      link: '/audit-events',
+      link: '/ee/audit-events',
       label: 'Audit Trail',
       icon: IconNotes,
       visible: authorisations['VIEW_AUDIT_LOGS'],
