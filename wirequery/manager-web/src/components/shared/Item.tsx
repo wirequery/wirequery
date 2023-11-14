@@ -1,3 +1,10 @@
+// Copyright 2023 Wouter Nederhof
+//
+// Use of this source code is governed by the AGPLv3
+// license that can be found in the `licenses` folder.
+//
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { Anchor, createStyles, Text, ActionIcon } from '@mantine/core'
 import { IconTrash } from '@tabler/icons-react'
 import Link from 'next/link'

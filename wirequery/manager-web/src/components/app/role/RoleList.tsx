@@ -1,3 +1,10 @@
+// Copyright 2023 Wouter Nederhof
+//
+// Use of this source code is governed by the AGPLv3
+// license that can be found in the `licenses` folder.
+//
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { EmptyList } from '@components/shared/EmptyList'
 import { ErrorMessage } from '@components/shared/ErrorMessage'
 import { Item } from '@components/shared/Item'

@@ -11,10 +11,40 @@ repos:
           - --comment-style
           - //
       - id: insert-license
+        files: '^wirequery/manager-web/.*\.(t|j)sx?$'
+        exclude: '^(ee|.+/ee)/.*$'
+        args:
+          - --license-filepath
+          - license-headers/AGPL.txt
+          - --comment-style
+          - //
+      - id: insert-license
         files: '^sdk/jvm/.*\.kt$'
         exclude: '^(ee|.+/ee)/.*$'
         args:
           - --license-filepath
           - license-headers/MIT.txt
+          - --comment-style
+          - //
+      - id: insert-license
+        files: '^sdk/js/.*\.(t|j)sx?$'
+        exclude: '^(ee|.+/ee)/.*$'
+        args:
+          - --license-filepath
+          - license-headers/MIT.txt
+          - --comment-style
+          - //
+      - id: insert-license
+        files: '^(ee|.+/ee)/.*\.kt$'
+        args:
+          - --license-filepath
+          - license-headers/ee/WQPL.txt
+          - --comment-style
+          - //
+      - id: insert-license
+        files: '^(ee|.+/ee)/.*\.(t|j)sx?$'
+        args:
+          - --license-filepath
+          - license-headers/ee/WQPL.txt
           - --comment-style
           - //

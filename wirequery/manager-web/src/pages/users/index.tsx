@@ -1,3 +1,10 @@
+// Copyright 2023 Wouter Nederhof
+//
+// Use of this source code is governed by the AGPLv3
+// license that can be found in the `licenses` folder.
+//
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { GroupRoleForm } from 'src/ee/components/group-role/GroupRoleForm'
 import { GroupRoleList } from 'src/ee/components/group-role/GroupRoleList'
 import { RoleForm } from '@components/app/role/RoleForm'

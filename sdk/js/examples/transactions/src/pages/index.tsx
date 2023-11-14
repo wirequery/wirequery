@@ -1,3 +1,10 @@
+// Copyright 2023 Wouter Nederhof
+//
+// Use of this source code is governed by the MIT
+// license that can be found in the `licenses` folder.
+//
+// SPDX-License-Identifier: MIT
+
 import { BalanceCalculator } from "@/components/BalanceCalculator";
 import { Recorder } from "@/components/Recorder";
 import { Transactions } from "@/components/Transactions";

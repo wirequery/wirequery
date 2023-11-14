@@ -1,3 +1,10 @@
+// Copyright 2023 Wouter Nederhof
+//
+// Use of this source code is governed by the AGPLv3
+// license that can be found in the `licenses` folder.
+//
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { Query } from '@generated/graphql'
 import { Badge, Card, Code, Flex, Grid, ScrollArea } from '@mantine/core'
 import { useEffect, useMemo, useRef, useState } from 'react'

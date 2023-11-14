@@ -1,3 +1,10 @@
+// Copyright 2023 Wouter Nederhof
+//
+// Use of this source code is governed by the AGPLv3
+// license that can be found in the `licenses` folder.
+//
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { CurrentUserSettings } from '@components/app/user/CurrentUserSettings'
 import { showErrorAlertForMessage } from '@lib/alert'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
