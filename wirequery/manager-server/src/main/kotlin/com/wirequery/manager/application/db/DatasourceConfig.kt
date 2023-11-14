@@ -88,7 +88,7 @@ class DatasourceConfig {
                                    |To create a new user with the correct privileges, you can create the user using the following queries:
                                    |
                                    |  -- Don't forget to replace this password.
-                                   |  CREATE USER "wirequery-multitenant" WITH PASSWORD "...";
+                                   |  CREATE USER "wirequery-multitenant" WITH PASSWORD '...';
                                    |
                                    |  GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES ON ALL TABLES IN SCHEMA public TO "wirequery-multitenant";
                                    |  GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO "wirequery-multitenant";

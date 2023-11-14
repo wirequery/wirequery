@@ -38,7 +38,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.google.re2j:re2j:1.6")
 
-    implementation("org.postgresql:postgresql:42.3.8")
+    implementation("org.postgresql:postgresql")
     implementation("com.graphql-java-kickstart:graphiql-spring-boot-starter:11.1.0")
     implementation("org.springframework.boot:spring-boot-devtools")
 

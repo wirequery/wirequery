@@ -14,11 +14,10 @@ spring:
     url: jdbc:postgresql://localhost:15432/postgres
 
 # This user is used with special multi-tenancy rights
-# TODO ensure that the app cannot be started up if those rights are not in place.
 wirequery:
   db:
-    user: wirequery
-    password: wirequery
+    user: wirequery-multitenant
+    password: wirequery-multitenant
     url: jdbc:postgresql://localhost:15432/postgres
   redis:
     hostName: localhost
