@@ -5,7 +5,6 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { GroupUserList } from 'src/ee/components/group-user/GroupUserList'
 import { UserDetails } from '@components/app/user/UserDetails'
 import DashboardLayout from '@components/layout/DashboardLayout'
 import { Anchor, Breadcrumbs, Tabs } from '@mantine/core'
@@ -26,14 +25,6 @@ export default function ShowUser() {
         </Anchor>
       </Breadcrumbs>
       <UserDetails id={userId as string} />
-      <Tabs defaultValue="groups">
-        <Tabs.List>
-          <Tabs.Tab value="groups">Groups</Tabs.Tab>
-        </Tabs.List>
-        <Tabs.Panel value="groups">
-          <GroupUserList userId={'' + userId} />
-        </Tabs.Panel>
-      </Tabs>
     </DashboardLayout>
   )
 }

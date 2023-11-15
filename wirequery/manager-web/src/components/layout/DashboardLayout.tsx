@@ -11,10 +11,8 @@ import { AuthorisationsContext } from '@lib/authorisations-context'
 import { CurrentUserContext } from '@lib/current-user-context'
 import { ResetUrqlClientContext } from '@lib/reset-urql-client-context'
 import {
-  Affix,
   AppShell,
   Burger,
-  Button,
   Container,
   createStyles,
   getStylesRef,
@@ -23,22 +21,17 @@ import {
   MediaQuery,
   Modal,
   Navbar,
-  rem,
   Text,
   UnstyledButton,
   useMantineTheme,
 } from '@mantine/core'
 import {
-  IconBoxMultiple,
   IconListSearch,
   IconLogout,
-  IconNotes,
-  IconReportMedical,
   IconReportSearch,
   IconSearch,
   IconServer,
   IconSettings,
-  IconSpeakerphone,
   IconTemplate,
   IconUsers,
 } from '@tabler/icons-react'
@@ -225,7 +218,6 @@ export function NavbarSimpleColored({
       label: 'ADMINISTRATION',
       visible:
         authorisations['VIEW_APPLICATIONS'] ||
-        authorisations['VIEW_GROUPS'] ||
         authorisations['MANAGE_USERS'] ||
         authorisations['MANAGE_ROLES'],
     },
@@ -236,34 +228,10 @@ export function NavbarSimpleColored({
       visible: authorisations['VIEW_APPLICATIONS'],
     },
     {
-      link: '/ee/groups',
-      label: 'Groups',
-      icon: IconBoxMultiple,
-      visible: authorisations['VIEW_GROUPS'],
-    },
-    {
       link: '/users',
       label: 'User Management',
       icon: IconUsers,
       visible: authorisations['MANAGE_USERS'] || authorisations['MANAGE_ROLES'],
-    },
-    {
-      label: 'SECURITY',
-      visible:
-        authorisations['MANAGE_QUARANTINE_RULES'] ||
-        authorisations['VIEW_AUDIT_LOGS'],
-    },
-    {
-      link: '/ee/quarantine-groups',
-      label: 'Quarantine',
-      icon: IconReportMedical,
-      visible: authorisations['MANAGE_QUARANTINE_RULES'],
-    },
-    {
-      link: '/ee/audit-events',
-      label: 'Audit Trail',
-      icon: IconNotes,
-      visible: authorisations['VIEW_AUDIT_LOGS'],
     },
     { label: 'ACCOUNT', visible: true },
     { link: '/settings', label: 'Settings', icon: IconSettings, visible: true },
@@ -389,17 +357,6 @@ export const DashboardLayout = ({
             onCancel={() => setSessionModalActive(false)}
           />
         </Modal>
-        <Affix position={{ bottom: 0, right: rem(20) }}>
-          <Button
-            className={classes.feedbackButton}
-            leftIcon={<IconSpeakerphone size="1rem" />}
-            onClick={() => {
-              alert('TODO')
-            }}
-          >
-            Feedback
-          </Button>
-        </Affix>
       </Container>
     </AppShell>
   )

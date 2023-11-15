@@ -21,7 +21,6 @@ import {
 } from '@tabler/icons-react'
 import { useMemo, useState } from 'react'
 import { gql, useMutation, useQuery } from 'urql'
-import { GroupApplicationForm } from '../../../ee/components/group-application/GroupApplicationForm'
 import { ApplicationForm } from './ApplicationForm'
 
 export interface ApplicationDetailsProps {
@@ -30,8 +29,6 @@ export interface ApplicationDetailsProps {
 
 export function ApplicationDetails(props: ApplicationDetailsProps) {
   const [modalActive, setEditModalActive] = useState(false)
-  const [newGroupApplicationModalActive, setNewGroupApplicationModalActive] =
-    useState(false)
 
   const [, unquarantineApplication] = useMutation<Mutation>(gql`
     mutation unquarantineApplication(
@@ -127,12 +124,6 @@ export function ApplicationDetails(props: ApplicationDetailsProps) {
                 Edit
               </Menu.Item>
               <Menu.Item
-                icon={<IconBoxMultiple size={14} />}
-                onClick={() => setNewGroupApplicationModalActive(true)}
-              >
-                Add Group
-              </Menu.Item>
-              <Menu.Item
                 icon={<IconLockOpen size={14} />}
                 onClick={() => revealApiKeyAlert()}
               >
@@ -186,17 +177,6 @@ export function ApplicationDetails(props: ApplicationDetailsProps) {
         />
       </Modal>
 
-      <Modal
-        opened={newGroupApplicationModalActive}
-        title="Add Existing Application"
-        onClose={() => setNewGroupApplicationModalActive(false)}
-      >
-        <GroupApplicationForm
-          applicationId={'' + props.id}
-          onSave={() => setNewGroupApplicationModalActive(false)}
-          onCancel={() => setNewGroupApplicationModalActive(false)}
-        />
-      </Modal>
     </>
   )
 }

@@ -5,6 +5,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { ApplicationForm } from '@components/app/application/ApplicationForm'
 import { ApplicationList } from '@components/app/application/ApplicationList'
 import DashboardLayout from '@components/layout/DashboardLayout'
 import { Button, Grid, Modal, Title } from '@mantine/core'
@@ -30,15 +31,6 @@ export default function Applications() {
         title="New Application"
         onClose={() => setModalActive(false)}
       >
-        <p>You can add a new application from the Groups screen.</p>
-        <p>Go to:</p>
-        <ul>
-          <li>Click 'Groups' in the navigation bar</li>
-          <li>Select a group</li>
-          <li>Click 'Actions'</li>
-          <li>Click 'Add New Application'</li>
-        </ul>
-        <Button onClick={() => setModalActive(false)}>OK</Button>
       </Modal>
     </>
   )

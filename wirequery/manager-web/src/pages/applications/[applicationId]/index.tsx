@@ -6,7 +6,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { ApplicationDetails } from '@components/app/application/ApplicationDetails'
-import { GroupApplicationList } from 'src/ee/components/group-application/GroupApplicationList'
 import { StoredQueryList } from '@components/app/stored-query/StoredQueryList'
 import DashboardLayout from '@components/layout/DashboardLayout'
 import { Anchor, Breadcrumbs, Tabs } from '@mantine/core'
@@ -29,12 +28,8 @@ export default function ShowApplication() {
       {applicationId && <ApplicationDetails id={applicationId as string} />}
       <Tabs defaultValue="groups">
         <Tabs.List>
-          <Tabs.Tab value="groups">Groups</Tabs.Tab>
           <Tabs.Tab value="storedQueries">Queries</Tabs.Tab>
         </Tabs.List>
-        <Tabs.Panel value="groups">
-          <GroupApplicationList applicationId={'' + applicationId} />
-        </Tabs.Panel>
         <Tabs.Panel value="storedQueries">
           <StoredQueryList applicationId={'' + applicationId} />
         </Tabs.Panel>

@@ -5,8 +5,6 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { GroupRoleForm } from 'src/ee/components/group-role/GroupRoleForm'
-import { GroupRoleList } from 'src/ee/components/group-role/GroupRoleList'
 import { RoleForm } from '@components/app/role/RoleForm'
 import { RoleList } from '@components/app/role/RoleList'
 import { UserForm } from '@components/app/user/UserForm'
@@ -24,7 +22,6 @@ import { useState } from 'react'
 export default function Users() {
   const [userModalActive, setUserModalActive] = useState(false)
   const [roleModalActive, setRoleModalActive] = useState(false)
-  const [groupRoleModalActive, setGroupRoleModalActive] = useState(false)
   return (
     <>
       <DashboardLayout active="User Management">
@@ -53,12 +50,6 @@ export default function Users() {
                 >
                   Add New Role
                 </Menu.Item>
-                <Menu.Item
-                  icon={<IconUsersGroup size={14} />}
-                  onClick={() => setGroupRoleModalActive(true)}
-                >
-                  Add New Group Role
-                </Menu.Item>
               </Menu.Dropdown>
             </Menu>
           </Grid.Col>
@@ -68,16 +59,12 @@ export default function Users() {
           <Tabs.List>
             <Tabs.Tab value="users">Users</Tabs.Tab>
             <Tabs.Tab value="roles">User Roles</Tabs.Tab>
-            <Tabs.Tab value="groupRoles">Group Roles</Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="users">
             <UserList />
           </Tabs.Panel>
           <Tabs.Panel value="roles">
             <RoleList />
-          </Tabs.Panel>
-          <Tabs.Panel value="groupRoles">
-            <GroupRoleList />
           </Tabs.Panel>
         </Tabs>
       </DashboardLayout>
@@ -104,16 +91,6 @@ export default function Users() {
         />
       </Modal>
 
-      <Modal
-        opened={groupRoleModalActive}
-        title="New Group Role"
-        onClose={() => setGroupRoleModalActive(false)}
-      >
-        <GroupRoleForm
-          onSave={() => setGroupRoleModalActive(false)}
-          onCancel={() => setGroupRoleModalActive(false)}
-        />
-      </Modal>
     </>
   )
 }

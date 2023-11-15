@@ -18,7 +18,6 @@ import {
 } from '@tabler/icons-react'
 import { useMemo, useState } from 'react'
 import { gql, useQuery } from 'urql'
-import { GroupUserForm } from '../../../ee/components/group-user/GroupUserForm'
 import { UserForm } from './UserForm'
 
 export interface UserDetailsProps {
@@ -26,7 +25,6 @@ export interface UserDetailsProps {
 }
 
 export function UserDetails(props: UserDetailsProps) {
-  const [newGroupUserModalActive, setNewGroupUserModalActive] = useState(false)
   const [editModalActive, setEditModalActive] = useState(false)
 
   const [{ data, error }] = useQuery<Query>({
@@ -82,12 +80,6 @@ export function UserDetails(props: UserDetailsProps) {
               >
                 Edit
               </Menu.Item>
-              <Menu.Item
-                icon={<IconBoxMultiple size={14} />}
-                onClick={() => setNewGroupUserModalActive(true)}
-              >
-                Add Group
-              </Menu.Item>
             </Menu.Dropdown>
           </Menu>
         </Grid.Col>
@@ -101,17 +93,6 @@ export function UserDetails(props: UserDetailsProps) {
         ]}
       />
 
-      <Modal
-        opened={newGroupUserModalActive}
-        title="Add User to Group"
-        onClose={() => setNewGroupUserModalActive(false)}
-      >
-        <GroupUserForm
-          userId={'' + props.id}
-          onSave={() => setNewGroupUserModalActive(false)}
-          onCancel={() => setNewGroupUserModalActive(false)}
-        />
-      </Modal>
 
       <Modal
         opened={editModalActive}
