@@ -44,6 +44,12 @@ core.workflow(
     authoring = authoring.pass_thru("Wouter Nederhof <wouter.nederhof@gmail.com>"),
     transformations = [
         #core.move("external", ""),
+        core.replace(
+            before = "${x}",
+            after = "",
+            multiline = True,
+            regex_groups = {
+            },
+        ),
     ],
 )
-
