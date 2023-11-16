@@ -11,7 +11,7 @@ core.workflow(
     ),
     destination = git.github_destination(
         url = destinationUrl,
-        destination_ref = "main",
+        push = "main",
     ),
     origin_files = files,
     authoring = authoring.pass_thru("Wouter Nederhof <wouter.nederhof@gmail.com>"),
@@ -29,9 +29,9 @@ core.workflow(
 
 core.workflow(
     name = "pr",
-    origin = git.origin(
+    origin = git.github_pr_origin(
         url = destinationUrl,
-        ref = "main",
+        branch = "main",
     ),
     destination = git.github_pr_destination(
         url = sotUrl,
@@ -44,6 +44,6 @@ core.workflow(
     set_rev_id = False,
     transformations = [
         metadata.save_author("ORIGINAL_AUTHOR"),
-        metadata.expose_label("GITHUB_PR_NUMBER", new_name = "Closes", separator = DESTINATION_REPO.replace("git@github.com:", " ").replace(".git", "#")),
+        metadata.expose_label("GITHUB_PR_NUMBER", new_name = "Closes", separator = destinationUrl.replace("git@github.com:", " ").replace(".git", "#")),
     ],
 )
