@@ -5,6 +5,7 @@ files = glob(["**"], exclude = ["**/ee/**", "copy.bara.sky"])
 
 core.workflow(
     name = "pull",
+    smart_prune = True,
     origin = git.origin(
         url = sourceUrl,
         ref = "main",
