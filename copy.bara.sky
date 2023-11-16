@@ -1,50 +1,22 @@
-sourceUrl = "ssh://git@github.com/wirequery/wirequery.git"
-destinationUrl = "ssh://git@github.com/wirequery/wirequery-ee.git"
+destinationUrl = "ssh://git@github.com/wirequery/wirequery.git"
+sotUrl = "ssh://git@github.com/wirequery/wirequery-ee.git"
 
-files = glob(["**"], exclude = ["**/ee/**", "copy.bara.sky"])
-
-core.workflow(
-    name = "pull",
-    smart_prune = True,
-    origin = git.origin(
-        url = sourceUrl,
-        ref = "main",
-    ),
-    destination = git.github_pr_destination(
-        url = destinationUrl,
-        destination_ref = "main",
-        pr_branch = "from_public_repo",
-        title = "Synchronize with Public Repo",
-        body = "Synchronize with Public Repo",
-        integrates = [],
-    ),
-    origin_files = files,
-    destination_files = files,
-    authoring = authoring.pass_thru("Wouter Nederhof <wouter.nederhof@gmail.com>"),
-    transformations = [
-        #core.move("", "external"),
-    ],
-)
+files = glob(["**"], exclude = ["**/ee/**"])
 
 core.workflow(
     name = "push",
     origin = git.origin(
-        url = destinationUrl,
+        url = sotUrl,
         ref = "main",
     ),
-    destination = git.github_pr_destination(
-        url = sourceUrl,
+    destination = git.github_destination(
+        url = destinationUrl,
         destination_ref = "main",
-        pr_branch = "from_monorepo",
-        title = "Synchronize with Private Repo",
-        body = "Synchronize with Private Repo",
-        integrates = [],
     ),
     origin_files = files,
-    destination_files = files,
     authoring = authoring.pass_thru("Wouter Nederhof <wouter.nederhof@gmail.com>"),
+    mode = "ITERATIVE",
     transformations = [
-        #core.move("external", ""),
         core.replace(
             before = "${x}",
             after = "",
@@ -52,5 +24,26 @@ core.workflow(
             regex_groups = {
             },
         ),
+    ],
+)
+
+core.workflow(
+    name = "pr",
+    origin = git.origin(
+        url = destinationUrl,
+        ref = "main",
+    ),
+    destination = git.github_pr_destination(
+        url = sotUrl,
+        destination_ref = "main",
+    ),
+    destination_files = files,
+    origin_files = files,
+    authoring = authoring.pass_thru("Wouter Nederhof <wouter.nederhof@gmail.com>"),
+    mode = "CHANGE_REQUEST",
+    set_rev_id = False,
+    transformations = [
+        metadata.save_author("ORIGINAL_AUTHOR"),
+        metadata.expose_label("GITHUB_PR_NUMBER", new_name = "Closes", separator = DESTINATION_REPO.replace("git@github.com:", " ").replace(".git", "#")),
     ],
 )
