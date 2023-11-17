@@ -21,6 +21,5 @@ jobs:
             -v "$(pwd)":/usr/src/app \
             -e COPYBARA_CONFIG=/usr/src/app/copy.bara.sky \
             -e COPYBARA_WORKFLOW=pr \
-            ${{ github.event.number }} \
             -i sharelatex/copybara copybara copy.bara.sky pr ${{ github.event.number }}
         shell: bash
