@@ -1,7 +1,7 @@
 on:
   pull_request_target:
 jobs:
-  move-code:
+  pr-to-private-repo:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
