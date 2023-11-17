@@ -19,7 +19,7 @@ jobs:
             -v ~/.ssh:/root/.ssh \
             -v ~/.gitconfig:/root/.gitconfig \
             -v "$(pwd)":/usr/src/app \
-            -e COPYBARA_CONFIG=/usr/src/app/copy.bara.sky \
-            -e COPYBARA_WORKFLOW=pr \
-            -i sharelatex/copybara copybara
+            -i sharelatex/copybara copybara \
+            --
+            /usr/src/app/copy.bara.sky pr ${{ github.event.number }}
         shell: bash
