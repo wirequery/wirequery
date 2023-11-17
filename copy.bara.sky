@@ -1,13 +1,31 @@
 destinationUrl = "ssh://git@github.com/wirequery/wirequery.git"
 sotUrl = "ssh://git@github.com/wirequery/wirequery-ee.git"
 
-files = glob(["**"], exclude = ["**/ee/**"])
+files = glob(["**"], exclude = ["**/ee/**", "copy.bara.sky"])
 
+core.workflow(
+    name = "push",
+    origin = git.origin(
+        url = sotUrl,
+        ref = "main",
+    ),
+    destination = git.github_destination(
+        url = destinationUrl,
+        push = "main",
+    ),
+    origin_files = files,
+    authoring = authoring.pass_thru("Wouter Nederhof <wouter.nederhof@gmail.com>"),
+    mode = "ITERATIVE",
+    transformations = [
+        core.replace(
+            before = "${x}",
+            after = "",
+            multiline = True,
+            regex_groups = {
             },
         ),
     ],
 )
-# END-EE-ONLY
 
 core.workflow(
     name = "pr",
