@@ -1,0 +1,25 @@
+on:
+  pull_request_target:
+jobs:
+  move-code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - run: |
+          mkdir ~/.ssh
+          echo $'${{ secrets.SSH_KEY }}' > ~/.ssh/id_rsa
+          echo $'${{ secrets.GH_TOKEN }}' > ~/.ssh/known_hosts
+          git config --global user.name Wouter Nederhof
+          git config --global user.email wouter.nederhof@gmail.com
+          docker pull sharelatex/copybara:latest
+          docker run \
+            -v ~/.ssh:/root/.ssh \
+            -v ~/.gitconfig:/root/.gitconfig \
+            -v "$(pwd)":/usr/src/app \
+            -e COPYBARA_CONFIG=/usr/src/app/copy.bara.sky \
+            -e COPYBARA_WORKFLOW=pr \
+            -i sharelatex/copybara copybara
+        shell: bash
