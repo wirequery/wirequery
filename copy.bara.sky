@@ -17,7 +17,7 @@ core.workflow(
     destination_files = files,
     origin_files = files,
     authoring = authoring.pass_thru("Wouter Nederhof <wouter.nederhof@gmail.com>"),
-    smart_prune = True,
+    merge_import = True,
     mode = "CHANGE_REQUEST",
     set_rev_id = False,
     transformations = [
