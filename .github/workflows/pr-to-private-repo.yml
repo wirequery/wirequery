@@ -11,7 +11,8 @@ jobs:
       - run: |
           mkdir ~/.ssh
           echo $'${{ secrets.SSH_KEY }}' > ~/.ssh/id_rsa
-          echo $'${{ secrets.GH_TOKEN }}' > ~/.ssh/known_hosts
+          echo $'${{ secrets.KNOWN_HOSTS }}' > ~/.ssh/known_hosts
+          echo $'https://wnederhof:${{ secrets.GH_TOKEN }}@github.com' > ~/.git-credentials
           git config --global user.name Wouter Nederhof
           git config --global user.email wouter.nederhof@gmail.com
           docker pull sharelatex/copybara:latest
