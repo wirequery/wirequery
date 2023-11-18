@@ -12,13 +12,14 @@ jobs:
           mkdir ~/.ssh
           echo $'${{ secrets.SSH_KEY }}' > ~/.ssh/id_rsa
           echo $'${{ secrets.KNOWN_HOSTS }}' > ~/.ssh/known_hosts
-          echo $'https://wnederhof:${{ secrets.GH_TOKEN }}@github.com' > ~/.git-credentials
+          echo 'https://user:${{ secrets.GH_TOKEN }}@github.com' > ~/.git-credentials
           git config --global user.name Wouter Nederhof
           git config --global user.email wouter.nederhof@gmail.com
           docker pull sharelatex/copybara:latest
           docker run \
             -v ~/.ssh:/root/.ssh \
             -v ~/.gitconfig:/root/.gitconfig \
+            -v ~/.git-credentials:/root/.git-credentials \
             -v "$(pwd)":/usr/src/app \
             -e COPYBARA_CONFIG=/usr/src/app/copy.bara.sky \
             -e COPYBARA_WORKFLOW=pr \
