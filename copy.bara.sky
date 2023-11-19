@@ -1,8 +1,34 @@
 destinationUrl = "ssh://git@github.com/wirequery/wirequery.git"
 sotUrl = "ssh://git@github.com/wirequery/wirequery-ee.git"
 
-files = glob(["**"], exclude = ["**/ee/**"])
+files = glob(["**"], exclude = ["**/ee/**", ".github/workflows/push-to-public-repo.yml"])
 
+core.workflow(
+    name = "push",
+    origin = git.origin(
+        url = sotUrl,
+        ref = "main",
+    ),
+    destination = git.github_destination(
+        url = destinationUrl,
+        push = "main",
+    ),
+    origin_files = files,
+    authoring = authoring.pass_thru("Wouter Nederhof <wouter.nederhof@gmail.com>"),
+    mode = "ITERATIVE",
+    transformations = [
+        metadata.restore_author("ORIGINAL_AUTHOR", search_all_changes = True),
+        metadata.expose_label("COPYBARA_INTEGRATE_REVIEW"),
+        core.replace(
+            before = "${x}",
+            after = "",
+            multiline = True,
+            regex_groups = {
+                "x": "(?m)^.*" + "start-ee-only".upper() + "[\\w\\W]*?" + "end-ee-only".upper() + ".*$\\n",
+            },
+        ),
+    ],
+)
 
 core.workflow(
     name = "pr",
