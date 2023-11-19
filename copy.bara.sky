@@ -22,6 +22,6 @@ core.workflow(
     set_rev_id = False,
     transformations = [
         metadata.save_author("ORIGINAL_AUTHOR"),
-        metadata.expose_label("GITHUB_PR_NUMBER", new_name = "Closes", separator = destinationUrl.replace("git@github.com:", " ").replace(".git", "#")),
+        metadata.expose_label("GITHUB_PR_NUMBER", new_name = "Closes", separator = destinationUrl.replace("git@github.com:", " ").replace("ssh://git@github.com/", " ").replace(".git", "#")),
     ],
 )
