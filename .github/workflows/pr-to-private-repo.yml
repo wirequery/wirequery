@@ -15,7 +15,7 @@ jobs:
           echo 'https://user:${{ secrets.GH_TOKEN }}@github.com' > ~/.git-credentials
           git config --global user.name Wouter Nederhof
           git config --global user.email wouter.nederhof@gmail.com
-          docker pull sharelatex/copybara:latest
+          docker pull olivr/copybara:latest
           docker run \
             -v ~/.ssh:/root/.ssh \
             -v ~/.gitconfig:/root/.gitconfig \
@@ -24,5 +24,5 @@ jobs:
             -e COPYBARA_CONFIG=/usr/src/app/copy.bara.sky \
             -e COPYBARA_WORKFLOW=pr \
             -e COPYBARA_SOURCEREF=${{ github.event.number }} \
-            -i sharelatex/copybara copybara
+            -i olivr/copybara copybara
         shell: bash
