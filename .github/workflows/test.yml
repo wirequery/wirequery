@@ -47,7 +47,7 @@ jobs:
         with:
           node-version: 18.x
           cache: 'npm'
-          cache-dependency-path: ./manager/manager-web/package-lock.json
+          cache-dependency-path: ./wirequery/manager-web/package-lock.json
       - run: npm ci
         working-directory: ./wirequery/manager-web
       - run: npm run generate:schema
