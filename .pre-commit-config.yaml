@@ -38,13 +38,13 @@ repos:
         files: '^(ee|.+/ee)/.*\.kt$'
         args:
           - --license-filepath
-          - license-headers/ee/WQPL.txt
+          - license-headers/ce/WQPL.txt
           - --comment-style
           - //
       - id: insert-license
         files: '^(ee|.+/ee)/.*\.(t|j)sx?$'
         args:
           - --license-filepath
-          - license-headers/ee/WQPL.txt
+          - license-headers/ce/WQPL.txt
           - --comment-style
           - //

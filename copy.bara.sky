@@ -1,7 +1,15 @@
 destinationUrl = "ssh://git@github.com/wirequery/wirequery.git"
 sotUrl = "ssh://git@github.com/wirequery/wirequery-ee.git"
 
-files = glob(["**"], exclude = ["**/ee/**", ".github/workflows/push-to-public-repo.yml"])
+files = glob(["**"], exclude = ["**/ce/**", ".github/workflows/push-to-public-repo.yml"])
+
+code_transformations = [
+    core.replace(
+        before = "/ce/",
+        after = "/ce/",
+        paths = glob(["**"], exclude = ["**/ce/**", "**/ce/**"]),
+    ),
+]
 
 core.workflow(
     name = "push",
@@ -19,15 +27,7 @@ core.workflow(
     transformations = [
         metadata.restore_author("ORIGINAL_AUTHOR", search_all_changes = True),
         metadata.expose_label("COPYBARA_INTEGRATE_REVIEW"),
-        core.replace(
-            before = "${x}",
-            after = "",
-            multiline = True,
-            regex_groups = {
-                "x": "(?m)^.*" + "start-ee-only".upper() + "[\\w\\W]*?" + "end-ee-only".upper() + ".*$\\n",
-            },
-        ),
-    ],
+    ] + code_transformations,
 )
 
 core.workflow(
@@ -49,5 +49,5 @@ core.workflow(
     transformations = [
         metadata.save_author("ORIGINAL_AUTHOR"),
         metadata.expose_label("GITHUB_PR_NUMBER", new_name = "Closes", separator = destinationUrl.replace("git@github.com:", " ").replace("ssh://git@github.com/", " ").replace(".git", "#")),
-    ],
+    ] + core.reverse(code_transformations),
 )

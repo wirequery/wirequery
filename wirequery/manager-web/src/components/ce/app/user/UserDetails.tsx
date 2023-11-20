@@ -12,7 +12,6 @@ import { Query } from '@generated/graphql'
 import { createAuditItems } from '@lib/audit'
 import { Button, Grid, Menu, Modal, Title } from '@mantine/core'
 import {
-  IconBoxMultiple,
   IconChevronDown,
   IconSettings,
 } from '@tabler/icons-react'
@@ -92,7 +91,6 @@ export function UserDetails(props: UserDetailsProps) {
           ...createAuditItems(data?.user),
         ]}
       />
-
 
       <Modal
         opened={editModalActive}

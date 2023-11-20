@@ -7,7 +7,7 @@
 
 import { QueryForm } from '@components/shared/app/query/QueryForm'
 import { StoredQueryForm } from '@components/shared/app/stored-query/StoredQueryForm'
-import DashboardLayout from '@components/ee/layout/DashboardLayout'
+import DashboardLayout from '@components/ce/layout/DashboardLayout'
 import { Modal } from '@mantine/core'
 import { useRouter } from 'next/router'
 import { useState } from 'react'

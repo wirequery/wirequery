@@ -5,7 +5,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { UserForm } from '@components/shared/app/user/UserForm'
+import { UserForm } from '@components/ce/app/user/UserForm'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'

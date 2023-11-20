@@ -7,9 +7,9 @@
 
 import { RoleForm } from '@components/shared/app/role/RoleForm'
 import { RoleList } from '@components/shared/app/role/RoleList'
-import { UserForm } from '@components/shared/app/user/UserForm'
+import { UserForm } from '@components/ce/app/user/UserForm'
 import { UserList } from '@components/shared/app/user/UserList'
-import DashboardLayout from '@components/ee/layout/DashboardLayout'
+import DashboardLayout from '@components/ce/layout/DashboardLayout'
 import { Button, Grid, Menu, Modal, Tabs, Title } from '@mantine/core'
 import {
   IconChevronDown,

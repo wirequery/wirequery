@@ -7,7 +7,7 @@
 
 import { ApplicationForm } from '@components/shared/app/application/ApplicationForm'
 import { ApplicationList } from '@components/ce/app/application/ApplicationList'
-import DashboardLayout from '@components/ee/layout/DashboardLayout'
+import DashboardLayout from '@components/ce/layout/DashboardLayout'
 import { Button, Grid, Modal, Title } from '@mantine/core'
 import { useState } from 'react'
 

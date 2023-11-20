@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { render, screen } from '@testing-library/react'
-import { UserDetails } from '@components/shared/app/user/UserDetails'
+import { UserDetails } from '@components/ce/app/user/UserDetails'
 import { Client, Provider } from 'urql'
 import { act } from 'react-dom/test-utils'
 import { fromValue } from 'wonka'
