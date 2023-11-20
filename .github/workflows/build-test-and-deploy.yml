@@ -1,4 +1,4 @@
-name: Test FE and BE
+name: Build, Test and Deploy FE and BE
 on:
   push:
     branches:
@@ -54,3 +54,33 @@ jobs:
         working-directory: ./wirequery/manager-web
       - run: npm run test
         working-directory: ./wirequery/manager-web
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker - BE
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ${{ github.repository }}-backend
+      - name: Build and push BE Docker image
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: wirequery/manager-server
+          push: true
+          tags: ghcr.io/${{ github.repository }}-backend:latest
+          labels: ${{ steps.meta.outputs.labels }}
+      - name: Extract metadata (tags, labels) for Docker - FE
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ${{ github.repository }}-frontend
+      - name: Build and push FE Docker image
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: wirequery/manager-web
+          push: true
+          tags: ghcr.io/${{ github.repository }}-frontend:latest
+          labels: ${{ steps.meta.outputs.labels }}
