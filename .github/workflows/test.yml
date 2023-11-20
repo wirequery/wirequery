@@ -39,3 +39,9 @@ jobs:
       - name: Run Gradle build on the Balance Calculator Example
         working-directory: ./sdk/jvm/examples/spring-boot/balance-calculator
         run: ./gradlew build
+      - name: Run Gradle build on Wirequery's manager-server
+        working-directory: ./wirequery/manager-server
+        run: ./gradlew test
+      - name: Run Gradle build on Wirequery's manager-web
+        working-directory: ./wirequery/manager-web
+        run: ./gradlew test
