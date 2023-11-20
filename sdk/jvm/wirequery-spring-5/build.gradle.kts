@@ -49,8 +49,8 @@ dependencies {
 	implementation("org.springframework:spring-webmvc:5.3.27")
 	implementation("org.apache.tomcat.embed:tomcat-embed-core:9.0.74")
 	testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-	testImplementation("org.mockito:mockito-core:4.5.1")
-	testImplementation("org.mockito:mockito-junit-jupiter:4.5.1")
+	testImplementation("org.mockito:mockito-core:5.2.0")
+	testImplementation("org.mockito:mockito-junit-jupiter:5.2.0")
 	testImplementation("org.assertj:assertj-core:3.22.0")
 	testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
 
