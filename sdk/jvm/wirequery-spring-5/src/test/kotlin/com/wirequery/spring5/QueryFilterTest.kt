@@ -18,12 +18,17 @@ import org.mockito.kotlin.verify
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.anyLong
 
 @ExtendWith(MockitoExtension::class)
 internal class QueryFilterTest {
 
     @Mock
     private lateinit var interceptedQueryTrafficProcessor: InterceptedQueryTrafficProcessor
+
+    @Mock
+    private lateinit var requestData: RequestData
 
     @InjectMocks
     private lateinit var queryFilter: QueryFilter
@@ -38,6 +43,8 @@ internal class QueryFilterTest {
 
         verify(filterChain).doFilter(any(), any())
         verify(interceptedQueryTrafficProcessor).processInterceptedTraffic(any(), any())
+
+        verify(requestData).startTime = anyLong()
     }
 
 }
