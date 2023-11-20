@@ -11,10 +11,7 @@ import { SummaryBar } from '@components/shared/SummaryBar'
 import { Query } from '@generated/graphql'
 import { createAuditItems } from '@lib/audit'
 import { Button, Grid, Menu, Modal, Title } from '@mantine/core'
-import {
-  IconChevronDown,
-  IconSettings,
-} from '@tabler/icons-react'
+import { IconChevronDown, IconSettings } from '@tabler/icons-react'
 import { useMemo, useState } from 'react'
 import { gql, useQuery } from 'urql'
 import { UserForm } from './UserForm'

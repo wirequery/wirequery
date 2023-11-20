@@ -14,7 +14,6 @@ import { showErrorAlertForMessage, showInfoAlert } from '@lib/alert'
 import { createAuditItems } from '@lib/audit'
 import { Badge, Button, Grid, Menu, Modal, Title } from '@mantine/core'
 import {
-  IconBoxMultiple,
   IconChevronDown,
   IconLockOpen,
   IconSettings,

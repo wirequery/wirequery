@@ -42,6 +42,15 @@ jobs:
       - name: Run Gradle build on Wirequery's manager-server
         working-directory: ./wirequery/manager-server
         run: ./gradlew test
-      - name: Run Gradle build on Wirequery's manager-web
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+          cache-dependency-path: ./manager/manager-web/package-lock.json
+      - run: npm ci
         working-directory: ./wirequery/manager-web
-        run: ./gradlew test
+      - run: npm run generate:schema
+        working-directory: ./wirequery/manager-web
+      - run: npm run test
+        working-directory: ./wirequery/manager-web

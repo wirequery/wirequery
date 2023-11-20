@@ -11,11 +11,7 @@ import { UserForm } from '@components/ce/app/user/UserForm'
 import { UserList } from '@components/shared/app/user/UserList'
 import DashboardLayout from '@components/ce/layout/DashboardLayout'
 import { Button, Grid, Menu, Modal, Tabs, Title } from '@mantine/core'
-import {
-  IconChevronDown,
-  IconUser,
-  IconUserCheck,
-} from '@tabler/icons-react'
+import { IconChevronDown, IconUser, IconUserCheck } from '@tabler/icons-react'
 import { useState } from 'react'
 
 export default function Users() {
