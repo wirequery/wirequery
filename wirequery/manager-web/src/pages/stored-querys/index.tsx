@@ -5,9 +5,9 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { StoredQueryForm } from '@components/app/stored-query/StoredQueryForm'
-import { StoredQueryList } from '@components/app/stored-query/StoredQueryList'
-import DashboardLayout from '@components/layout/DashboardLayout'
+import { StoredQueryForm } from '@components/shared/app/stored-query/StoredQueryForm'
+import { StoredQueryList } from '@components/shared/app/stored-query/StoredQueryList'
+import DashboardLayout from '@components/ce/layout/DashboardLayout'
 import { Button, Grid, Modal, Title } from '@mantine/core'
 import { useState } from 'react'
 

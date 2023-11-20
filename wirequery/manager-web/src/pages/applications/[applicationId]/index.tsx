@@ -5,9 +5,9 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { ApplicationDetails } from '@components/app/application/ApplicationDetails'
-import { StoredQueryList } from '@components/app/stored-query/StoredQueryList'
-import DashboardLayout from '@components/layout/DashboardLayout'
+import { ApplicationDetails } from '@components/ce/app/application/ApplicationDetails'
+import { StoredQueryList } from '@components/shared/app/stored-query/StoredQueryList'
+import DashboardLayout from '@components/ee/layout/DashboardLayout'
 import { Anchor, Breadcrumbs, Tabs } from '@mantine/core'
 import Link from 'next/link'
 import { useRouter } from 'next/router'

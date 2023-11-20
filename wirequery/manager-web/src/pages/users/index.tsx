@@ -5,17 +5,16 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { RoleForm } from '@components/app/role/RoleForm'
-import { RoleList } from '@components/app/role/RoleList'
-import { UserForm } from '@components/app/user/UserForm'
-import { UserList } from '@components/app/user/UserList'
-import DashboardLayout from '@components/layout/DashboardLayout'
+import { RoleForm } from '@components/shared/app/role/RoleForm'
+import { RoleList } from '@components/shared/app/role/RoleList'
+import { UserForm } from '@components/shared/app/user/UserForm'
+import { UserList } from '@components/shared/app/user/UserList'
+import DashboardLayout from '@components/ee/layout/DashboardLayout'
 import { Button, Grid, Menu, Modal, Tabs, Title } from '@mantine/core'
 import {
   IconChevronDown,
   IconUser,
   IconUserCheck,
-  IconUsersGroup,
 } from '@tabler/icons-react'
 import { useState } from 'react'
 
@@ -90,7 +89,6 @@ export default function Users() {
           onCancel={() => setRoleModalActive(false)}
         />
       </Modal>
-
     </>
   )
 }

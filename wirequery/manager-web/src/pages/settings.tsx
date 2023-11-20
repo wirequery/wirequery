@@ -5,8 +5,8 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { CurrentUserSettings } from '@components/app/user/CurrentUserSettings'
-import DashboardLayout from '@components/layout/DashboardLayout'
+import { CurrentUserSettings } from '@components/shared/app/user/CurrentUserSettings'
+import DashboardLayout from '@components/ce/layout/DashboardLayout'
 import { ActionIcon, Title, useMantineColorScheme } from '@mantine/core'
 import { IconMoonStars, IconSun } from '@tabler/icons-react'
 

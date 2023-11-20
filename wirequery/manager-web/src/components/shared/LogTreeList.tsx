@@ -9,7 +9,7 @@ import { Divider, Drawer, UnstyledButton } from '@mantine/core'
 import { IconBinaryTree2, IconCopy } from '@tabler/icons-react'
 import { LogTree } from './LogTree'
 import { useState } from 'react'
-import { TraceDetails } from '@components/app/trace/TraceDetails'
+import { TraceDetails } from '@components/shared/app/trace/TraceDetails'
 
 export interface LogTreeListProps {
   sessionId?: string | number | null

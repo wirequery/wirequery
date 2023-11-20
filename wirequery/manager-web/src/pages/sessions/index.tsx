@@ -5,9 +5,9 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { SessionForm } from '@components/app/session/SessionForm'
-import { SessionList } from '@components/app/session/SessionList'
-import DashboardLayout from '@components/layout/DashboardLayout'
+import { SessionForm } from '@components/shared/app/session/SessionForm'
+import { SessionList } from '@components/shared/app/session/SessionList'
+import DashboardLayout from '@components/ce/layout/DashboardLayout'
 import { Button, Grid, Modal, Title } from '@mantine/core'
 import { useState } from 'react'
 

@@ -5,9 +5,9 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { TemplateForm } from '@components/app/template/TemplateForm'
-import { TemplateList } from '@components/app/template/TemplateList'
-import DashboardLayout from '@components/layout/DashboardLayout'
+import { TemplateForm } from '@components/shared/app/template/TemplateForm'
+import { TemplateList } from '@components/shared/app/template/TemplateList'
+import DashboardLayout from '@components/ce/layout/DashboardLayout'
 import { Button, Grid, Modal, Title } from '@mantine/core'
 import { useState } from 'react'
 

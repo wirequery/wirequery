@@ -5,9 +5,9 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { ApplicationForm } from '@components/app/application/ApplicationForm'
-import { ApplicationList } from '@components/app/application/ApplicationList'
-import DashboardLayout from '@components/layout/DashboardLayout'
+import { ApplicationForm } from '@components/shared/app/application/ApplicationForm'
+import { ApplicationList } from '@components/ce/app/application/ApplicationList'
+import DashboardLayout from '@components/ee/layout/DashboardLayout'
 import { Button, Grid, Modal, Title } from '@mantine/core'
 import { useState } from 'react'
 
@@ -31,6 +31,10 @@ export default function Applications() {
         title="New Application"
         onClose={() => setModalActive(false)}
       >
+        <ApplicationForm
+          onSave={() => setModalActive(false)}
+          onCancel={() => setModalActive(false)}
+        />
       </Modal>
     </>
   )

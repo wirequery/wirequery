@@ -5,7 +5,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { Login } from '@components/app/auth/Login'
+import { Login } from '@components/shared/app/auth/Login'
 import { Query, User } from '@generated/graphql'
 import { AuthorisationsContext } from '@lib/authorisations-context'
 import { CurrentUserContext } from '@lib/current-user-context'

@@ -5,8 +5,8 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { TemplateDetails } from '@components/app/template/TemplateDetails'
-import DashboardLayout from '@components/layout/DashboardLayout'
+import { TemplateDetails } from '@components/shared/app/template/TemplateDetails'
+import DashboardLayout from '@components/ce/layout/DashboardLayout'
 import { Anchor, Breadcrumbs } from '@mantine/core'
 import Link from 'next/link'
 import { useRouter } from 'next/router'

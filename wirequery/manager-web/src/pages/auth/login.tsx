@@ -5,7 +5,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { Login } from '@components/app/auth/Login'
+import { Login } from '@components/shared/app/auth/Login'
 import { showErrorAlertForMessage } from '@lib/alert'
 import { ResetUrqlClientContext } from '@lib/reset-urql-client-context'
 import { Container, Paper, Title } from '@mantine/core'
