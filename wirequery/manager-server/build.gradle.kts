@@ -70,9 +70,9 @@ dependencies {
 
     implementation("com.auth0:java-jwt:4.4.0")
 
-    implementation("io.grpc:grpc-protobuf:${grpcVersion}")
-    implementation("io.grpc:grpc-netty:${grpcVersion}")
-    implementation("io.grpc:grpc-stub:${grpcVersion}")
+    implementation("io.grpc:grpc-protobuf:$grpcVersion")
+    implementation("io.grpc:grpc-netty:$grpcVersion")
+    implementation("io.grpc:grpc-stub:$grpcVersion")
     implementation("io.grpc:grpc-kotlin-stub:1.3.0")
     implementation("com.google.protobuf:protobuf-java:$protobufVersion")
 
@@ -106,7 +106,7 @@ if (osdetector.os == "osx") {
 sourceSets {
     main {
         proto {
-            srcDir ("../../wirequery/proto")
+            srcDir("../../wirequery/proto")
         }
     }
 }
@@ -114,11 +114,12 @@ sourceSets {
 protobuf {
     // Artifacts not available for Apple Silicon. Therefore fallback to x86_64 arch.
     protoc {
-        artifact = if (osdetector.os == "osx") {
-            "com.google.protobuf:protoc:${protobufVersion}:osx-x86_64"
-        } else {
-            "com.google.protobuf:protoc:${protobufVersion}"
-        }
+        artifact =
+            if (osdetector.os == "osx") {
+                "com.google.protobuf:protoc:$protobufVersion:osx-x86_64"
+            } else {
+                "com.google.protobuf:protoc:$protobufVersion"
+            }
     }
     plugins {
         id("grpc") {

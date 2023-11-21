@@ -2,10 +2,6 @@ extend type Query {
     authorisations: [Authorisation!]!
 }
 
-extend type Role {
-    authorisations: [Authorisation!]!
-}
-
 type Authorisation {
     name: ID!
     label: String!
