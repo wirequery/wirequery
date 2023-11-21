@@ -1,5 +1,6 @@
 on:
   pull_request_target:
+
 jobs:
   pr-to-private-repo:
     if: github.repository == 'wirequery/wirequery'

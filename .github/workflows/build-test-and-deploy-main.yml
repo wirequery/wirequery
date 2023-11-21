@@ -1,14 +1,15 @@
-name: Build, Test and Deploy FE and BE
+name: Build, Test and Deploy FE and BE - Main
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+  pull_request_target:
+    types:
+      - closed
 
 jobs:
   build:
+    if: github.event_name == "push" || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

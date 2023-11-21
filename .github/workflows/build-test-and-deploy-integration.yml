@@ -1,0 +1,53 @@
+name: Build, Test and Deploy FE and BE - Integration
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+      - name: Run Gradle test on WireQuery Java Core SDK
+        working-directory: ./sdk/jvm/wirequery-java-core
+        run: ./gradlew test && ./gradlew publishToMavenLocal --no-daemon
+      - name: Run Gradle test on WireQuery Spring 5 SDK
+        working-directory: ./sdk/jvm/wirequery-spring-5
+        run: ./gradlew test && ./gradlew publishToMavenLocal --no-daemon
+      - name: Run Gradle test on WireQuery Spring 6 SDK
+        working-directory: ./sdk/jvm/wirequery-spring-6
+        run: ./gradlew test && ./gradlew publishToMavenLocal --no-daemon
+      - name: Run Gradle test on WireQuery Spring 2 Starter SDK
+        working-directory: ./sdk/jvm/wirequery-spring-boot-2-starter
+        run: ./gradlew test && ./gradlew publishToMavenLocal --no-daemon
+      - name: Run Gradle test on WireQuery Spring 3 Starter SDK
+        working-directory: ./sdk/jvm/wirequery-spring-boot-3-starter
+        run: ./gradlew test && ./gradlew publishToMavenLocal --no-daemon
+      - name: Run Gradle test on the Transaction Example
+        working-directory: ./sdk/jvm/examples/spring-boot/transactions
+        run: ./gradlew build
+      - name: Run Gradle build on the Balance Calculator Example
+        working-directory: ./sdk/jvm/examples/spring-boot/balance-calculator
+        run: ./gradlew build
+      - name: Run Gradle build on Wirequery's manager-server
+        working-directory: ./wirequery/manager-server
+        run: ./gradlew build
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+          cache-dependency-path: ./wirequery/manager-web/package-lock.json
+      - run: npm ci
+        working-directory: ./wirequery/manager-web
+      - run: npm run generate:schema
+        working-directory: ./wirequery/manager-web
+      - run: npm run test
+        working-directory: ./wirequery/manager-web
