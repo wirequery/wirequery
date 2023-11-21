@@ -61,7 +61,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GH_TOKEN }}
       - name: Extract metadata (tags, labels) for Docker - BE
-        id: meta
+        id: meta_be
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: ${{ github.repository }}-backend
@@ -71,9 +71,9 @@ jobs:
           context: wirequery/manager-server
           push: true
           tags: ghcr.io/${{ github.repository }}-backend:latest
-          labels: ${{ steps.meta.outputs.labels }}
+          labels: ${{ steps.meta_be.outputs.labels }}
       - name: Extract metadata (tags, labels) for Docker - FE
-        id: meta
+        id: meta_fe
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: ${{ github.repository }}-frontend
@@ -83,4 +83,4 @@ jobs:
           context: wirequery/manager-web
           push: true
           tags: ghcr.io/${{ github.repository }}-frontend:latest
-          labels: ${{ steps.meta.outputs.labels }}
+          labels: ${{ steps.meta_fe.outputs.labels }}
