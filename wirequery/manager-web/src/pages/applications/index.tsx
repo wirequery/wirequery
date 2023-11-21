@@ -5,7 +5,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { ApplicationForm } from '@components/shared/app/application/ApplicationForm'
+import { ApplicationForm } from '@components/ce/app/application/ApplicationForm'
 import { ApplicationList } from '@components/ce/app/application/ApplicationList'
 import DashboardLayout from '@components/ce/layout/DashboardLayout'
 import { Button, Grid, Modal, Title } from '@mantine/core'
