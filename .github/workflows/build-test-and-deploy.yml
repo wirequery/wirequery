@@ -59,7 +59,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GH_TOKEN }}
+          password: ${{ secrets.GH_TOKEN_PUSH_IMAGES }}
       - name: Extract metadata (tags, labels) for Docker - BE
         id: meta_be
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
