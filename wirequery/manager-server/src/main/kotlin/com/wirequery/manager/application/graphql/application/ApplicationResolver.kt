@@ -10,6 +10,7 @@ package com.wirequery.manager.application.graphql.application
 import com.netflix.graphql.dgs.DgsComponent
 import com.netflix.graphql.dgs.DgsMutation
 import com.netflix.graphql.dgs.DgsQuery
+import com.wirequery.manager.domain.FunctionalException.Companion.functionalError
 import com.wirequery.manager.domain.application.Application
 import com.wirequery.manager.domain.application.ApplicationService
 import com.wirequery.manager.domain.application.ApplicationService.*
@@ -40,6 +41,17 @@ class ApplicationResolver(
     @PreAuthorize("hasAuthority(T(com.wirequery.manager.domain.authorisation.AuthorisationEnum).VIEW_APPLICATIONS)")
     fun applications(): Iterable<Application> {
         return applicationService.findAll()
+    }
+
+    @DgsMutation
+    @PreAuthorize(
+        """hasAuthority(T(com.wirequery.manager.domain.authorisation.AuthorisationEnum).CREATE_GROUP)"""
+    )
+    fun createApplication(
+        id: Int,
+        input: CreateApplicationInput,
+    ): Application? {
+        functionalError("Not implemented yet.")
     }
 
     @DgsMutation

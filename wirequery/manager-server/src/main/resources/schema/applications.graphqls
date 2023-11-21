@@ -4,6 +4,7 @@ extend type Query {
 }
 
 extend type Mutation {
+    createApplication(input: CreateApplicationInput!): Application
     updateApplication(id: ID!, input: UpdateApplicationInput!): Application
     unquarantineApplication(id: ID!, input: UnquarantineApplicationInput!): Application
     deleteApplication(id: ID!): Boolean!
@@ -26,7 +27,6 @@ type Application {
 input CreateApplicationInput {
     name: String!
     description: String!
-    groupId: Int!
 }
 
 input UpdateApplicationInput {

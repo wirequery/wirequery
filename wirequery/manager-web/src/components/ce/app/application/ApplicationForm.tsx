@@ -17,7 +17,6 @@ import { useEffect } from 'react'
 
 export interface ApplicationFormProps {
   id?: string | number
-  groupId?: string
   onSave: () => void
   onCancel: () => void
 }
@@ -25,20 +24,13 @@ export interface ApplicationFormProps {
 interface ApplicationFormData {
   name: string | undefined
   description: string | undefined
-  groupId?: string
 }
 
 export function ApplicationForm(props: ApplicationFormProps) {
   const [, executeCreateMutation] = useMutation<Mutation>(gql`
-    mutation addNewApplicationToGroup($input: AddNewApplicationToGroupInput!) {
-      addNewApplicationToGroup(input: $input) {
+    mutation createApplication($input: CreateApplicationInput!) {
+      createApplication(input: $input) {
         id
-        group {
-          id
-        }
-        application {
-          id
-        }
       }
     }
   `)
@@ -60,10 +52,6 @@ export function ApplicationForm(props: ApplicationFormProps) {
 
   const doSubmit = (formData: ApplicationFormData) => {
     if (props.id) {
-      if (formData.groupId) {
-        formData = { ...formData } // Ensure doSubmit does not alter its input args.
-        delete formData.groupId
-      }
       if (formData.name) {
         formData = { ...formData } // Ensure doSubmit does not alter its input args.
         delete formData.name
@@ -112,8 +100,6 @@ export function ApplicationForm(props: ApplicationFormProps) {
     initialValues: {
       name: '',
       description: '',
-      groupId:
-        props.groupId !== undefined ? parseInt(props.groupId) : undefined,
     } as ApplicationFormData,
 
     validate: props.id
@@ -133,7 +119,6 @@ export function ApplicationForm(props: ApplicationFormProps) {
       form.setValues({
         name: data.application.name,
         description: data.application.description,
-        groupId: props.groupId,
       })
       form.resetDirty()
     }
