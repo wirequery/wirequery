@@ -26,9 +26,8 @@ export default function ShowApplication() {
         </Anchor>
       </Breadcrumbs>
       {applicationId && <ApplicationDetails id={applicationId as string} />}
-      <Tabs defaultValue="groups">
+      <Tabs defaultValue="storedQueries">
         <Tabs.List>
-          <Tabs.Tab value="groups">Groups</Tabs.Tab>
           <Tabs.Tab value="storedQueries">Queries</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="storedQueries">
