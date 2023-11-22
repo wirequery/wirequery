@@ -1,13 +1,13 @@
 destinationUrl = "ssh://git@github.com/wirequery/wirequery.git"
 sotUrl = "ssh://git@github.com/wirequery/wirequery-ee.git"
 
-files = glob(["**"], exclude = ["**/ce/**", ".github/workflows/push-to-public-repo.yml"])
+files = glob(["**"], exclude = ["**/ee/**", ".github/workflows/push-to-public-repo.yml"])
 
 code_transformations = [
     core.replace(
-        before = "/ce/",
+        before = "/ee/",
         after = "/ce/",
-        paths = glob(["**"], exclude = ["**/ce/**", "**/ce/**"]),
+        paths = glob(["**"], exclude = ["**/ce/**", "**/ee/**", "copy.bara.sky"]),
     ),
 ]
 
