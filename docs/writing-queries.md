@@ -1,5 +1,6 @@
 # Writing Queries
 
+
 Queries consist of three parts:
 
 - Query Head
