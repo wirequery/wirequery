@@ -7,6 +7,7 @@
 
 package com.wirequery.manager.application.security
 
+import com.wirequery.manager.domain.access.AccessService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
@@ -47,6 +48,11 @@ class SecurityConfig : AsyncConfigurer {
         poolExecutor.setTaskDecorator(ContextCopyingDecorator())
         poolExecutor.initialize()
         return poolExecutor
+    }
+
+    @Bean
+    fun accessService(accessService: AccessService): AccessService {
+        return accessService
     }
 
     class ContextCopyingDecorator : TaskDecorator {

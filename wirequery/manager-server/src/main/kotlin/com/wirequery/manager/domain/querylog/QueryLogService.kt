@@ -8,7 +8,7 @@
 package com.wirequery.manager.domain.querylog
 
 import com.wirequery.manager.domain.access.AccessService
-import com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum.*
+import com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum.VIEW_STORED_QUERY
 import com.wirequery.manager.domain.query.QueryReport
 import com.wirequery.manager.domain.querylog.QueryLogEvent.QueryLogsCreatedEvent
 import com.wirequery.manager.domain.querylog.QueryLogEvent.QueryLogsFetchedEvent
