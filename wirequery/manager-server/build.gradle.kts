@@ -25,7 +25,7 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:latest.release")
+        mavenBom("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:7.6.0")
     }
 }
 
@@ -47,9 +47,9 @@ dependencies {
 
     implementation("org.flywaydb:flyway-core")
 
-    implementation("io.lettuce:lettuce-core:6.2.6.RELEASE")
+    implementation("io.lettuce:lettuce-core:6.3.0.RELEASE")
+    implementation("io.projectreactor:reactor-core:3.5.10")
 
-    implementation("com.google.protobuf:protobuf-java:3.22.0")
     implementation("net.devh:grpc-spring-boot-starter:2.15.0.RELEASE")
 
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
