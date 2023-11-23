@@ -4,11 +4,11 @@ Capture, explore, and analyze data flowing in and out of your applications - wit
 
 - **Fix production incidents** an order of magnitude faster by querying the exact state
   in which it occurs.
-- **Speed up development** and gain insights by observing and analyzing production data.
-- **Free and Open Source**, so you can use WireQuery to your heart's content.
+- **Speed up development** and gain technical/business insights by exploring production data.
+- **Free and Open Source**, so that you can use WireQuery to your heart's content.
 
 WireQuery SDKs capture HTTP requests and responses based on the provided query in the WireQuery UI. Masking is done in
-the application itself, so that sensitive data is stripped before reaching the WireQuery server.
+the application itself, so that sensitive data is stripped before ever reaching the WireQuery server.
 
 ![Screenshot](screenshot_1.png)
 
@@ -35,12 +35,14 @@ You can follow the Getting Started guide [here](docs/getting-started.md).
 
 ## SDKs
 
-WireQuery is offered in the following variants:
+WireQuery's SDKs are offered in the following variants:
 
 | Technology              | Description                                                       |
 |-------------------------|-------------------------------------------------------------------|
 | [JVM](/sdk/jvm)         | Library for vanilla Java, Spring Boot 2 and 3                     |
 | [JS (Browser)](/sdk/js) | Integration with Javascript in the Browser for frontend recording |
+
+More SDKs will be added over time.
 
 ## Guides
 

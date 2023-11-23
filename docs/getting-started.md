@@ -1,3 +1,5 @@
+# Getting Started
+
 There are different ways to set up WireQuery:
 
 - Using Helm (depends on Kubernetes)
