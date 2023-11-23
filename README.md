@@ -9,17 +9,19 @@ Capture, explore, and analyze data flowing in and out of your applications - wit
 - **Free and Open Source**: WireQuery is licensed under AGPLv3 and the SDK is licensed under MIT, so you can use
   WireQuery to your heart's content.
 
+Imagine what your production systems could tell you...
+
 ![Screenshot](screenshot_1.png)
 
 ## Feature Highlights
 
-- **Instant Query**:
-  After typing in a query, the targeted production system will immediately start capturing data so that WireQuery can
+- **Explore**:
+  After entering a query, the targeted production system will immediately start capturing data so that WireQuery can
   show it back to you.
-- **Stored Queries**: Occassionally, you may want to run a query for a longer time, or even indefinitely. Stored Queries
-  allows you to do so.
-- **Extended Tracing**: Like regular tracing, but with request and response bodies and more where confidential
-  information is redacted, so you can see what *actually* happens during a call.
+- **(Stored) Queries**: Occassionally, you may want to run a query for a longer time, or even indefinitely. (Stored)
+  Queries allow you to do so.
+- **Extended Tracing**: Extended Tracing is similar to regular tracing, but adds request and response bodies and more
+  where confidential information is redacted, so you can see what *actually* happens during a call.
 - **Sessions**: Allow users such as Support Engineers to spin up a group of queries that are
   instantiated by applying a template, so developers have all the knowledge they need to tackle any incident prior to
   getting started.
@@ -52,7 +54,16 @@ WireQuery is offered in the following variants:
 
 ## Community
 
-- [Join our Discord Channel](https://discord.gg/ej7Rxwdd)
+- [Join our Discord Channel](https://discord.gg/ej7Rxwdd) for questions and support.
+
+## Contributing
+
+The best way to improve the product is by providing us with feedback. Please feel free to provide feedback (i.e. ideas
+for improvement, bugs, etc.) by opening an issue. Also, if you found a bug, you can create a PR to have it merged into
+the code. Before it can be merged, however, you need to sign a Contributors License Agreement, to make sure that we can
+serve our users with your code going forward.
+
+Also, please feel free to discuss ideas and feedback on our [Discord Channel](https://discord.gg/ej7Rxwdd).
 
 ## License
 
