@@ -1,6 +1,6 @@
 # WireQuery
 
-Capture, explore, and analyze data flowing in and out of your applications - without compromising privacy.
+Capture, explore, and analyze data flowing in and out of your applications - without compromising confidentiality.
 
 - **Investigate and Fix Bugs Faster**: Investigate and fix bugs an order of magnitude faster by querying the exact state
   in which it occurs.
@@ -14,13 +14,18 @@ Capture, explore, and analyze data flowing in and out of your applications - wit
 ## Feature Highlights
 
 - **Instant Query**:
-  After typing in a query, the targeted production system will immediately start capturing data to show it back to you.
+  After typing in a query, the targeted production system will immediately start capturing data so that WireQuery can
+  show it back to you.
 - **Stored Queries**: Occassionally, you may want to run a query for a longer time, or even indefinitely. Stored Queries
   allows you to do so.
-- **Sessions**: Allow non-technical users to spin up a session - a group of queries that are instantiated by applying a
-  template.
-- **Recording**: Record interactions on the frontend as if it were a screen capture. Combine this with the data on the
-  backend to get an end-to-end overview of what's happening in your stack.
+- **Extended Tracing**: Like regular tracing, but with request and response bodies and more where confidential
+  information is redacted, so you can see what *actually* happens during a call.
+- **Sessions**: Allow users such as Support Engineers to spin up a group of queries that are
+  instantiated by applying a template, so developers have all the knowledge they need to tackle any incident prior to
+  getting started.
+- **Recording**: Record interactions on the frontend as if they were screen captures. WireQuery is the first tool in the
+  world to combine that data with the data on the backend, so you can get an end-to-end overview of what happened when a
+  user ended up in a certain state.
 - **Masking**: Each application can specify masking and unmasking rules, so that confidential information is hidden.
 
 ## Get Started
