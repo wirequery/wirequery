@@ -32,12 +32,7 @@ Imagine what your production systems could tell you.
 
 ## Get Started
 
-WireQuery is available as a Docker image. In order for it to operate, you need to have the following software installed:
-
-- TimescaleDB
-- Redis
-
-The easiest way to install WireQuery on a cluster is using its Helm image.
+You can follow the Getting Started guide [here](docs/getting-started.md).
 
 ## SDKs
 
@@ -55,6 +50,13 @@ WireQuery is offered in the following variants:
 ## Community
 
 - [Join our Discord Channel](https://discord.gg/ej7Rxwdd) for questions and support.
+
+## WireQuery as a Service
+
+WireQuery is also available as a service, including a Free Tier that's powerful enough for small businesses, so you
+don't have to spend time on maintaining it.
+
+Visit [www.wirequery.com](http://www.wirequery.com/) for more information.
 
 ## Contributing
 
