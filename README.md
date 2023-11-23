@@ -2,14 +2,13 @@
 
 Capture, explore, and analyze data flowing in and out of your applications - without compromising privacy.
 
-- **Investigate and Fix Bugs Faster**: Investigate and fix bugs an order of magnitude faster by querying the exact state
+- **Fix production incidents** an order of magnitude faster by querying the exact state
   in which it occurs.
-- **Speed Up Development**: Speed up development by observing and analyzing production data instead of relying on
-  possibly outdated or missing documentation.
-- **Free and Open Source**: WireQuery is licensed under AGPLv3 and the SDK is licensed under MIT, so you can use
-  WireQuery to your heart's content.
+- **Speed up development** and gain insights by observing and analyzing production data.
+- **Free and Open Source**, so you can use WireQuery to your heart's content.
 
-Imagine what your production systems could tell you.
+WireQuery SDKs capture HTTP requests and responses based on the provided query in the WireQuery UI. Masking is done in
+the application itself, so that sensitive data is stripped before reaching the WireQuery server.
 
 ![Screenshot](screenshot_1.png)
 
@@ -56,7 +55,7 @@ WireQuery is offered in the following variants:
 WireQuery is also available as a service, including a Free Tier that's powerful enough for small businesses, so you
 don't have to spend time on maintaining it.
 
-Visit [www.wirequery.com](http://www.wirequery.com/) for more information.
+Visit [wirequery.com](https://www.wirequery.com/) for more information.
 
 ## Contributing
 
