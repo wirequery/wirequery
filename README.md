@@ -1,6 +1,6 @@
 # WireQuery
 
-Capture, explore, and analyze data flowing in and out of your applications - without compromising confidentiality.
+Capture, explore, and analyze data flowing in and out of your applications - without compromising privacy.
 
 - **Investigate and Fix Bugs Faster**: Investigate and fix bugs an order of magnitude faster by querying the exact state
   in which it occurs.
@@ -9,7 +9,7 @@ Capture, explore, and analyze data flowing in and out of your applications - wit
 - **Free and Open Source**: WireQuery is licensed under AGPLv3 and the SDK is licensed under MIT, so you can use
   WireQuery to your heart's content.
 
-Imagine what your production systems could tell you...
+Imagine what your production systems could tell you.
 
 ![Screenshot](screenshot_1.png)
 
