@@ -53,10 +53,7 @@ describe('TraceDetails', () => {
         </Provider>
       )
     })
-    expect(
-      screen.getAllByText('Trace of ' + storedQuery.name)
-    ).not.toHaveLength(0)
 
-    expect(screen.getAllByText('mytrace')).not.toHaveLength(0)
+    expect(screen.getAllByText('Selected Trace')).not.toHaveLength(0)
   })
 })

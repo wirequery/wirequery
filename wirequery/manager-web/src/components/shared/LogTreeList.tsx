@@ -73,7 +73,7 @@ export const LogTreeList = (props: LogTreeListProps) => {
         opened={selectedItem !== undefined}
         onClose={() => setSelectedItem(undefined)}
         size="xl"
-        title="Selected Trace"
+        title={selectedItem?.traceId}
       >
         {selectedItem?.storedQueryId && (
           <TraceDetails

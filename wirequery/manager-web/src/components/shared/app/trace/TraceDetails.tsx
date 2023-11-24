@@ -7,11 +7,10 @@
 
 import { ErrorMessage } from '@components/shared/ErrorMessage'
 import { LoadingScreen } from '@components/shared/LoadingScreen'
-import { SummaryBar } from '@components/shared/SummaryBar'
 import { Query } from '@generated/graphql'
-import { Button, UnstyledButton } from '@mantine/core'
+import { Anchor, Breadcrumbs, UnstyledButton } from '@mantine/core'
 import { IconCopy } from '@tabler/icons-react'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { gql, useQuery } from 'urql'
 import { LogTree } from '../../LogTree'
 import { TraceTimeline } from './TraceTimeline'
@@ -92,7 +91,9 @@ export const TraceDetails = (props: TraceDetailsProps) => {
     <>
       {selectedIndex === undefined ? (
         <>
-          <SummaryBar items={[props.traceId]} />
+          <Breadcrumbs style={{ paddingBottom: 20 }}>
+            <Anchor>Selected Trace</Anchor>
+          </Breadcrumbs>
           <TraceTimeline
             series={traceQueryLogs.map((queryLog, i) => ({
               appName: queryLog.appName,
@@ -112,9 +113,16 @@ export const TraceDetails = (props: TraceDetailsProps) => {
         </>
       ) : (
         <>
-          <SummaryBar items={[props.traceId]} />
-          <Button onClick={() => setSelectedId(undefined)}>Back</Button>
-
+          <Breadcrumbs style={{ paddingBottom: 20 }}>
+            <Anchor
+              onClick={() => {
+                setSelectedId(undefined)
+              }}
+            >
+              Selected Trace
+            </Anchor>
+            <Anchor>Selected Span</Anchor>
+          </Breadcrumbs>
           <div style={{ float: 'right' }}>
             <UnstyledButton
               onClick={() =>

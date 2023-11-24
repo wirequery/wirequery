@@ -31,13 +31,13 @@ export const Recorder = () => {
   };
 
   const startRecording = () => {
-    fetch("https://demo.wirequery.io/api/v1/recordings", {
+    fetch("http://localhost:8080/api/v1/recordings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        templateId: 3, // Debug Session by Account Id
+        templateId: 1, // Debug Session by Account Id
         args: {
           accountId: "NL69FAKE8085990849",
         },
@@ -63,7 +63,7 @@ export const Recorder = () => {
   const send = () => {
     if (recording) {
       setRecording(undefined);
-      fetch(`https://demo.wirequery.io/api/v1/recordings/${recording.id}/finish`, {
+      fetch(`http://localhost:8080/api/v1/recordings/${recording.id}/finish`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
