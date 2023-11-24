@@ -9,7 +9,7 @@ import { ErrorMessage } from '@components/shared/ErrorMessage'
 import { LoadingScreen } from '@components/shared/LoadingScreen'
 import { SummaryBar } from '@components/shared/SummaryBar'
 import { Query } from '@generated/graphql'
-import { Modal, Title, UnstyledButton } from '@mantine/core'
+import { Button, UnstyledButton } from '@mantine/core'
 import { IconCopy } from '@tabler/icons-react'
 import React, { useMemo, useState } from 'react'
 import { gql, useQuery } from 'urql'
@@ -90,53 +90,50 @@ export const TraceDetails = (props: TraceDetailsProps) => {
 
   return (
     <>
-      <Title order={2}>Trace of {data?.storedQuery?.name}</Title>
-      <SummaryBar items={[props.traceId]} />
-      <TraceTimeline
-        series={traceQueryLogs.map((queryLog, i) => ({
-          appName: queryLog.appName,
-          label:
-            jsonByIndex[i]?.error ??
-            jsonByIndex[i]?.result?.method +
-              ' ' +
-              jsonByIndex[i]?.result?.path +
-              ' ' +
-              jsonByIndex[i]?.result?.statusCode,
-          startTimestamp: queryLog.startTime - start,
-          endTimestamp: queryLog.endTime - start,
-          id: i,
-        }))}
-        onSelect={(i) => setSelectedId(i)}
-      />
+      {selectedIndex === undefined ? (
+        <>
+          <SummaryBar items={[props.traceId]} />
+          <TraceTimeline
+            series={traceQueryLogs.map((queryLog, i) => ({
+              appName: queryLog.appName,
+              label:
+                jsonByIndex[i]?.error ??
+                jsonByIndex[i]?.result?.method +
+                  ' ' +
+                  jsonByIndex[i]?.result?.path +
+                  ' ' +
+                  jsonByIndex[i]?.result?.statusCode,
+              startTimestamp: queryLog.startTime - start,
+              endTimestamp: queryLog.endTime - start,
+              id: i,
+            }))}
+            onSelect={(i) => setSelectedId(i)}
+          />
+        </>
+      ) : (
+        <>
+          <SummaryBar items={[props.traceId]} />
+          <Button onClick={() => setSelectedId(undefined)}>Back</Button>
 
-      <Modal
-        title="Selected Query Log"
-        opened={selectedIndex !== undefined}
-        onClose={() => setSelectedId(undefined)}
-        size="xl"
-      >
-        {selectedIndex !== undefined && (
-          <>
-            <div style={{ float: 'right' }}>
-              <UnstyledButton
-                onClick={() =>
-                  navigator.clipboard.writeText(
-                    JSON.stringify(jsonByIndex[selectedIndex]?.result)
-                  )
-                }
-              >
-                <IconCopy size={16} />
-              </UnstyledButton>
-            </div>
-            <LogTree
-              display={jsonByIndex[selectedIndex]?.result}
-              startTime={traceQueryLogs[selectedIndex]?.startTime}
-              endTime={traceQueryLogs[selectedIndex]?.endTime}
-              traceId={traceQueryLogs[selectedIndex]?.traceId}
-            />
-          </>
-        )}
-      </Modal>
+          <div style={{ float: 'right' }}>
+            <UnstyledButton
+              onClick={() =>
+                navigator.clipboard.writeText(
+                  JSON.stringify(jsonByIndex[selectedIndex]?.result)
+                )
+              }
+            >
+              <IconCopy size={16} />
+            </UnstyledButton>
+          </div>
+          <LogTree
+            display={jsonByIndex[selectedIndex]?.result}
+            startTime={traceQueryLogs[selectedIndex]?.startTime}
+            endTime={traceQueryLogs[selectedIndex]?.endTime}
+            traceId={traceQueryLogs[selectedIndex]?.traceId}
+          />
+        </>
+      )}
     </>
   )
 }

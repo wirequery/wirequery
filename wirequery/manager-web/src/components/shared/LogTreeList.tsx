@@ -5,7 +5,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { Divider, Drawer, UnstyledButton } from '@mantine/core'
+import { Divider, Modal, UnstyledButton } from '@mantine/core'
 import { IconBinaryTree2, IconCopy } from '@tabler/icons-react'
 import { LogTree } from './LogTree'
 import { useState } from 'react'
@@ -69,11 +69,11 @@ export const LogTreeList = (props: LogTreeListProps) => {
         )
       })}
 
-      <Drawer
+      <Modal
         opened={selectedItem !== undefined}
         onClose={() => setSelectedItem(undefined)}
         size="xl"
-        position="right"
+        title="Selected Trace"
       >
         {selectedItem?.storedQueryId && (
           <TraceDetails
@@ -81,7 +81,7 @@ export const LogTreeList = (props: LogTreeListProps) => {
             traceId={selectedItem.traceId}
           />
         )}
-      </Drawer>
+      </Modal>
     </>
   )
 }

@@ -10,7 +10,7 @@ import { LoadingScreen } from '@components/shared/LoadingScreen'
 import { SummaryBar } from '@components/shared/SummaryBar'
 import { Query } from '@generated/graphql'
 import { createAuditItems } from '@lib/audit'
-import { Drawer, Title } from '@mantine/core'
+import { Modal, Title } from '@mantine/core'
 import { useMemo, useState } from 'react'
 import { gql, useQuery } from 'urql'
 import { RecordingPlayer } from '../recording/RecordingPlayer'
@@ -124,11 +124,11 @@ export function SessionDetails(props: SessionDetailsProps) {
         />
       )}
 
-      <Drawer
+      <Modal
         opened={selectedItem !== undefined}
         onClose={() => setSelectedItem(undefined)}
         size="xl"
-        position="right"
+        title="Selected Trace"
       >
         {selectedItem?.storedQueryId && (
           <TraceDetails
@@ -136,7 +136,7 @@ export function SessionDetails(props: SessionDetailsProps) {
             traceId={selectedItem.traceId as string}
           />
         )}
-      </Drawer>
+      </Modal>
     </>
   )
 }
