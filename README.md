@@ -7,8 +7,8 @@ Capture, explore, and analyze data flowing in and out of your applications - wit
 - **Speed up development** and gain technical/business insights by exploring production data.
 - **Free and Open Source**, so that you can use WireQuery to your heart's content.
 
-WireQuery SDKs capture HTTP requests and responses based on the provided query in the WireQuery UI. Masking is done in
-the application itself, so that sensitive data is stripped before ever reaching the WireQuery server.
+WireQuery SDKs capture HTTP requests and responses based on the provided query in WireQuery. Masking is done in the
+application itself, so that sensitive data is stripped before ever reaching the WireQuery server.
 
 ![Screenshot](screenshot_1.png)
 
@@ -20,13 +20,13 @@ the application itself, so that sensitive data is stripped before ever reaching 
 - **(Stored) Queries**: Occassionally, you may want to run a query for a longer time, or even indefinitely. (Stored)
   Queries allow you to do so.
 - **Extended Tracing**: Extended Tracing is similar to regular tracing, but adds request and response bodies and more
-  where confidential information is redacted, so you can see what *actually* happens during a call.
+  where confidential information is redacted, so you can see what *actually* happens during a call. [Screenshot](screenshot_2.png)
 - **Sessions**: Allow users such as Support Engineers to spin up a group of queries that are
   instantiated by applying a template, so developers have all the knowledge they need to tackle any incident prior to
   getting started.
 - **Recording**: Record interactions on the frontend as if they were screen captures. WireQuery is the first tool in the
   world to combine that data with the data on the backend, so you can get an end-to-end overview of what happened when a
-  user ended up in a certain state.
+  user ended up in a certain state. [Screenshot](screenshot_3.png)
 - **Masking**: Each application can specify masking and unmasking rules, so that confidential information is hidden.
 
 ## Get Started
