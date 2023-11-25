@@ -121,6 +121,7 @@ class TemplateQueryResolverTests : ResolverTestContext() {
             mapOf(
                 "templateId" to 10,
                 "nameTemplate" to "Some nameTemplate",
+                "type" to "QUERY",
                 "queryTemplate" to "Some queryTemplate",
                 "queryLimit" to 1,
             )
@@ -146,6 +147,7 @@ class TemplateQueryResolverTests : ResolverTestContext() {
             mapOf(
                 "templateId" to 10,
                 "nameTemplate" to "Some nameTemplate",
+                "type" to "QUERY",
                 "queryTemplate" to "Some queryTemplate",
                 "queryLimit" to 1,
             )
@@ -174,6 +176,7 @@ class TemplateQueryResolverTests : ResolverTestContext() {
             mapOf(
                 "templateId" to 10,
                 "nameTemplate" to "Some nameTemplate",
+                "type" to "QUERY",
                 "queryTemplate" to "Some queryTemplate",
                 "queryLimit" to 1,
             )
@@ -208,6 +211,7 @@ class TemplateQueryResolverTests : ResolverTestContext() {
             mapOf(
                 "templateId" to 10,
                 "nameTemplate" to "Some nameTemplate",
+                "type" to "QUERY",
                 "queryTemplate" to "Some queryTemplate",
                 "queryLimit" to 1,
             )
@@ -233,6 +237,7 @@ class TemplateQueryResolverTests : ResolverTestContext() {
             mapOf(
                 "templateId" to 10,
                 "nameTemplate" to "Some nameTemplate",
+                "type" to "QUERY",
                 "queryTemplate" to "Some queryTemplate",
                 "queryLimit" to 1,
             )
@@ -261,6 +266,7 @@ class TemplateQueryResolverTests : ResolverTestContext() {
             mapOf(
                 "templateId" to 10,
                 "nameTemplate" to "Some nameTemplate",
+                "type" to "QUERY",
                 "queryTemplate" to "Some queryTemplate",
                 "queryLimit" to 1,
             )

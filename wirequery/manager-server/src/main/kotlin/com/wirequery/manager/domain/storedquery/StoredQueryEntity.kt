@@ -18,7 +18,7 @@ data class StoredQueryEntity(
     val sessionId: Int?,
     val applicationId: Int,
     val name: String,
-    val type: String,
+    val type: StoredQuery.Type,
     val query: String,
     val queryLimit: Int,
     val disabled: Boolean,

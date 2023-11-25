@@ -10,6 +10,7 @@ package com.wirequery.manager.domain.session
 import com.wirequery.manager.domain.FunctionalException.Companion.functionalError
 import com.wirequery.manager.domain.session.SessionEvent.SessionsCreatedEvent
 import com.wirequery.manager.domain.session.SessionEvent.SessionsDeletedEvent
+import com.wirequery.manager.domain.storedquery.StoredQuery
 import com.wirequery.manager.domain.storedquery.StoredQueryService
 import com.wirequery.manager.domain.storedquery.StoredQueryService.CreateStoredQueryInput
 import com.wirequery.manager.domain.template.Template
@@ -71,7 +72,7 @@ class SessionService(
                     CreateStoredQueryInput(
                         sessionId = session.id,
                         name = interpolate(templateQuery.nameTemplate, template.fields, input.variables),
-                        type = "TAPPING",
+                        type = StoredQuery.Type.valueOf(templateQuery.type.name),
                         query = interpolate(templateQuery.queryTemplate, template.fields, input.variables),
                         queryLimit = templateQuery.queryLimit,
                         endDate = input.endDate,

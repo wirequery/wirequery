@@ -22,6 +22,7 @@ type TemplateQuery {
     templateId: Int!
     applicationId: Int!
     nameTemplate: String!
+    type: TemplateQueryType!
     queryTemplate: String!
     queryLimit: Int!
     template: Template
@@ -40,6 +41,7 @@ input TemplateQueryFilter {
 input CreateTemplateQueryInput { 
     templateId: Int!
     nameTemplate: String!
+    type: TemplateQueryType!
     queryTemplate: String!
     queryLimit: Int!
 }
@@ -48,6 +50,12 @@ input UpdateTemplateQueryInput {
     templateId: Int
     applicationId: Int
     nameTemplate: String
+    type: TemplateQueryType!
     queryTemplate: String!
     queryLimit: Int
+}
+
+enum TemplateQueryType {
+    QUERY,
+    QUERY_WITH_TRACING
 }

@@ -23,6 +23,7 @@ object TemplateQueryFixtures {
             templateId = 10,
             applicationId = 10,
             nameTemplate = "Some nameTemplate",
+            type = TemplateQuery.Type.QUERY,
             queryTemplate = "Some queryTemplate",
             queryLimit = 1,
             createdAt = OFFSET_DATE_TIME_FIXTURE,
@@ -34,6 +35,7 @@ object TemplateQueryFixtures {
             templateId = 10,
             applicationId = 10,
             nameTemplate = "Some nameTemplate",
+            type = TemplateQuery.Type.QUERY,
             queryTemplate = "Some queryTemplate",
             queryLimit = 1,
         )
@@ -42,6 +44,7 @@ object TemplateQueryFixtures {
         TemplateQueryService.CreateTemplateQueryInput(
             templateId = 10,
             nameTemplate = "Some nameTemplate",
+            type = TemplateQuery.Type.QUERY,
             queryTemplate = "Some queryTemplate",
             queryLimit = 1,
         )
@@ -50,6 +53,7 @@ object TemplateQueryFixtures {
         TemplateQueryService.UpdateTemplateQueryInput(
             templateId = 10,
             nameTemplate = "Some nameTemplate",
+            type = TemplateQuery.Type.QUERY,
             queryTemplate = "Some queryTemplate",
             queryLimit = 1,
         )

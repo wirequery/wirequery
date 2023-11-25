@@ -23,7 +23,7 @@ object StoredQueryFixtures {
             sessionId = null,
             applicationId = 10,
             name = "Some name",
-            type = "Some type",
+            type = StoredQuery.Type.QUERY,
             query = "SomeName GET 2xx",
             queryLimit = 1,
             endDate =
@@ -39,7 +39,7 @@ object StoredQueryFixtures {
             sessionId = null,
             applicationId = 10,
             name = "Some name",
-            type = "Some type",
+            type = StoredQuery.Type.QUERY,
             query = "SomeName GET 2xx",
             queryLimit = 1,
             endDate = LOCAL_DATE_TIME_FIXTURE.plusDays(3),
@@ -50,7 +50,7 @@ object StoredQueryFixtures {
         StoredQueryService.CreateStoredQueryInput(
             sessionId = null,
             name = "Some name",
-            type = "Some type",
+            type = StoredQuery.Type.QUERY,
             query = "SomeName GET 2xx",
             queryLimit = 1,
             endDate =

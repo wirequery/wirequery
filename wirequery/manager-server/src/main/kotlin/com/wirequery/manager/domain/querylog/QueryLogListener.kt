@@ -12,6 +12,7 @@ import com.wirequery.manager.domain.query.QueryEvent.QueryReportedEvent
 import com.wirequery.manager.domain.query.QueryParserService
 import com.wirequery.manager.domain.query.QueryService.QueryMutation.QueryOneTrace
 import com.wirequery.manager.domain.querylog.QueryLogService.CreateQueryLogInput
+import com.wirequery.manager.domain.storedquery.StoredQuery
 import com.wirequery.manager.domain.storedquery.StoredQueryService
 import com.wirequery.manager.domain.storedquery.StoredQueryService.Companion.STORED_QUERY_PREFIX
 import org.springframework.context.event.EventListener
@@ -36,7 +37,7 @@ class QueryLogListener(
 
         if (!queryReport.queryId.endsWith(":trace") && queryReport.traceId != null) {
             val storedQuery = storedQueryService.findById(storedQueryId)
-            val trace = storedQuery?.let { queryParserService.parse(storedQuery.query).queryHead.trace } ?: false
+            val trace = storedQuery?.type == StoredQuery.Type.QUERY_WITH_TRACING
             if (trace) {
                 // Gather additional logs for tracing.
                 pubSubService.publish(

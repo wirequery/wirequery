@@ -64,9 +64,6 @@ class QueryService(
             if (applicationService.isQuarantined(query.queryHead.appName)) {
                 functionalError("Application is in quarantine: ${query.queryHead.appName}")
             }
-            if (query.queryHead.trace) {
-                functionalError("Tracing is currently not supported for instant queries")
-            }
             val aggregator = aggregatorService.create(query)
             val flux =
                 Flux

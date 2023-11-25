@@ -17,6 +17,7 @@ describe('TemplateQueryList', () => {
     templateId: 1,
     applicationId: 1,
     nameTemplate: 'Some nameTemplate',
+    type: 'QUERY',
     queryTemplate: 'Some queryTemplate',
     queryLimit: 10,
     template: {

@@ -12,6 +12,7 @@ import com.wirequery.manager.domain.session.SessionFixtures.OFFSET_DATE_TIME_FIX
 import com.wirequery.manager.domain.session.SessionFixtures.SESSION_ENTITY_FIXTURE_1
 import com.wirequery.manager.domain.session.SessionFixtures.SESSION_ENTITY_FIXTURE_WITH_ID_1
 import com.wirequery.manager.domain.session.SessionFixtures.SESSION_FIXTURE_WITH_ID_1
+import com.wirequery.manager.domain.storedquery.StoredQuery
 import com.wirequery.manager.domain.storedquery.StoredQueryFixtures.STORED_QUERY_FIXTURE_WITH_ID_1
 import com.wirequery.manager.domain.storedquery.StoredQueryService
 import com.wirequery.manager.domain.template.TemplateFixtures
@@ -118,7 +119,7 @@ internal class SessionServiceUnitTests {
             StoredQueryService.CreateStoredQueryInput(
                 sessionId = SESSION_FIXTURE_WITH_ID_1.id,
                 name = "Some nameTemplate",
-                type = "TAPPING",
+                type = StoredQuery.Type.QUERY,
                 query = "Some queryTemplate",
                 queryLimit = 1,
                 endDate = OFFSET_DATE_TIME_FIXTURE.plusDays(1),

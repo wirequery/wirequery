@@ -14,6 +14,7 @@ import { Code, Title } from '@mantine/core'
 import { useMemo } from 'react'
 import { gql, useQuery } from 'urql'
 import { QueryLogList } from '../query-log/QueryLogList'
+import { KEYWORDS } from '@lib/keywords'
 
 export interface StoredQueryDetailsProps {
   sessionId?: string | number | null
@@ -63,6 +64,7 @@ export function StoredQueryDetails(props: StoredQueryDetailsProps) {
   const items = [
     data?.storedQuery?.application?.name,
     data?.storedQuery?.queryLimit && 'Max ' + data?.storedQuery?.queryLimit,
+    data?.storedQuery?.type && KEYWORDS[data?.storedQuery?.type],
     data?.storedQuery?.endDate &&
       'Ends ' + new Date(data?.storedQuery?.endDate).toLocaleString(),
     ...createAuditItems(data?.storedQuery),

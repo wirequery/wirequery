@@ -109,7 +109,7 @@ class StoredQueryResolverTests : ResolverTestContext() {
         val createStoredQueryInput =
             mapOf(
                 "name" to "Some name",
-                "type" to "TAPPING",
+                "type" to "QUERY",
                 "query" to "Some query",
                 "queryLimit" to 1,
                 "endDate" to "2100-01-01T00:00:00Z",
@@ -145,7 +145,7 @@ class StoredQueryResolverTests : ResolverTestContext() {
         val createStoredQueryInput =
             mapOf(
                 "name" to "Some name",
-                "type" to "TAPPING",
+                "type" to "QUERY",
                 "query" to "Some query",
                 "queryLimit" to 1,
                 "endDate" to "2100-01-01T00:00:00Z",
@@ -170,7 +170,7 @@ class StoredQueryResolverTests : ResolverTestContext() {
         val createStoredQueryInput =
             mapOf(
                 "name" to "Some name",
-                "type" to "TAPPING",
+                "type" to "QUERY",
                 "query" to "Some query",
                 "queryLimit" to 1,
                 "endDate" to "2100-01-01T00:00:00Z",

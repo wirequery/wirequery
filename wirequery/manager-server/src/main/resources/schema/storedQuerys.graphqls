@@ -21,7 +21,7 @@ type StoredQuery {
     sessionId: Int
     applicationId: Int!
     name: String!
-    type: QueryType!
+    type: StoredQueryType!
     query: String!
     queryLimit: Int!
     endDate: DateTime
@@ -41,12 +41,13 @@ input StoredQueryFilter {
 
 input CreateStoredQueryInput { 
     name: String!
-    type: QueryType!
+    type: StoredQueryType!
     query: String!
     queryLimit: Int!
     endDate: DateTime
 }
 
-enum QueryType {
-    TAPPING
+enum StoredQueryType {
+    QUERY,
+    QUERY_WITH_TRACING
 }

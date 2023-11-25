@@ -23,7 +23,7 @@ describe('StoredQueryForm', () => {
       </Provider>
     )
     expect(screen.queryByText('Name')).not.toBeNull()
-    expect(screen.queryByText('Query')).not.toBeNull()
+    expect(screen.queryAllByText('Query')).toHaveLength(2)
     expect(screen.queryByText('Query Limit')).not.toBeNull()
     expect(screen.queryByText('Ends at')).not.toBeNull()
   })

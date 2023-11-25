@@ -200,7 +200,7 @@ class StoredQueryService(
     data class CreateStoredQueryInput(
         val sessionId: Int?,
         val name: String,
-        val type: String,
+        val type: StoredQuery.Type,
         val query: String,
         val queryLimit: Int,
         val endDate: OffsetDateTime?,

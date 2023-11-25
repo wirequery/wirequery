@@ -65,7 +65,7 @@ export function StoredQueryForm(props: StoredQueryFormProps) {
   const form = useForm<StoredQueryFormData>({
     initialValues: {
       name: '',
-      type: 'TAPPING',
+      type: 'QUERY',
       query: props.query || '',
       queryLimit: 100,
       endDate: undefined,
@@ -93,14 +93,14 @@ export function StoredQueryForm(props: StoredQueryFormProps) {
       {props.query || (
         <Textarea label="Query" {...form.getInputProps('query')} />
       )}
-      {false && (
-        <NativeSelect
-          hidden
-          label="Type"
-          {...form.getInputProps('type')}
-          data={[{ label: 'Tap', value: 'TAPPING' }]}
-        />
-      )}
+      <NativeSelect
+        label="Type"
+        {...form.getInputProps('type')}
+        data={[
+          { label: 'Query', value: 'QUERY' },
+          { label: 'Query With Tracing', value: 'QUERY_WITH_TRACING' },
+        ]}
+      />
       <Grid>
         <Grid.Col span={6}>
           <NumberInput

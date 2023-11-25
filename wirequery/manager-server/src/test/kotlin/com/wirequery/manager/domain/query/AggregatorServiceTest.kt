@@ -86,7 +86,6 @@ internal class AggregatorServiceTest {
                         method = "GET",
                         path = "/some/path",
                         statusCode = "200",
-                        trace = false,
                     ),
                 streamOperations = listOf(),
                 aggregatorOperation = null,

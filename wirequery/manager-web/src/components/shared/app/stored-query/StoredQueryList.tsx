@@ -10,6 +10,7 @@ import { ItemList } from '@components/shared/ItemList'
 import { Mutation, Query } from '@generated/graphql'
 import { showErrorAlert, showInfoAlert } from '@lib/alert'
 import { createAuditItems } from '@lib/audit'
+import { KEYWORDS } from '@lib/keywords'
 import { IconListSearch } from '@tabler/icons-react'
 import { useMemo } from 'react'
 import { gql, useMutation, useQuery } from 'urql'
@@ -110,6 +111,7 @@ export function StoredQueryList(props: StoredQueryListProps) {
             row.session?.name,
             row.application?.name,
             row.queryLimit && 'Max ' + row.queryLimit,
+            row.type && KEYWORDS[row.type],
             row.endDate && 'Ends ' + new Date(row.endDate).toLocaleString(),
             ...createAuditItems(row),
           ]}

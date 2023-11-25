@@ -15,6 +15,7 @@ import com.wirequery.manager.domain.query.QueryParserService.Query
 import com.wirequery.manager.domain.query.QueryParserService.QueryHead
 import com.wirequery.manager.domain.query.QueryReport
 import com.wirequery.manager.domain.query.QueryService.QueryMutation.QueryOneTrace
+import com.wirequery.manager.domain.storedquery.StoredQuery
 import com.wirequery.manager.domain.storedquery.StoredQueryFixtures.STORED_QUERY_FIXTURE_WITH_ID_1
 import com.wirequery.manager.domain.storedquery.StoredQueryService
 import com.wirequery.manager.domain.storedquery.StoredQueryService.Companion.STORED_QUERY_PREFIX
@@ -64,27 +65,11 @@ class QueryLogListenerTest {
     }
 
     @Test
-    fun `onEvent QueryReportedEvent writes a log event for query ids starting with the STORED_QUERY_PREFIX and re-traces if trace is true`() {
+    fun `onEvent QueryReportedEvent writes a log event for query ids starting with the STORED_QUERY_PREFIX and re-traces if type is QUERY_WITH_TRACING`() {
         val queryIdWithPrefix = STORED_QUERY_PREFIX + STORED_QUERY_FIXTURE_WITH_ID_1.id
 
         whenever(storedQueryService.findById(STORED_QUERY_FIXTURE_WITH_ID_1.id))
-            .thenReturn(STORED_QUERY_FIXTURE_WITH_ID_1)
-
-        whenever(queryParserService.parse(STORED_QUERY_FIXTURE_WITH_ID_1.query))
-            .thenReturn(
-                Query(
-                    queryHead =
-                        QueryHead(
-                            appName = "",
-                            method = "",
-                            path = "",
-                            statusCode = "",
-                            trace = true,
-                        ),
-                    streamOperations = listOf(),
-                    aggregatorOperation = null,
-                ),
-            )
+            .thenReturn(STORED_QUERY_FIXTURE_WITH_ID_1.copy(type = StoredQuery.Type.QUERY_WITH_TRACING))
 
         queryLogListener.onEvent(
             QueryEvent.QueryReportedEvent(
@@ -143,27 +128,11 @@ class QueryLogListenerTest {
     }
 
     @Test
-    fun `onEvent QueryReportedEvent writes a log event for query ids starting with the STORED_QUERY_PREFIX and does not re-trace if trace is false`() {
+    fun `onEvent QueryReportedEvent writes a log event for query ids starting with the STORED_QUERY_PREFIX and does not re-trace if type is not QUERY_WITH_TRACING`() {
         val queryIdWithPrefix = STORED_QUERY_PREFIX + STORED_QUERY_FIXTURE_WITH_ID_1.id
 
         whenever(storedQueryService.findById(STORED_QUERY_FIXTURE_WITH_ID_1.id))
             .thenReturn(STORED_QUERY_FIXTURE_WITH_ID_1)
-
-        whenever(queryParserService.parse(STORED_QUERY_FIXTURE_WITH_ID_1.query))
-            .thenReturn(
-                Query(
-                    queryHead =
-                        QueryHead(
-                            appName = "",
-                            method = "",
-                            path = "",
-                            statusCode = "",
-                            trace = false,
-                        ),
-                    streamOperations = listOf(),
-                    aggregatorOperation = null,
-                ),
-            )
 
         queryLogListener.onEvent(
             QueryEvent.QueryReportedEvent(

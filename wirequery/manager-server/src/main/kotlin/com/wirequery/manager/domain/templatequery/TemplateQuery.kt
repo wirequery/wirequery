@@ -14,10 +14,16 @@ data class TemplateQuery(
     val templateId: Int,
     val applicationId: Int,
     val nameTemplate: String,
+    val type: Type,
     val queryTemplate: String,
     val queryLimit: Int,
     val createdAt: OffsetDateTime,
     val updatedAt: OffsetDateTime? = null,
     val createdBy: String? = null,
     val updatedBy: String? = null,
-)
+) {
+    enum class Type {
+        QUERY,
+        QUERY_WITH_TRACING,
+    }
+}

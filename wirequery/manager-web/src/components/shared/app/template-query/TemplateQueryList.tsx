@@ -11,6 +11,7 @@ import { Item } from '@components/shared/Item'
 import { LoadingScreen } from '@components/shared/LoadingScreen'
 import { Mutation, Query } from '@generated/graphql'
 import { showErrorAlert, showInfoAlert } from '@lib/alert'
+import { KEYWORDS } from '@lib/keywords'
 import { Code } from '@mantine/core'
 import { IconListSearch } from '@tabler/icons-react'
 import { useMemo } from 'react'
@@ -51,6 +52,7 @@ export function TemplateQueryList(props: TemplateQueryListProps) {
           }
           nameTemplate
           queryTemplate
+          type
           queryLimit
         }
       }
@@ -108,6 +110,7 @@ export function TemplateQueryList(props: TemplateQueryListProps) {
             items={[
               row.template?.name,
               row.application?.name,
+              KEYWORDS[row.type],
               'Max ' + row.queryLimit,
             ]}
           />

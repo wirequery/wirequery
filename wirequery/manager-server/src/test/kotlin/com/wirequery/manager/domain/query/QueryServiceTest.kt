@@ -128,29 +128,6 @@ class QueryServiceTest {
     }
 
     @Test
-    fun `query fails if the trace annotation is used, as it is not supported yet`() {
-        val sink = mock<FluxSink<QueryReport>>()
-
-        whenever(applicationService.isQuarantined(DEFAULT_APP_NAME))
-            .thenReturn(false)
-
-        whenever(queryIdGenerator.generateId()).thenReturn("123")
-
-        queryService.query("$DEFAULT_APP_NAME @trace", sink)
-
-        verify(sink).next(
-            QueryReport(
-                appName = "",
-                queryId = "123",
-                message = "{\"error\":\"Tracing is currently not supported for instant queries\"}",
-                startTime = 0,
-                endTime = 0,
-                traceId = null,
-            ),
-        )
-    }
-
-    @Test
     fun `query publishes QueryEnteredEvent`() {
         val sink = mock<FluxSink<QueryReport>>()
         whenever(aggregatorService.create(any()))
@@ -214,7 +191,6 @@ class QueryServiceTest {
                         method = "",
                         path = "",
                         statusCode = "",
-                        trace = false,
                     ),
                 operations = listOf(),
                 aggregatorOperation = null,

@@ -7,7 +7,14 @@
 
 import { Mutation } from '@generated/graphql'
 import { showErrorAlert, showInfoAlert } from '@lib/alert'
-import { Button, Group, NumberInput, Textarea, TextInput } from '@mantine/core'
+import {
+  Button,
+  Group,
+  NativeSelect,
+  NumberInput,
+  Textarea,
+  TextInput,
+} from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { gql, OperationResult, useMutation } from 'urql'
 
@@ -20,6 +27,7 @@ export interface TemplateQueryFormProps {
 interface TemplateQueryFormData {
   nameTemplate: string | undefined
   queryTemplate: string | undefined
+  type: string | undefined
   queryLimit: number | undefined
 }
 
@@ -58,6 +66,7 @@ export function TemplateQueryForm(props: TemplateQueryFormProps) {
     initialValues: {
       nameTemplate: '',
       queryTemplate: '',
+      type: 'QUERY',
       queryLimit: 100,
     },
     validate: {},
@@ -74,6 +83,14 @@ export function TemplateQueryForm(props: TemplateQueryFormProps) {
         label="Query Template"
         placeholder="Query Template"
         {...form.getInputProps('queryTemplate')}
+      />
+      <NativeSelect
+        label="Type"
+        {...form.getInputProps('type')}
+        data={[
+          { label: 'Query', value: 'QUERY' },
+          { label: 'Query With Tracing', value: 'QUERY_WITH_TRACING' },
+        ]}
       />
       <NumberInput
         label="Query Limit"

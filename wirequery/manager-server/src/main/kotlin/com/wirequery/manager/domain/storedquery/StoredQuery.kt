@@ -14,7 +14,7 @@ data class StoredQuery(
     val sessionId: Int?,
     val applicationId: Int,
     val name: String,
-    val type: String,
+    val type: Type,
     val query: String,
     val queryLimit: Int,
     val endDate: OffsetDateTime?,
@@ -22,4 +22,9 @@ data class StoredQuery(
     val updatedAt: OffsetDateTime? = null,
     val createdBy: String? = null,
     val updatedBy: String? = null,
-)
+) {
+    enum class Type {
+        QUERY,
+        QUERY_WITH_TRACING
+    }
+}

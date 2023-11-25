@@ -18,6 +18,7 @@ data class TemplateQueryEntity(
     val templateId: Int,
     val applicationId: Int,
     val nameTemplate: String,
+    val type: TemplateQuery.Type,
     val queryTemplate: String,
     val queryLimit: Int,
     @CreatedDate

@@ -54,7 +54,6 @@ class QueryParserService {
         var method = ""
         var path = ""
         var statusCode = ""
-        var trace = false
 
         value.split(" ").forEachIndexed { i, part ->
             when {
@@ -63,9 +62,6 @@ class QueryParserService {
 
                 part in METHODS ->
                     method = part
-
-                part == "@trace" ->
-                    trace = true
 
                 part.startsWith("/") ->
                     if (path != "") {
@@ -92,7 +88,6 @@ class QueryParserService {
                     method = method,
                     path = path,
                     statusCode = statusCode,
-                    trace = trace,
                 ),
             streamOperations = emptyList(),
             aggregatorOperation = null,
@@ -110,7 +105,6 @@ class QueryParserService {
         val method: String,
         val path: String,
         val statusCode: String,
-        val trace: Boolean,
     )
 
     data class Operation(

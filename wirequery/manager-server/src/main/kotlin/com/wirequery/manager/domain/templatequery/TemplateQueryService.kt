@@ -77,6 +77,7 @@ class TemplateQueryService(
                 nameTemplate = input.nameTemplate,
                 queryTemplate = input.queryTemplate,
                 queryLimit = input.queryLimit,
+                type = input.type
             )
         val templateQuery = toDomainObject(templateQueryRepository.save(templateQueryEntity))
         publisher.publishEvent(TemplateQuerysCreatedEvent(this, listOf(templateQuery)))
@@ -151,6 +152,7 @@ class TemplateQueryService(
             templateId = entity.templateId,
             applicationId = entity.applicationId,
             nameTemplate = entity.nameTemplate,
+            type = entity.type,
             queryTemplate = entity.queryTemplate,
             queryLimit = entity.queryLimit,
             createdAt =
@@ -168,6 +170,7 @@ class TemplateQueryService(
     data class CreateTemplateQueryInput(
         val templateId: Int,
         val nameTemplate: String,
+        val type: TemplateQuery.Type,
         val queryTemplate: String,
         val queryLimit: Int,
     )
@@ -175,6 +178,7 @@ class TemplateQueryService(
     data class UpdateTemplateQueryInput(
         val templateId: Int?,
         val nameTemplate: String?,
+        val type: TemplateQuery.Type?,
         // This should always be passed since it is used in the PreAuthorize clause.
         val queryTemplate: String,
         val queryLimit: Int?,
