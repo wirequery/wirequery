@@ -5,21 +5,23 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { Divider, Modal, UnstyledButton } from '@mantine/core'
-import { IconBinaryTree2, IconCopy } from '@tabler/icons-react'
-import { LogTree } from './LogTree'
-import { useState } from 'react'
 import { TraceDetails } from '@components/shared/app/trace/TraceDetails'
+import { Divider, Modal, UnstyledButton } from '@mantine/core'
+import { IconCopy, IconZoomScan } from '@tabler/icons-react'
+import { useState } from 'react'
+import { LogTree } from './LogTree'
 
 export interface LogTreeListProps {
   sessionId?: string | number | null
   storedQueryId: string | number
+  type: string
   rows?: {
     message: string
     traceId?: string | null
     startTime: number
     endTime: number
   }[]
+  extendedTracing: boolean
 }
 
 export const LogTreeList = (props: LogTreeListProps) => {
@@ -36,7 +38,7 @@ export const LogTreeList = (props: LogTreeListProps) => {
         return (
           <div key={i}>
             <div style={{ float: 'right' }}>
-              {row.traceId && (
+              {row.traceId && props.extendedTracing && (
                 <UnstyledButton
                   mr={'lg'}
                   onClick={() => {
@@ -46,7 +48,7 @@ export const LogTreeList = (props: LogTreeListProps) => {
                     })
                   }}
                 >
-                  <IconBinaryTree2 size={16} />
+                  <IconZoomScan size={16} />
                 </UnstyledButton>
               )}
 

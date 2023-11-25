@@ -19,6 +19,7 @@ import { QueryLogChart } from './QueryLogChart'
 export interface QueryLogListProps {
   sessionId?: string | number | null
   storedQueryId: string
+  extendedTracing: boolean
 }
 
 export function QueryLogList(props: QueryLogListProps) {
@@ -110,6 +111,7 @@ export function QueryLogList(props: QueryLogListProps) {
         sessionId={props.sessionId}
         storedQueryId={props.storedQueryId}
         rows={data?.queryLogs}
+        extendedTracing={props.extendedTracing}
       />
     </>
   )

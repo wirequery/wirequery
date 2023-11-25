@@ -77,7 +77,11 @@ export function StoredQueryDetails(props: StoredQueryDetailsProps) {
         <Code>{data?.storedQuery?.query}</Code>
       </p>
 
-      <QueryLogList sessionId={props.sessionId} storedQueryId={'' + props.id} />
+      <QueryLogList
+        sessionId={props.sessionId}
+        storedQueryId={'' + props.id}
+        tracing={data?.storedQuery?.type === 'QUERY_WITH_TRACING'}
+      />
     </>
   )
 }
