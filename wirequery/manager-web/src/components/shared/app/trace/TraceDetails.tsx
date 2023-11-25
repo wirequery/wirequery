@@ -8,7 +8,7 @@
 import { ErrorMessage } from '@components/shared/ErrorMessage'
 import { LoadingScreen } from '@components/shared/LoadingScreen'
 import { Query } from '@generated/graphql'
-import { ActionIcon, Anchor, Breadcrumbs, Divider, Group, UnstyledButton } from '@mantine/core'
+import { ActionIcon, Anchor, Breadcrumbs, Divider, Group } from '@mantine/core'
 import { IconChevronLeft, IconCopy } from '@tabler/icons-react'
 import { useMemo, useState } from 'react'
 import { gql, useQuery } from 'urql'
@@ -101,10 +101,10 @@ export const TraceDetails = (props: TraceDetailsProps) => {
               label:
                 jsonByIndex[i]?.error ??
                 jsonByIndex[i]?.result?.method +
-                ' ' +
-                jsonByIndex[i]?.result?.path +
-                ' ' +
-                jsonByIndex[i]?.result?.statusCode,
+                  ' ' +
+                  jsonByIndex[i]?.result?.path +
+                  ' ' +
+                  jsonByIndex[i]?.result?.statusCode,
               startTimestamp: queryLog.startTime - start,
               endTimestamp: queryLog.endTime - start,
               id: i,
@@ -125,10 +125,14 @@ export const TraceDetails = (props: TraceDetailsProps) => {
             <Anchor>Selected Span</Anchor>
           </Breadcrumbs>
           <Group spacing="xs" mb={'lg'}>
-            <ActionIcon variant="default" onClick={() => setSelectedId(undefined)}>
+            <ActionIcon
+              variant="default"
+              onClick={() => setSelectedId(undefined)}
+            >
               <IconChevronLeft size="1rem" />
             </ActionIcon>
-            <ActionIcon variant="default"
+            <ActionIcon
+              variant="default"
               onClick={() =>
                 navigator.clipboard.writeText(
                   JSON.stringify(jsonByIndex[selectedIndex]?.result)
