@@ -8,8 +8,8 @@
 import { ErrorMessage } from '@components/shared/ErrorMessage'
 import { LoadingScreen } from '@components/shared/LoadingScreen'
 import { Query } from '@generated/graphql'
-import { Anchor, Breadcrumbs, UnstyledButton } from '@mantine/core'
-import { IconCopy } from '@tabler/icons-react'
+import { ActionIcon, Anchor, Breadcrumbs, Divider, Group, UnstyledButton } from '@mantine/core'
+import { IconChevronLeft, IconCopy } from '@tabler/icons-react'
 import { useMemo, useState } from 'react'
 import { gql, useQuery } from 'urql'
 import { LogTree } from '../../LogTree'
@@ -94,16 +94,17 @@ export const TraceDetails = (props: TraceDetailsProps) => {
           <Breadcrumbs style={{ paddingBottom: 20 }}>
             <Anchor>Selected Trace</Anchor>
           </Breadcrumbs>
+          <Divider mb={'xl'} />
           <TraceTimeline
             series={traceQueryLogs.map((queryLog, i) => ({
               appName: queryLog.appName,
               label:
                 jsonByIndex[i]?.error ??
                 jsonByIndex[i]?.result?.method +
-                  ' ' +
-                  jsonByIndex[i]?.result?.path +
-                  ' ' +
-                  jsonByIndex[i]?.result?.statusCode,
+                ' ' +
+                jsonByIndex[i]?.result?.path +
+                ' ' +
+                jsonByIndex[i]?.result?.statusCode,
               startTimestamp: queryLog.startTime - start,
               endTimestamp: queryLog.endTime - start,
               id: i,
@@ -123,17 +124,21 @@ export const TraceDetails = (props: TraceDetailsProps) => {
             </Anchor>
             <Anchor>Selected Span</Anchor>
           </Breadcrumbs>
-          <div style={{ float: 'right' }}>
-            <UnstyledButton
+          <Group spacing="xs" mb={'lg'}>
+            <ActionIcon variant="default" onClick={() => setSelectedId(undefined)}>
+              <IconChevronLeft size="1rem" />
+            </ActionIcon>
+            <ActionIcon variant="default"
               onClick={() =>
                 navigator.clipboard.writeText(
                   JSON.stringify(jsonByIndex[selectedIndex]?.result)
                 )
               }
             >
-              <IconCopy size={16} />
-            </UnstyledButton>
-          </div>
+              <IconCopy size="1rem" />
+            </ActionIcon>
+          </Group>
+          <Divider mb={'xl'} />
           <LogTree
             display={jsonByIndex[selectedIndex]?.result}
             startTime={traceQueryLogs[selectedIndex]?.startTime}

@@ -14,7 +14,6 @@ import { LogTree } from './LogTree'
 export interface LogTreeListProps {
   sessionId?: string | number | null
   storedQueryId: string | number
-  type: string
   rows?: {
     message: string
     traceId?: string | null
