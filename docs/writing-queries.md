@@ -49,6 +49,9 @@ The `context` (and initially `it`) consists of the following variables:
 - `responseHeaders`
 - `extensions`
 
+All stream operations are followed by an expression. These expressions are based on Google CEL. More information about
+how to write Google CEL expressions can be found [here](https://github.com/google/cel-spec).
+
 For example:
 
 ```

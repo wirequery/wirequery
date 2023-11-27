@@ -31,16 +31,18 @@ application itself, so that sensitive data is stripped before ever reaching the 
 
 ## Get Started
 
-You can follow the Getting Started guide [here](docs/getting-started.md).
+- You can follow the Installation Guide [here](docs/installation.md).
+- You can follow the Getting Started Guide [here](docs/getting-started.md).
 
 ## SDKs
 
 WireQuery's SDKs are offered in the following variants:
 
-| Technology              | Description                                                       |
-|-------------------------|-------------------------------------------------------------------|
-| [JVM](/sdk/jvm)         | Library for vanilla Java, Spring Boot 2 and 3                     |
-| [JS (Browser)](/sdk/js) | Integration with Javascript in the Browser for frontend recording |
+| Technology                  | Description                                                       |
+|-----------------------------|-------------------------------------------------------------------|
+| [JVM](/sdk/jvm)             | Library for vanilla Java, Spring Boot 2 and 3                     |
+| [JS (Browser)](/sdk/js)     | Integration with Javascript in the Browser for frontend recording |
+| [Universal](/sdk/universal) | Universal SDK for every other programming language                |                                                    |
 
 More SDKs will be added over time.
 
@@ -51,13 +53,6 @@ More SDKs will be added over time.
 ## Community
 
 - [Join our Discord Channel](https://discord.gg/ej7Rxwdd) for questions and support.
-
-## WireQuery as a Service
-
-WireQuery is also available as a service, including a Free Tier that's powerful enough for small businesses, so you
-don't have to spend time on maintaining it.
-
-Visit [wirequery.com](https://www.wirequery.com/) for more information.
 
 ## Contributing
 

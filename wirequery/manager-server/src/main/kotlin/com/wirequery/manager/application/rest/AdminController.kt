@@ -17,6 +17,7 @@ import com.wirequery.manager.domain.user.UserService.RegisterInput
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 // This class should NEVER be exposed to the outside world.
@@ -31,6 +32,7 @@ class AdminController(
     @PostMapping("/api/internal/admin/new-env/{name}")
     fun admin(
         @PathVariable name: String,
+        @RequestBody params: NewEnvParamsRequest
     ) {
         tenantRequestContext.tenantId = 0
         tenantRequestContext.tenantId =
@@ -44,6 +46,10 @@ class AdminController(
             ).id
 
         roleService.create(CreateRoleInput("Administrator", AuthorisationEnum.entries.map { it.name }))
-        userService.register(RegisterInput("admin", "Administrator", true, "Administrator"))
+        userService.register(RegisterInput("admin", params.adminPassword, true, "Administrator"))
     }
+
+    data class NewEnvParamsRequest(
+        val adminPassword: String
+    )
 }

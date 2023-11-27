@@ -47,7 +47,6 @@ class ApplicationResolver(
         """hasAuthority(T(com.wirequery.manager.domain.authorisation.AuthorisationEnum).CREATE_GROUP)"""
     )
     fun createApplication(
-        id: Int,
         input: CreateApplicationInput,
     ): Application? {
         return applicationService.create(input)
