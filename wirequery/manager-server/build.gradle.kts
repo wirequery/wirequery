@@ -7,11 +7,48 @@ val protobufPluginVersion by extra("0.9.2")
 val grpcVersion by extra("1.55.1")
 
 plugins {
+    jacoco
     id("org.springframework.boot") version "3.1.5"
     id("io.spring.dependency-management") version "1.1.0"
     kotlin("jvm") version "1.9.20"
     kotlin("plugin.spring") version "1.8.21"
     id("com.google.protobuf") version "0.9.2"
+}
+
+val testCoverage by tasks.registering {
+    group = "verification"
+    description = "Runs the unit tests with coverage."
+
+    dependsOn(":test", ":jacocoTestReport", ":jacocoTestCoverageVerification")
+    val jacocoTestReport = tasks.findByName("jacocoTestReport")
+    jacocoTestReport?.mustRunAfter(tasks.findByName("test"))
+    tasks.findByName("jacocoTestCoverageVerification")?.mustRunAfter(jacocoTestReport)
+}
+
+val jacocoFrom =
+    sourceSets.main.get().output.asFileTree.matching {
+        exclude("com/wirequery/manager/Application.class")
+        exclude("com/wirequery/manager/ApplicationKt.class")
+        exclude("com/wirequery/manager/**/*Config.class")
+        exclude("wirequerypb/**")
+
+        // Config / glue code
+        exclude("com/wirequery/manager/application/db/*")
+    }
+
+tasks.jacocoTestReport {
+    classDirectories.setFrom(jacocoFrom)
+}
+
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.9".toBigDecimal()
+            }
+        }
+    }
+    classDirectories.setFrom(jacocoFrom)
 }
 
 group = "com.wirequery"

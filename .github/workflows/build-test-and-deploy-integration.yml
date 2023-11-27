@@ -38,7 +38,7 @@ jobs:
         run: ./gradlew build
       - name: Run Gradle build on Wirequery's manager-server
         working-directory: ./wirequery/manager-server
-        run: ./gradlew build
+        run: ./gradlew build testCoverage jacocoTestCoverageVerification
       - name: Use Node.js 18.x
         uses: actions/setup-node@v3
         with:
