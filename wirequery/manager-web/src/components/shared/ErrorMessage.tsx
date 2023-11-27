@@ -15,13 +15,13 @@ export interface ErrorMessageProps {
 
 export const ErrorMessage = (props: ErrorMessageProps) => {
   if (props.error) {
-    if (props.error.graphQLErrors.length > 0) {
+    if (props.error.graphQLErrors?.length > 0) {
       return (
         <Alert
           mt="lg"
           color="red"
           icon={<IconAlertCircle size="1rem" />}
-          title="An error occurred"
+          title="Error"
         >
           {props.error.graphQLErrors[0].message}
         </Alert>
@@ -33,7 +33,7 @@ export const ErrorMessage = (props: ErrorMessageProps) => {
           mt="lg"
           color="red"
           icon={<IconAlertCircle size="1rem" />}
-          title="Network issues"
+          title="Network Issue"
         >
           There were network issues while loading. Please check your internet
           connection and try again.
@@ -41,5 +41,14 @@ export const ErrorMessage = (props: ErrorMessageProps) => {
       )
     }
   }
-  return <></>
+  return (
+    <Alert
+      mt="lg"
+      color="red"
+      icon={<IconAlertCircle size="1rem" />}
+      title="Unknown Error"
+    >
+      An unknown error occurred.
+    </Alert>
+  )
 }

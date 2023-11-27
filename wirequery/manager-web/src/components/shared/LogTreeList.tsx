@@ -12,7 +12,6 @@ import { useState } from 'react'
 import { LogTree } from './LogTree'
 
 export interface LogTreeListProps {
-  sessionId?: string | number | null
   storedQueryId: string | number
   rows?: {
     message: string
@@ -40,6 +39,7 @@ export const LogTreeList = (props: LogTreeListProps) => {
               {row.traceId && props.extendedTracing && (
                 <UnstyledButton
                   mr={'lg'}
+                  title="Extended Tracing"
                   onClick={() => {
                     setSelectedItem({
                       storedQueryId: props.storedQueryId,
