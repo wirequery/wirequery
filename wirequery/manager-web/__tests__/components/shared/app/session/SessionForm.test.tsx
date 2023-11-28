@@ -39,24 +39,28 @@ describe('SessionForm', () => {
                 {
                   type: 'TEXT',
                   key: 'textKey',
-                  label: 'textLabel'
-                }, {
+                  label: 'textLabel',
+                },
+                {
                   type: 'TEXTAREA',
                   key: 'textAreaKey',
-                  label: 'textAreaLabel'
-                }, {
+                  label: 'textAreaLabel',
+                },
+                {
                   type: 'INTEGER',
                   key: 'integerKey',
-                  label: 'integerLabel'
-                }, {
+                  label: 'integerLabel',
+                },
+                {
                   type: 'FLOAT',
                   key: 'floatKey',
-                  label: 'floatLabel'
-                }, {
+                  label: 'floatLabel',
+                },
+                {
                   type: 'BOOLEAN',
                   key: 'booleanKey',
-                  label: 'booleanLabel'
-                }
+                  label: 'booleanLabel',
+                },
               ],
             },
           ],

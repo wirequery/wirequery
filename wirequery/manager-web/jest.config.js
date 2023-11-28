@@ -12,6 +12,11 @@ const createJestConfig = nextJest({
 })
 
 const customJestConfig = {
+  coverageThreshold: {
+    global: {
+      statements: 80
+    }
+  },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleDirectories: ['node_modules', '<rootDir>/'],
   testEnvironment: 'jest-environment-jsdom',

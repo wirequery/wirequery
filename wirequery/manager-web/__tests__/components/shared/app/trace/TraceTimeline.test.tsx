@@ -20,16 +20,17 @@ describe('TraceTimeline', () => {
         toggleColorScheme={undefined as any}
       >
         <TraceTimeline
-          onSelect={() => { }}
+          onSelect={jest.fn()}
           series={[
             {
               appName: '',
               label: '',
               startTimestamp: 0,
               endTimestamp: 1000,
-              id: 1
-            }
-          ]} />
+              id: 1,
+            },
+          ]}
+        />
       </ColorSchemeProvider>
     )
   })

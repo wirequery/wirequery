@@ -108,7 +108,6 @@ export function QueryLogList(props: QueryLogListProps) {
     <>
       {actionBar}
       <LogTreeList
-        sessionId={props.sessionId}
         storedQueryId={props.storedQueryId}
         rows={data?.queryLogs}
         extendedTracing={props.extendedTracing}

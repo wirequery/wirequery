@@ -25,13 +25,14 @@ describe('QueryLogChart', () => {
           data={[
             {
               startTime: 1000,
-              endTime: 2000
+              endTime: 2000,
             },
             {
               startTime: 1500,
-              endTime: 2500
-            }
-          ]} />
+              endTime: 2500,
+            },
+          ]}
+        />
       </ColorSchemeProvider>
     )
   })

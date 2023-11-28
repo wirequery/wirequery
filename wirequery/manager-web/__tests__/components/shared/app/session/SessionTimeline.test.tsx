@@ -19,11 +19,7 @@ describe('SessionTimeline', () => {
         colorScheme={undefined as any}
         toggleColorScheme={undefined as any}
       >
-        <SessionTimeline
-          currentTime={0}
-          data={[]}
-          onEventClick={() => { }}
-        />
+        <SessionTimeline currentTime={0} data={[]} onEventClick={jest.fn()} />
       </ColorSchemeProvider>
     )
   })
