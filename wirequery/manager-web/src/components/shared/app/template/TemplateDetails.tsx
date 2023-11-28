@@ -130,7 +130,7 @@ export function TemplateDetails(props: TemplateDetailsProps) {
                     }}
                   >
                     {data?.template?.fields?.map((field) => (
-                      <li>
+                      <li key={field.key}>
                         {field.label} ({field.key}: {field.type})
                       </li>
                     ))}

@@ -297,7 +297,7 @@ export const DashboardLayout = ({
   children,
 }: {
   active: string
-  children: ReactNode
+  children?: ReactNode
 }) => {
   const theme = useMantineTheme()
   const router = useRouter()

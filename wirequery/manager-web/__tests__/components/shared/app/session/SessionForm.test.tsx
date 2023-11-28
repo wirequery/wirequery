@@ -11,7 +11,7 @@ import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'
 
 describe('SessionForm', () => {
-  it('renders form containing the necessary fields', () => {
+  it('renders the form', () => {
     const mockClient: Partial<Client> = {
       executeQuery: jest.fn(),
       executeMutation: jest.fn(),
@@ -22,8 +22,64 @@ describe('SessionForm', () => {
         <SessionForm onSave={jest.fn()} onCancel={jest.fn()} />
       </Provider>
     )
-    expect(screen.queryByText('Template')).not.toBeNull()
     expect(screen.queryByText('Ends at')).not.toBeNull()
+    expect(screen.queryByText('Template')).not.toBeNull()
+  })
+
+  it('renders form containing the fields in the template', () => {
+    const executeQuery = jest.fn()
+    executeQuery.mockReturnValue(
+      fromValue({
+        data: {
+          templates: [
+            {
+              id: '1',
+              name: 'Some template',
+              fields: [
+                {
+                  type: 'TEXT',
+                  key: 'textKey',
+                  label: 'textLabel'
+                }, {
+                  type: 'TEXTAREA',
+                  key: 'textAreaKey',
+                  label: 'textAreaLabel'
+                }, {
+                  type: 'INTEGER',
+                  key: 'integerKey',
+                  label: 'integerLabel'
+                }, {
+                  type: 'FLOAT',
+                  key: 'floatKey',
+                  label: 'floatLabel'
+                }, {
+                  type: 'BOOLEAN',
+                  key: 'booleanKey',
+                  label: 'booleanLabel'
+                }
+              ],
+            },
+          ],
+        },
+      })
+    )
+    const mockClient: Partial<Client> = {
+      executeQuery,
+      executeMutation: jest.fn(),
+      executeSubscription: jest.fn(),
+    }
+    render(
+      <Provider value={mockClient as Client}>
+        <SessionForm templateId={'1'} onSave={jest.fn()} onCancel={jest.fn()} />
+      </Provider>
+    )
+    expect(screen.queryByText('Ends at')).not.toBeNull()
+
+    expect(screen.queryByText('textLabel')).not.toBeNull()
+    expect(screen.queryByText('textAreaLabel')).not.toBeNull()
+    expect(screen.queryByText('integerLabel')).not.toBeNull()
+    expect(screen.queryByText('floatLabel')).not.toBeNull()
+    expect(screen.queryByText('booleanLabel')).not.toBeNull()
   })
 
   it('calls a mutation if Save is clicked', async () => {
