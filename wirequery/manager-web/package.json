@@ -56,10 +56,8 @@
     "wonka": "^6.3.1"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "3.3.0",
-    "@graphql-codegen/introspection": "3.0.1",
-    "@graphql-codegen/typescript": "^3.0.3",
-    "@graphql-codegen/typescript-document-nodes": "3.0.3",
+    "@graphql-codegen/cli": "^4.1.0",
+    "@graphql-codegen/client-preset": "^4.1.0",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "14.0.0",
     "@types/d3": "^7.4.2",

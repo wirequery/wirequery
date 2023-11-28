@@ -10,6 +10,7 @@ import { ApplicationDetails } from '@components/ce/app/application/ApplicationDe
 import { Client, Provider } from 'urql'
 import { act } from 'react-dom/test-utils'
 import { fromValue } from 'wonka'
+import { ApplicationDetailsQuery } from '@generated/graphql'
 
 describe('ApplicationDetails', () => {
   const application = {
@@ -39,11 +40,11 @@ describe('ApplicationDetails', () => {
 
   it('renders details when data is fetched', () => {
     const executeQuery = jest.fn()
+
     executeQuery.mockReturnValue(
-      fromValue({
-        data: { application },
-      })
+      fromValue<{ data: ApplicationDetailsQuery }>({ data: { application } })
     )
+
     const mockClient: Partial<Client> = {
       executeQuery,
       executeMutation: jest.fn(),
@@ -72,7 +73,7 @@ describe('ApplicationDetails', () => {
   it('when an app is in quarantine, the reason is shown', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: ApplicationDetailsQuery }>({
         data: { application: { ...application, inQuarantine: true } },
       })
     )
@@ -99,12 +100,12 @@ describe('ApplicationDetails', () => {
   it('when an app is in quarantine, it can be unquarantined', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: ApplicationDetailsQuery }>({
         data: { application: { ...application, inQuarantine: true } },
       })
     )
     const executeMutation = jest.fn().mockReturnValue(
-      fromValue({
+      fromValue<{ data: ApplicationDetailsQuery }>({
         data: {},
       })
     )
@@ -130,12 +131,12 @@ describe('ApplicationDetails', () => {
   it('when an app is in quarantine, it is not quarantined if the prompt is not filled', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: ApplicationDetailsQuery }>({
         data: { application: { ...application, inQuarantine: true } },
       })
     )
     const executeMutation = jest.fn().mockReturnValue(
-      fromValue({
+      fromValue<{ data: ApplicationDetailsQuery }>({
         data: {},
       })
     )

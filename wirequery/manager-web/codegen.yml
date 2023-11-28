@@ -2,7 +2,5 @@ overwrite: true
 schema: "../manager-server/src/main/resources/schema/**"
 documents: "src/**/*.tsx"
 generates:
-  src/generated/graphql.ts:
-    plugins:
-      - "typescript"
-      - "typescript-document-nodes"
+  src/generated/:
+    preset: client

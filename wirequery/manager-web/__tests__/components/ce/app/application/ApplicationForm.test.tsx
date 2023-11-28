@@ -9,6 +9,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { ApplicationForm } from '@components/ce/app/application/ApplicationForm'
 import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'
+import { ApplicationFormQuery } from '@generated/graphql'
 
 describe('ApplicationForm', () => {
   const application = {
@@ -35,7 +36,7 @@ describe('ApplicationForm', () => {
   it('renders form containing existing data if id is passed', async () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{data: ApplicationFormQuery}>({
         data: {
           application,
         },
@@ -67,12 +68,12 @@ describe('ApplicationForm', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{data: ApplicationFormQuery}>({
         data: { application },
       })
     )
     executeMutation.mockReturnValue(
-      fromValue({
+      fromValue<{data: ApplicationFormQuery}>({
         data: {},
       })
     )
@@ -95,7 +96,7 @@ describe('ApplicationForm', () => {
   it('calls a mutation if Save is clicked if there is no id', async () => {
     const executeMutation = jest.fn()
     executeMutation.mockReturnValue(
-      fromValue({
+      fromValue<{data: ApplicationFormQuery}>({
         data: {},
       })
     )
@@ -121,7 +122,7 @@ describe('ApplicationForm', () => {
   it('calls no mutation if Save when validation fails', async () => {
     const executeMutation = jest.fn()
     executeMutation.mockReturnValue(
-      fromValue({
+      fromValue<{data: ApplicationFormQuery}>({
         data: {},
       })
     )

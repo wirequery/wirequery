@@ -5,10 +5,11 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { render, screen } from '@testing-library/react'
 import { UserDetails } from '@components/ce/app/user/UserDetails'
-import { Client, Provider } from 'urql'
+import { UserDetailsQuery } from '@generated/graphql'
+import { render, screen } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
+import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'
 
 describe('UserDetails', () => {
@@ -24,7 +25,7 @@ describe('UserDetails', () => {
   it('renders details when data is fetched', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: UserDetailsQuery }>({
         data: { user },
       })
     )

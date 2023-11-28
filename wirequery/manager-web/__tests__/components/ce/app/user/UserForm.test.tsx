@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { UserForm } from '@components/ce/app/user/UserForm'
+import { RegisterMutation, UpdateUserMutation, UserFormQuery, UserFormRolesQuery } from '@generated/graphql'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'
@@ -39,12 +40,12 @@ describe('UserForm', () => {
   it('renders form containing existing data if id is passed', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: (UserFormQuery & UserFormRolesQuery) }>({
         data: {
           user,
           roles: [
             {
-              id: 1,
+              id: '1',
               name: 'ADMIN',
             },
           ],
@@ -74,13 +75,16 @@ describe('UserForm', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: UserFormQuery }>({
         data: { user },
       })
     )
     executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
+      fromValue<{ data: RegisterMutation & UpdateUserMutation }>({
+        data: {
+          register: user,
+          updateUser: user
+        },
       })
     )
     const mockClient: Partial<Client> = {
@@ -102,8 +106,11 @@ describe('UserForm', () => {
   it('calls a mutation if Save is clicked if there is no id', async () => {
     const executeMutation = jest.fn()
     executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
+      fromValue<{ data: RegisterMutation & UpdateUserMutation }>({
+        data: {
+          register: user,
+          updateUser: user
+        },
       })
     )
     const mockClient: Partial<Client> = {
@@ -130,11 +137,6 @@ describe('UserForm', () => {
 
   it('calls no mutation if Save if validation failed', async () => {
     const executeMutation = jest.fn()
-    executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
-      })
-    )
     const mockClient: Partial<Client> = {
       executeQuery: jest.fn(),
       executeMutation,
