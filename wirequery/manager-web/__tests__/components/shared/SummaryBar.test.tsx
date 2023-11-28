@@ -35,7 +35,7 @@ describe('SummaryBar', () => {
       expect(screen.getByText('item 1')).not.toBeNull()
       expect(screen.getByText('item 2')).not.toBeNull()
       expect(screen.getByText('item 3')).not.toBeNull()
-      expect(screen.queryAllByText('·')).toHaveLength(1)
+      expect(screen.queryAllByText('·', { exact: false })).toHaveLength(2)
     })
   })
 })

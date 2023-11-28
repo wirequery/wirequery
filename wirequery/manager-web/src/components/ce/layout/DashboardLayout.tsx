@@ -51,11 +51,11 @@ const useStyles = createStyles((theme) => {
     },
 
     feedbackButton: {
-      backgroundColor: theme.colors.purple[4],
+      backgroundColor: theme.colors?.purple?.[4],
     },
 
     header: {
-      backgroundColor: theme.colors.purple[7],
+      backgroundColor: theme.colors?.purple?.[7],
       color:
         theme.colorScheme === 'dark'
           ? theme.colors.gray[0]
@@ -213,7 +213,6 @@ export function NavbarSimpleColored({
       icon: IconTemplate,
       visible: authorisations['VIEW_TEMPLATES'],
     },
-
     {
       label: 'ADMINISTRATION',
       visible:
