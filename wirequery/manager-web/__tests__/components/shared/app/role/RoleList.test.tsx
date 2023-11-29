@@ -10,18 +10,20 @@ import { RoleList } from '@components/shared/app/role/RoleList'
 import { Client, Provider } from 'urql'
 import { act } from 'react-dom/test-utils'
 import { fromValue } from 'wonka'
+import { DeleteRoleMutation, RoleListQuery } from '@generated/graphql'
 
 describe('RoleList', () => {
   const role = {
     id: '1',
     name: 'Some name',
-    authorisations: [{ label: 'Some authorisation' }],
+    authorisations: [{ name: 'SOME_AUTHORISATION', label: 'Some label', description: 'Some description' }],
+    createdAt: '1970-01-01T00:00:00Z'
   }
 
   it('renders entries when data is fetched', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: RoleListQuery }>({
         data: {
           roles: [role],
         },
@@ -50,15 +52,17 @@ describe('RoleList', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: RoleListQuery }>({
         data: {
           roles: [role],
         },
       })
     )
     executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
+      fromValue<{ data: DeleteRoleMutation }>({
+        data: {
+          deleteRole: true
+        },
       })
     )
     const mockClient: Partial<Client> = {
@@ -84,7 +88,7 @@ describe('RoleList', () => {
         )
       })
     })
-    expect(mockClient.executeMutation).toBeCalled()
+    expect(mockClient.executeMutation).toHaveBeenCalled()
   })
 
   it('does not call mutation when Delete is clicked and not confirmed', async () => {
@@ -92,15 +96,10 @@ describe('RoleList', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: RoleListQuery }>({
         data: {
           roles: [role],
         },
-      })
-    )
-    executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
       })
     )
     const mockClient: Partial<Client> = {
@@ -126,6 +125,6 @@ describe('RoleList', () => {
         )
       })
     })
-    expect(mockClient.executeMutation).not.toBeCalled()
+    expect(mockClient.executeMutation).not.toHaveBeenCalled()
   })
 })

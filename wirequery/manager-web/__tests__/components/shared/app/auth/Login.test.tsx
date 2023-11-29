@@ -9,6 +9,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Login } from '@components/shared/app/auth/Login'
 import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'
+import { LoginMutation } from '@generated/graphql'
 
 describe('Login', () => {
   it('renders form containing the necessary fields', () => {
@@ -19,7 +20,7 @@ describe('Login', () => {
     }
     render(
       <Provider value={mockClient as Client}>
-        <Login onSave={jest.fn()} onCancel={jest.fn()} />
+        <Login onLogin={jest.fn()} />
       </Provider>
     )
     expect(screen.queryByText('Username')).not.toBeNull()
@@ -30,8 +31,13 @@ describe('Login', () => {
   it('calls a mutation if sign in is clicked', async () => {
     const executeMutation = jest.fn()
     executeMutation.mockReturnValue(
-      fromValue({
-        data: { login: {} },
+      fromValue<{ data: LoginMutation }>({
+        data: {
+          login: {
+            id: '1',
+            username: 'wnederhof'
+          }
+        },
       })
     )
     const mockClient: Partial<Client> = {
@@ -46,7 +52,7 @@ describe('Login', () => {
       </Provider>
     )
     fireEvent.click(screen.getByText('Sign in'))
-    await waitFor(() => expect(mockClient.executeMutation).toBeCalled())
-    await waitFor(() => expect(loginFn).toBeCalled())
+    await waitFor(() => expect(mockClient.executeMutation).toHaveBeenCalled())
+    await waitFor(() => expect(loginFn).toHaveBeenCalled())
   })
 })

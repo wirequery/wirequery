@@ -10,18 +10,20 @@ import { SessionList } from '@components/shared/app/session/SessionList'
 import { Client, Provider } from 'urql'
 import { act } from 'react-dom/test-utils'
 import { fromValue } from 'wonka'
+import { DeleteSessionMutation, SessionsQuery } from '@generated/graphql'
 
 describe('SessionList', () => {
   const session = {
     id: '1',
     name: 'Some name',
     description: 'Some description',
+    createdAt: '1970-01-01T00:00:00Z'
   }
 
   it('forwards to session page on Show', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: SessionsQuery }>({
         data: {
           sessions: [session],
         },
@@ -48,7 +50,7 @@ describe('SessionList', () => {
   it('renders entries when data is fetched', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: SessionsQuery }>({
         data: {
           sessions: [session],
         },
@@ -75,15 +77,17 @@ describe('SessionList', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: SessionsQuery }>({
         data: {
           sessions: [session],
         },
       })
     )
     executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
+      fromValue<{ data: DeleteSessionMutation }>({
+        data: {
+          deleteSession: true
+        },
       })
     )
     const mockClient: Partial<Client> = {
@@ -109,7 +113,7 @@ describe('SessionList', () => {
         )
       })
     })
-    expect(mockClient.executeMutation).toBeCalled()
+    expect(mockClient.executeMutation).toHaveBeenCalled()
   })
 
   it('does not call mutation when Delete is clicked and not confirmed', async () => {
@@ -117,15 +121,10 @@ describe('SessionList', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: SessionsQuery }>({
         data: {
           sessions: [session],
         },
-      })
-    )
-    executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
       })
     )
     const mockClient: Partial<Client> = {
@@ -151,6 +150,6 @@ describe('SessionList', () => {
         )
       })
     })
-    expect(mockClient.executeMutation).not.toBeCalled()
+    expect(mockClient.executeMutation).not.toHaveBeenCalled()
   })
 })

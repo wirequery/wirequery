@@ -9,6 +9,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { SessionForm } from '@components/shared/app/session/SessionForm'
 import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'
+import { CreateSessionMutation, FieldType, TemplatesForSessionOptionsQuery } from '@generated/graphql'
 
 describe('SessionForm', () => {
   it('renders the form', () => {
@@ -29,7 +30,7 @@ describe('SessionForm', () => {
   it('renders form containing the fields in the template', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: TemplatesForSessionOptionsQuery }>({
         data: {
           templates: [
             {
@@ -37,27 +38,27 @@ describe('SessionForm', () => {
               name: 'Some template',
               fields: [
                 {
-                  type: 'TEXT',
+                  type: FieldType.Text,
                   key: 'textKey',
                   label: 'textLabel',
                 },
                 {
-                  type: 'TEXTAREA',
+                  type: FieldType.Textarea,
                   key: 'textAreaKey',
                   label: 'textAreaLabel',
                 },
                 {
-                  type: 'INTEGER',
+                  type: FieldType.Integer,
                   key: 'integerKey',
                   label: 'integerLabel',
                 },
                 {
-                  type: 'FLOAT',
+                  type: FieldType.Float,
                   key: 'floatKey',
                   label: 'floatLabel',
                 },
                 {
-                  type: 'BOOLEAN',
+                  type: FieldType.Boolean,
                   key: 'booleanKey',
                   label: 'booleanLabel',
                 },
@@ -89,7 +90,7 @@ describe('SessionForm', () => {
   it('calls a mutation if Save is clicked', async () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: TemplatesForSessionOptionsQuery }>({
         data: {
           templates: [
             {
@@ -103,8 +104,12 @@ describe('SessionForm', () => {
     )
     const executeMutation = jest.fn()
     executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
+      fromValue<{ data: CreateSessionMutation }>({
+        data: {
+          createSession: {
+            id: '1'
+          }
+        },
       })
     )
     const mockClient: Partial<Client> = {
@@ -119,7 +124,7 @@ describe('SessionForm', () => {
       </Provider>
     )
     fireEvent.click(screen.getByText('Save'))
-    await waitFor(() => expect(mockClient.executeMutation).toBeCalled())
-    await waitFor(() => expect(saveFn).toBeCalled())
+    await waitFor(() => expect(mockClient.executeMutation).toHaveBeenCalled())
+    await waitFor(() => expect(saveFn).toHaveBeenCalled())
   })
 })

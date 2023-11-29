@@ -99,8 +99,8 @@ describe('UserForm', () => {
       </Provider>
     )
     fireEvent.click(screen.getByText('Save'))
-    await waitFor(() => expect(mockClient.executeMutation).toBeCalled())
-    await waitFor(() => expect(saveFn).toBeCalled())
+    await waitFor(() => expect(mockClient.executeMutation).toHaveBeenCalled())
+    await waitFor(() => expect(saveFn).toHaveBeenCalled())
   })
 
   it('calls a mutation if Save is clicked if there is no id', async () => {
@@ -131,8 +131,8 @@ describe('UserForm', () => {
       target: { value: 'wouter' },
     })
     fireEvent.click(screen.getByText('Save'))
-    await waitFor(() => expect(mockClient.executeMutation).toBeCalled())
-    await waitFor(() => expect(saveFn).toBeCalled())
+    await waitFor(() => expect(mockClient.executeMutation).toHaveBeenCalled())
+    await waitFor(() => expect(saveFn).toHaveBeenCalled())
   })
 
   it('calls no mutation if Save if validation failed', async () => {
@@ -149,13 +149,14 @@ describe('UserForm', () => {
       </Provider>
     )
     fireEvent.click(screen.getByText('Save'))
-    expect(mockClient.executeMutation).not.toBeCalled()
-    expect(saveFn).not.toBeCalled()
+    expect(mockClient.executeMutation).not.toHaveBeenCalled()
+    expect(saveFn).not.toHaveBeenCalled()
     expect(
       screen.getAllByText('Username must be at least 6 characters long').length
     ).toEqual(1)
     expect(
       screen.getAllByText('Password must be at least 6 characters long').length
     ).toEqual(1)
+    expect(executeMutation).not.toHaveBeenCalled()
   })
 })

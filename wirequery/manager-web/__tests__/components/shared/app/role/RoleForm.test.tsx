@@ -9,6 +9,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { RoleForm } from '@components/shared/app/role/RoleForm'
 import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'
+import { CreateRoleMutation, RoleFormQuery, UpdateRoleMutation } from '@generated/graphql'
 
 describe('RoleForm', () => {
   const role = {
@@ -16,7 +17,7 @@ describe('RoleForm', () => {
     name: 'Some name',
     authorisations: [
       {
-        name: { name: 'Admin', labe: 'Admin', description: 'Admin' },
+        name: 'SOME_AUTHORISATION',
       },
     ],
   }
@@ -39,7 +40,7 @@ describe('RoleForm', () => {
   it('renders form containing existing data if id is passed', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: RoleFormQuery }>({
         data: {
           role,
         },
@@ -68,13 +69,17 @@ describe('RoleForm', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: RoleFormQuery }>({
         data: { role },
       })
     )
     executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
+      fromValue<{ data: UpdateRoleMutation }>({
+        data: {
+          updateRole: {
+            id: '1'
+          }
+        },
       })
     )
     const mockClient: Partial<Client> = {
@@ -93,15 +98,19 @@ describe('RoleForm', () => {
     fireEvent.change(input, { target: { value: 'some name' } })
 
     fireEvent.click(screen.getByText('Save'))
-    await waitFor(() => expect(mockClient.executeMutation).toBeCalled())
-    await waitFor(() => expect(saveFn).toBeCalled())
+    await waitFor(() => expect(mockClient.executeMutation).toHaveBeenCalled())
+    await waitFor(() => expect(saveFn).toHaveBeenCalled())
   })
 
   it('calls a mutation if Save is clicked if there is no id', async () => {
     const executeMutation = jest.fn()
     executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
+      fromValue<{ data: CreateRoleMutation }>({
+        data: {
+          createRole: {
+            id: '1'
+          }
+        },
       })
     )
     const mockClient: Partial<Client> = {
@@ -120,7 +129,7 @@ describe('RoleForm', () => {
     fireEvent.change(input, { target: { value: 'some name' } })
 
     fireEvent.click(screen.getByText('Save'))
-    await waitFor(() => expect(mockClient.executeMutation).toBeCalled())
-    await waitFor(() => expect(saveFn).toBeCalled())
+    await waitFor(() => expect(mockClient.executeMutation).toHaveBeenCalled())
+    await waitFor(() => expect(saveFn).toHaveBeenCalled())
   })
 })

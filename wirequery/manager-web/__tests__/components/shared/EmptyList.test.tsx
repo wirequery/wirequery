@@ -26,11 +26,11 @@ describe('EmptyList', () => {
 
     expect(screen.getByText('Button')).not.toBeNull()
 
-    expect(onClickHandler).toBeCalledTimes(0)
+    expect(onClickHandler).toHaveBeenCalledTimes(0)
 
     fireEvent.click(screen.getByText('Button'))
 
-    expect(onClickHandler).toBeCalledTimes(1)
+    expect(onClickHandler).toHaveBeenCalledTimes(1)
   })
 
   it('renders with title and description but not button if onClick is undefined, even if button text is set', () => {

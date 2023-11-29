@@ -9,6 +9,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { TemplateQueryForm } from '@components/shared/app/template-query/TemplateQueryForm'
 import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'
+import { UpdateTemplateMutation } from '@generated/graphql'
 
 describe('TemplateQueryForm', () => {
   it('renders form containing the necessary fields', () => {
@@ -35,8 +36,12 @@ describe('TemplateQueryForm', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
+      fromValue<{ data: UpdateTemplateMutation }>({
+        data: {
+          updateTemplate: {
+            id: '1'
+          }
+        },
       })
     )
     const mockClient: Partial<Client> = {
@@ -55,7 +60,7 @@ describe('TemplateQueryForm', () => {
       </Provider>
     )
     fireEvent.click(screen.getByText('Save'))
-    await waitFor(() => expect(mockClient.executeMutation).toBeCalled())
-    await waitFor(() => expect(saveFn).toBeCalled())
+    await waitFor(() => expect(mockClient.executeMutation).toHaveBeenCalled())
+    await waitFor(() => expect(saveFn).toHaveBeenCalled())
   })
 })

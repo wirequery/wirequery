@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { TemplateForm } from '@components/shared/app/template/TemplateForm'
+import { CreateTemplateMutation, TemplateFormQuery, UpdateTemplateMutation } from '@generated/graphql'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'
@@ -41,7 +42,7 @@ describe('TemplateForm', () => {
   it('renders form containing existing data if id is passed', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: TemplateFormQuery }>({
         data: {
           template,
         },
@@ -70,12 +71,12 @@ describe('TemplateForm', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: TemplateFormQuery }>({
         data: { template },
       })
     )
     executeMutation.mockReturnValue(
-      fromValue({
+      fromValue<{ data: UpdateTemplateMutation }>({
         data: {},
       })
     )
@@ -91,15 +92,19 @@ describe('TemplateForm', () => {
       </Provider>
     )
     fireEvent.click(screen.getByText('Save'))
-    await waitFor(() => expect(mockClient.executeMutation).toBeCalled())
-    await waitFor(() => expect(saveFn).toBeCalled())
+    await waitFor(() => expect(mockClient.executeMutation).toHaveBeenCalled())
+    await waitFor(() => expect(saveFn).toHaveBeenCalled())
   })
 
   it('calls a mutation if Save is clicked if there is no id', async () => {
     const executeMutation = jest.fn()
     executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
+      fromValue<{ data: CreateTemplateMutation }>({
+        data: {
+          createTemplate: {
+            id: '1'
+          }
+        },
       })
     )
     const mockClient: Partial<Client> = {
@@ -132,7 +137,7 @@ describe('TemplateForm', () => {
       }
     )
     fireEvent.click(screen.getByText('Save'))
-    await waitFor(() => expect(mockClient.executeMutation).toBeCalled())
-    await waitFor(() => expect(saveFn).toBeCalled())
+    await waitFor(() => expect(mockClient.executeMutation).toHaveBeenCalled())
+    await waitFor(() => expect(saveFn).toHaveBeenCalled())
   })
 })

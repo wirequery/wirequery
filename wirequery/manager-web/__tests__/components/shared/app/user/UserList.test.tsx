@@ -10,6 +10,7 @@ import { UserList } from '@components/shared/app/user/UserList'
 import { Client, Provider } from 'urql'
 import { act } from 'react-dom/test-utils'
 import { fromValue } from 'wonka'
+import { DeleteUserMutation, UsersQuery } from '@generated/graphql'
 
 describe('UserList', () => {
   const user = {
@@ -17,12 +18,13 @@ describe('UserList', () => {
     username: 'Some username',
     enabled: true,
     roles: 'Some roles',
+    createdAt: '1970-01-01T00:00:00Z'
   }
 
   it('forwards to user page on Show', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: UsersQuery }>({
         data: {
           users: [user],
         },
@@ -46,7 +48,7 @@ describe('UserList', () => {
   it('renders entries when data is fetched', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: UsersQuery }>({
         data: {
           users: [user],
         },
@@ -76,15 +78,17 @@ describe('UserList', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: UsersQuery }>({
         data: {
           users: [user],
         },
       })
     )
     executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
+      fromValue<{ data: DeleteUserMutation }>({
+        data: {
+          deleteUser: true
+        },
       })
     )
     const mockClient: Partial<Client> = {
@@ -110,7 +114,7 @@ describe('UserList', () => {
         )
       })
     })
-    expect(mockClient.executeMutation).toBeCalled()
+    expect(mockClient.executeMutation).toHaveBeenCalled()
   })
 
   it('does not call mutation when Delete is clicked and not confirmed', async () => {
@@ -118,15 +122,17 @@ describe('UserList', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: UsersQuery }>({
         data: {
           users: [user],
         },
       })
     )
     executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
+      fromValue<{ data: DeleteUserMutation }>({
+        data: {
+          deleteUser: true
+        },
       })
     )
     const mockClient: Partial<Client> = {
@@ -152,6 +158,6 @@ describe('UserList', () => {
         )
       })
     })
-    expect(mockClient.executeMutation).not.toBeCalled()
+    expect(mockClient.executeMutation).not.toHaveBeenCalled()
   })
 })

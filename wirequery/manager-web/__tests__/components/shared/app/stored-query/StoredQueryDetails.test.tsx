@@ -11,6 +11,7 @@ import { Client, Provider } from 'urql'
 import { act } from 'react-dom/test-utils'
 import { fromValue } from 'wonka'
 import { ColorSchemeProvider } from '@mantine/core'
+import { StoredQueryDetailsQuery, StoredQueryType } from '@generated/graphql'
 
 jest.mock('@components/shared/app/query-log/QueryLogChart', () => ({
   QueryLogChart: () => <></>,
@@ -21,10 +22,11 @@ describe('StoredQueryDetails', () => {
     id: '1',
     applicationId: 1,
     application: {
+      id: '2',
       name: 'Some application name',
     },
     name: 'Some name',
-    type: 'Some type',
+    type: StoredQueryType.Query,
     query: 'Some query',
     queryLimit: 10,
     endDate: '2000-01-01',
@@ -35,7 +37,7 @@ describe('StoredQueryDetails', () => {
   it('renders details when data is fetched', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: StoredQueryDetailsQuery }>({
         data: { storedQuery },
       })
     )

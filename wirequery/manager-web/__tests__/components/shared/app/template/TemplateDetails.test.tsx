@@ -10,13 +10,14 @@ import { TemplateDetails } from '@components/shared/app/template/TemplateDetails
 import { Client, Provider } from 'urql'
 import { act } from 'react-dom/test-utils'
 import { fromValue } from 'wonka'
+import { FieldType, TemplateDetailsQuery } from '@generated/graphql'
 
 describe('TemplateDetails', () => {
   const template = {
     id: '1',
     name: 'Some name',
     description: 'Some description',
-    fields: [{ key: 'someKey', label: 'Some label', type: 'TEXT' }],
+    fields: [{ key: 'someKey', label: 'Some label', type: FieldType.Text }],
     nameTemplate: 'Some nameTemplate',
     descriptionTemplate: 'Some descriptionTemplate',
     allowUserInitiation: true,
@@ -27,7 +28,7 @@ describe('TemplateDetails', () => {
   it('renders details when data is fetched', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{data: TemplateDetailsQuery}>({
         data: { template },
       })
     )

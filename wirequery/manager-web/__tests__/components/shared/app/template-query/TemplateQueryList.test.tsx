@@ -10,6 +10,7 @@ import { TemplateQueryList } from '@components/shared/app/template-query/Templat
 import { Client, Provider } from 'urql'
 import { act } from 'react-dom/test-utils'
 import { fromValue } from 'wonka'
+import { DeleteTemplateMutation, TemplateQueryListQuery, TemplateQueryType } from '@generated/graphql'
 
 describe('TemplateQueryList', () => {
   const templateQuery = {
@@ -17,13 +18,15 @@ describe('TemplateQueryList', () => {
     templateId: 1,
     applicationId: 1,
     nameTemplate: 'Some nameTemplate',
-    type: 'QUERY',
+    type: TemplateQueryType.Query,
     queryTemplate: 'Some queryTemplate',
     queryLimit: 10,
     template: {
+      id: '1',
       name: 'Some template',
     },
     application: {
+      id: '1',
       name: 'Some application',
     },
   }
@@ -31,7 +34,7 @@ describe('TemplateQueryList', () => {
   it('renders entries when data is fetched', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: TemplateQueryListQuery }>({
         data: {
           templateQuerys: [templateQuery],
         },
@@ -65,15 +68,17 @@ describe('TemplateQueryList', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: TemplateQueryListQuery }>({
         data: {
           templateQuerys: [templateQuery],
         },
       })
     )
     executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
+      fromValue<{ data: DeleteTemplateMutation }>({
+        data: {
+          deleteTemplate: true
+        },
       })
     )
     const mockClient: Partial<Client> = {
@@ -99,7 +104,7 @@ describe('TemplateQueryList', () => {
         )
       })
     })
-    expect(mockClient.executeMutation).toBeCalled()
+    expect(mockClient.executeMutation).toHaveBeenCalled()
   })
 
   it('does not call mutation when Delete is clicked and not confirmed', async () => {
@@ -107,15 +112,10 @@ describe('TemplateQueryList', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: TemplateQueryListQuery }>({
         data: {
           templateQuerys: [templateQuery],
         },
-      })
-    )
-    executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
       })
     )
     const mockClient: Partial<Client> = {
@@ -141,6 +141,6 @@ describe('TemplateQueryList', () => {
         )
       })
     })
-    expect(mockClient.executeMutation).not.toBeCalled()
+    expect(mockClient.executeMutation).not.toHaveBeenCalled()
   })
 })

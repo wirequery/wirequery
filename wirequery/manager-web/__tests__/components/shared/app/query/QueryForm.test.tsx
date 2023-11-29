@@ -68,12 +68,12 @@ describe('QueryForm', () => {
     const label = screen.getByLabelText('Search Query')
     label.click()
     fireEvent.change(label, { target: { value: 'some query' } })
-    expect(executeSubscription).not.toBeCalled()
+    expect(executeSubscription).not.toHaveBeenCalled()
     act(() => {
       fireEvent.keyUp(label, { key: 'Enter', code: 'Enter', charCode: 13 })
       jest.runAllTimers()
     })
-    expect(executeSubscription).toBeCalled()
+    expect(executeSubscription).toHaveBeenCalled()
   })
 
   it('does not call subscription when enter is pressed and query is empty', () => {
@@ -99,7 +99,7 @@ describe('QueryForm', () => {
       fireEvent.keyUp(label, { key: 'Enter', code: 'Enter', charCode: 13 })
       jest.runAllTimers()
     })
-    expect(executeSubscription).not.toBeCalled()
+    expect(executeSubscription).not.toHaveBeenCalled()
   })
 
   it('renders result upon retrieving it', () => {
@@ -137,7 +137,7 @@ describe('QueryForm', () => {
       fireEvent.keyUp(label, { key: 'Enter', code: 'Enter', charCode: 13 })
       jest.runAllTimers()
     })
-    expect(executeSubscription).toBeCalled()
+    expect(executeSubscription).toHaveBeenCalled()
     expect(screen.getAllByText('"123"')).toHaveLength(1)
   })
 

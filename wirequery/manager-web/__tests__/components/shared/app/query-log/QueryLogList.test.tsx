@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { QueryLogList } from '@components/shared/app/query-log/QueryLogList'
+import { QueryLogListQuery } from '@generated/graphql'
 import { ColorSchemeProvider } from '@mantine/core'
 import { render, screen } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
@@ -21,12 +22,14 @@ describe('QueryLogList', () => {
     id: '1',
     storedQueryId: 1,
     message: '{"result": {"message": "Some message"}}',
+    startTime: 0,
+    endTime: 100,
   }
 
   it('renders entries when data is fetched', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{data: QueryLogListQuery}>({
         data: {
           queryLogs: [queryLog],
         },

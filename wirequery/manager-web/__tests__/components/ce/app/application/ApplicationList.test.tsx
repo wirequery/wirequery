@@ -97,7 +97,7 @@ describe('ApplicationList', () => {
       )
     })
     expect(screen.getAllByText('No applications found')).not.toHaveLength(0)
-    expect(onCreateApplicationMock).not.toBeCalled()
+    expect(onCreateApplicationMock).not.toHaveBeenCalled()
     await waitFor(() => {
       act(() => {
         fireEvent(
@@ -109,7 +109,7 @@ describe('ApplicationList', () => {
         )
       })
     })
-    expect(onCreateApplicationMock).toBeCalled()
+    expect(onCreateApplicationMock).toHaveBeenCalled()
   })
 
   it('shows in quarantine if an app is in quarantine', () => {
@@ -177,7 +177,7 @@ describe('ApplicationList', () => {
         )
       })
     })
-    expect(mockClient.executeMutation).toBeCalled()
+    expect(mockClient.executeMutation).toHaveBeenCalled()
   })
 
   it('does not call mutation when Delete is clicked and not confirmed', async () => {
@@ -214,6 +214,6 @@ describe('ApplicationList', () => {
         )
       })
     })
-    expect(mockClient.executeMutation).not.toBeCalled()
+    expect(mockClient.executeMutation).not.toHaveBeenCalled()
   })
 })

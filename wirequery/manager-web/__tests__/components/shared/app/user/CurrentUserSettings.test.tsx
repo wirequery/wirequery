@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { CurrentUserSettings } from '@components/shared/app/user/CurrentUserSettings'
+import { UpdateCurrentUserMutation } from '@generated/graphql'
 import { showErrorAlertForMessage } from '@lib/alert'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Client, Provider } from 'urql'
@@ -37,7 +38,7 @@ describe('CurrentUserSettings', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeMutation.mockReturnValue(
-      fromValue({
+      fromValue<{ data: UpdateCurrentUserMutation }>({
         data: {},
       })
     )
@@ -53,15 +54,15 @@ describe('CurrentUserSettings', () => {
       </Provider>
     )
     fireEvent.click(screen.getByText('Save'))
-    await waitFor(() => expect(mockClient.executeMutation).toBeCalled())
-    await waitFor(() => expect(saveFn).toBeCalled())
+    await waitFor(() => expect(mockClient.executeMutation).toHaveBeenCalled())
+    await waitFor(() => expect(saveFn).toHaveBeenCalled())
   })
 
   it('shows a prompt that needs to be the same as the password when changing password', async () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeMutation.mockReturnValue(
-      fromValue({
+      fromValue<{ data: UpdateCurrentUserMutation }>({
         data: {},
       })
     )
@@ -83,18 +84,13 @@ describe('CurrentUserSettings', () => {
       target: { value: 'Some password' },
     })
     fireEvent.click(screen.getByText('Save'))
-    await waitFor(() => expect(saveFn).toBeCalled())
-    await waitFor(() => expect(mockClient.executeMutation).toBeCalled())
+    await waitFor(() => expect(saveFn).toHaveBeenCalled())
+    await waitFor(() => expect(mockClient.executeMutation).toHaveBeenCalled())
   })
 
   it('does not call mutation when passwords differ', async () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
-    executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
-      })
-    )
     const mockClient: Partial<Client> = {
       executeQuery,
       executeMutation,
@@ -114,10 +110,11 @@ describe('CurrentUserSettings', () => {
     })
     fireEvent.click(screen.getByText('Save'))
     await waitFor(() => {
-      expect(mockClient.executeMutation).not.toBeCalled()
-      expect(showErrorAlertForMessage).toBeCalledWith(
+      expect(mockClient.executeMutation).not.toHaveBeenCalled()
+      expect(showErrorAlertForMessage).toHaveBeenCalledWith(
         'Passwords did not match. Please try again.'
       )
     })
+    expect(executeMutation).not.toHaveBeenCalled()
   })
 })

@@ -7,7 +7,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { RecordingPlayer } from '@components/shared/app/recording/RecordingPlayer'
-import { Recording } from '@generated/graphql'
+import { Recording, RecordingPlayerQuery } from '@generated/graphql'
 import { ColorSchemeProvider } from '@mantine/core'
 import { screen, render } from '@testing-library/react'
 import { Client, Provider } from 'urql'
@@ -34,7 +34,7 @@ describe('RecordingPlayer', () => {
     ]
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: RecordingPlayerQuery }>({
         data: { recordings },
       })
     )
@@ -79,7 +79,7 @@ describe('RecordingPlayer', () => {
     ]
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: RecordingPlayerQuery }>({
         data: { recordings },
       })
     )

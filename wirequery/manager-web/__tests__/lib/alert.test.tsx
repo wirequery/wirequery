@@ -27,7 +27,7 @@ describe('alert', () => {
         message: 'test',
       } as object as CombinedError)
       expect(actual).toBeTruthy()
-      expect(notifications.show).toBeCalledWith({
+      expect(notifications.show).toHaveBeenCalledWith({
         title: 'An error occured',
         message: 'test',
         color: 'red',
@@ -47,7 +47,7 @@ describe('alert', () => {
       ],
     } as object as CombinedError)
     expect(actual).toBeTruthy()
-    expect(notifications.show).toBeCalledWith({
+    expect(notifications.show).toHaveBeenCalledWith({
       title: 'An error occured',
       message:
         'Unable to process request. Please check if the form is correctly filled in.',
@@ -61,7 +61,7 @@ describe('alert', () => {
       networkError: {},
     } as object as CombinedError)
     expect(actual).toBeTruthy()
-    expect(notifications.show).toBeCalledWith({
+    expect(notifications.show).toHaveBeenCalledWith({
       title: 'An error occured',
       message:
         'There were network issues while loading. Please check your internet connection and try again.',
@@ -74,7 +74,7 @@ describe('alert', () => {
     it('shows the provided info message and returns true', () => {
       const actual = showInfoAlert('test')
       expect(actual).toBeTruthy()
-      expect(notifications.show).toBeCalledWith({
+      expect(notifications.show).toHaveBeenCalledWith({
         message: 'test',
       })
     })
@@ -84,7 +84,7 @@ describe('alert', () => {
     it('shows the provided error message and returns true', () => {
       const actual = showErrorAlertForMessage('test')
       expect(actual).toBeTruthy()
-      expect(notifications.show).toBeCalledWith({
+      expect(notifications.show).toHaveBeenCalledWith({
         title: 'An error occured',
         message: 'test',
         color: 'red',

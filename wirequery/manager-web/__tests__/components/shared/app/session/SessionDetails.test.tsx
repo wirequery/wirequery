@@ -10,6 +10,7 @@ import { SessionDetails } from '@components/shared/app/session/SessionDetails'
 import { Client, Provider } from 'urql'
 import { act } from 'react-dom/test-utils'
 import { fromValue } from 'wonka'
+import { SessionDetailsQuery } from '@generated/graphql'
 
 jest.mock('@components/shared/app/session/SessionTimeline', () => ({
   SessionTimeline: () => <></>,
@@ -44,7 +45,7 @@ describe('SessionDetails', () => {
   it('renders details when data is fetched', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: SessionDetailsQuery }>({
         data: { session },
       })
     )

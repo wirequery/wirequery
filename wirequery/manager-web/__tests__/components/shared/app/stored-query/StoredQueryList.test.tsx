@@ -10,25 +10,28 @@ import { StoredQueryList } from '@components/shared/app/stored-query/StoredQuery
 import { Client, Provider } from 'urql'
 import { act } from 'react-dom/test-utils'
 import { fromValue } from 'wonka'
+import { DeleteStoredQueryMutation, StoredQueryListQuery, StoredQueryType } from '@generated/graphql'
 
 describe('StoredQueryList', () => {
   const storedQuery = {
     id: '1',
     applicationId: 1,
     application: {
+      id: '1',
       name: 'Some application name',
     },
     name: 'Some name',
-    type: 'Some type',
+    type: StoredQueryType.Query,
     query: 'Some query',
     queryLimit: 10,
     endDate: '2000-01-01',
+    createdAt: '1970-01-01T00:00:00Z'
   }
 
   it('forwards to storedQuery page on Show', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: StoredQueryListQuery }>({
         data: {
           storedQuerys: [storedQuery],
         },
@@ -55,7 +58,7 @@ describe('StoredQueryList', () => {
   it('renders entries when data is fetched', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: StoredQueryListQuery }>({
         data: {
           storedQuerys: [storedQuery],
         },
@@ -83,7 +86,7 @@ describe('StoredQueryList', () => {
     const onCreateStoredQueryMock = jest.fn()
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: StoredQueryListQuery }>({
         data: {
           storedQuerys: [],
         },
@@ -102,7 +105,7 @@ describe('StoredQueryList', () => {
       )
     })
     expect(screen.getAllByText('No queries found')).not.toHaveLength(0)
-    expect(onCreateStoredQueryMock).not.toBeCalled()
+    expect(onCreateStoredQueryMock).not.toHaveBeenCalled()
     await waitFor(() => {
       act(() => {
         fireEvent(
@@ -114,7 +117,7 @@ describe('StoredQueryList', () => {
         )
       })
     })
-    expect(onCreateStoredQueryMock).toBeCalled()
+    expect(onCreateStoredQueryMock).toHaveBeenCalled()
   })
 
   it('calls mutation when Delete is clicked and confirmed', async () => {
@@ -122,15 +125,17 @@ describe('StoredQueryList', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: StoredQueryListQuery }>({
         data: {
           storedQuerys: [storedQuery],
         },
       })
     )
     executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
+      fromValue<{ data: DeleteStoredQueryMutation }>({
+        data: {
+          deleteStoredQuery: true
+        },
       })
     )
     const mockClient: Partial<Client> = {
@@ -156,7 +161,7 @@ describe('StoredQueryList', () => {
         )
       })
     })
-    expect(mockClient.executeMutation).toBeCalled()
+    expect(mockClient.executeMutation).toHaveBeenCalled()
   })
 
   it('does not call mutation when Delete is clicked and not confirmed', async () => {
@@ -164,15 +169,10 @@ describe('StoredQueryList', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: StoredQueryListQuery }>({
         data: {
           storedQuerys: [storedQuery],
         },
-      })
-    )
-    executeMutation.mockReturnValue(
-      fromValue({
-        data: {},
       })
     )
     const mockClient: Partial<Client> = {
@@ -198,6 +198,6 @@ describe('StoredQueryList', () => {
         )
       })
     })
-    expect(mockClient.executeMutation).not.toBeCalled()
+    expect(mockClient.executeMutation).not.toHaveBeenCalled()
   })
 })

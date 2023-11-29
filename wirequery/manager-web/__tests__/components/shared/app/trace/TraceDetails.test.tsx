@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { TraceDetails } from '@components/shared/app/trace/TraceDetails'
+import { QueryLogByTraceQuery } from '@generated/graphql'
 import { render, screen } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { Client, Provider } from 'urql'
@@ -37,7 +38,7 @@ describe('TraceDetails', () => {
   it('renders details when data is fetched', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: QueryLogByTraceQuery }>({
         data: { storedQuery, queryLogByTrace },
       })
     )
