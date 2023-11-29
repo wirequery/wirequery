@@ -9,7 +9,11 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { RoleForm } from '@components/shared/app/role/RoleForm'
 import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'
-import { CreateRoleMutation, RoleFormQuery, UpdateRoleMutation } from '@generated/graphql'
+import {
+  CreateRoleMutation,
+  RoleFormQuery,
+  UpdateRoleMutation,
+} from '@generated/graphql'
 
 describe('RoleForm', () => {
   const role = {
@@ -77,8 +81,8 @@ describe('RoleForm', () => {
       fromValue<{ data: UpdateRoleMutation }>({
         data: {
           updateRole: {
-            id: '1'
-          }
+            id: '1',
+          },
         },
       })
     )
@@ -108,8 +112,8 @@ describe('RoleForm', () => {
       fromValue<{ data: CreateRoleMutation }>({
         data: {
           createRole: {
-            id: '1'
-          }
+            id: '1',
+          },
         },
       })
     )

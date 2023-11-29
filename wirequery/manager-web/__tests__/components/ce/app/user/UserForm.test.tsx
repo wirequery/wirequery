@@ -6,7 +6,12 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { UserForm } from '@components/ce/app/user/UserForm'
-import { RegisterMutation, UpdateUserMutation, UserFormQuery, UserFormRolesQuery } from '@generated/graphql'
+import {
+  RegisterMutation,
+  UpdateUserMutation,
+  UserFormQuery,
+  UserFormRolesQuery,
+} from '@generated/graphql'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'
@@ -40,7 +45,7 @@ describe('UserForm', () => {
   it('renders form containing existing data if id is passed', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue<{ data: (UserFormQuery & UserFormRolesQuery) }>({
+      fromValue<{ data: UserFormQuery & UserFormRolesQuery }>({
         data: {
           user,
           roles: [
@@ -83,7 +88,7 @@ describe('UserForm', () => {
       fromValue<{ data: RegisterMutation & UpdateUserMutation }>({
         data: {
           register: user,
-          updateUser: user
+          updateUser: user,
         },
       })
     )
@@ -109,7 +114,7 @@ describe('UserForm', () => {
       fromValue<{ data: RegisterMutation & UpdateUserMutation }>({
         data: {
           register: user,
-          updateUser: user
+          updateUser: user,
         },
       })
     )

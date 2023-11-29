@@ -17,7 +17,7 @@ describe('SessionList', () => {
     id: '1',
     name: 'Some name',
     description: 'Some description',
-    createdAt: '1970-01-01T00:00:00Z'
+    createdAt: '1970-01-01T00:00:00Z',
   }
 
   it('forwards to session page on Show', () => {
@@ -86,7 +86,7 @@ describe('SessionList', () => {
     executeMutation.mockReturnValue(
       fromValue<{ data: DeleteSessionMutation }>({
         data: {
-          deleteSession: true
+          deleteSession: true,
         },
       })
     )

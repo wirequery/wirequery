@@ -36,7 +36,7 @@ describe('ApplicationForm', () => {
   it('renders form containing existing data if id is passed', async () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue<{data: ApplicationFormQuery}>({
+      fromValue<{ data: ApplicationFormQuery }>({
         data: {
           application,
         },
@@ -68,12 +68,12 @@ describe('ApplicationForm', () => {
     const executeQuery = jest.fn()
     const executeMutation = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue<{data: ApplicationFormQuery}>({
+      fromValue<{ data: ApplicationFormQuery }>({
         data: { application },
       })
     )
     executeMutation.mockReturnValue(
-      fromValue<{data: ApplicationFormQuery}>({
+      fromValue<{ data: ApplicationFormQuery }>({
         data: {},
       })
     )
@@ -96,7 +96,7 @@ describe('ApplicationForm', () => {
   it('calls a mutation if Save is clicked if there is no id', async () => {
     const executeMutation = jest.fn()
     executeMutation.mockReturnValue(
-      fromValue<{data: ApplicationFormQuery}>({
+      fromValue<{ data: ApplicationFormQuery }>({
         data: {},
       })
     )
@@ -122,7 +122,7 @@ describe('ApplicationForm', () => {
   it('calls no mutation if Save when validation fails', async () => {
     const executeMutation = jest.fn()
     executeMutation.mockReturnValue(
-      fromValue<{data: ApplicationFormQuery}>({
+      fromValue<{ data: ApplicationFormQuery }>({
         data: {},
       })
     )

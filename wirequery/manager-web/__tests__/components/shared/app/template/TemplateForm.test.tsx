@@ -6,7 +6,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { TemplateForm } from '@components/shared/app/template/TemplateForm'
-import { CreateTemplateMutation, TemplateFormQuery, UpdateTemplateMutation } from '@generated/graphql'
+import {
+  CreateTemplateMutation,
+  TemplateFormQuery,
+  UpdateTemplateMutation,
+} from '@generated/graphql'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'
@@ -102,8 +106,8 @@ describe('TemplateForm', () => {
       fromValue<{ data: CreateTemplateMutation }>({
         data: {
           createTemplate: {
-            id: '1'
-          }
+            id: '1',
+          },
         },
       })
     )

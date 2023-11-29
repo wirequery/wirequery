@@ -16,8 +16,14 @@ describe('RoleList', () => {
   const role = {
     id: '1',
     name: 'Some name',
-    authorisations: [{ name: 'SOME_AUTHORISATION', label: 'Some label', description: 'Some description' }],
-    createdAt: '1970-01-01T00:00:00Z'
+    authorisations: [
+      {
+        name: 'SOME_AUTHORISATION',
+        label: 'Some label',
+        description: 'Some description',
+      },
+    ],
+    createdAt: '1970-01-01T00:00:00Z',
   }
 
   it('renders entries when data is fetched', () => {
@@ -61,7 +67,7 @@ describe('RoleList', () => {
     executeMutation.mockReturnValue(
       fromValue<{ data: DeleteRoleMutation }>({
         data: {
-          deleteRole: true
+          deleteRole: true,
         },
       })
     )

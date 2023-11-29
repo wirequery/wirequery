@@ -35,8 +35,8 @@ describe('Login', () => {
         data: {
           login: {
             id: '1',
-            username: 'wnederhof'
-          }
+            username: 'wnederhof',
+          },
         },
       })
     )

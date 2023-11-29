@@ -1,4 +1,3 @@
-
 // Copyright 2023 Wouter Nederhof
 //
 // Use of this source code is governed by the AGPLv3
@@ -18,7 +17,7 @@ jest.mock('rrweb-player')
 
 jest.mock('@mantine/core', () => ({
   ...jest.requireActual('@mantine/core'),
-  ScrollArea: (props: any) => <div>{props.children}</div>
+  ScrollArea: (props: any) => <div>{props.children}</div>,
 }))
 
 // Most of the code in this component is visual, so we only check if no error occures when rendered.
@@ -28,9 +27,9 @@ describe('RecordingPlayer', () => {
       {
         id: '1',
         sessionId: 1,
-        recording: "[]",
-        createdAt: Symbol() as any
-      }
+        recording: '[]',
+        createdAt: Symbol() as any,
+      },
     ]
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
@@ -50,20 +49,24 @@ describe('RecordingPlayer', () => {
           colorScheme={undefined as any}
           toggleColorScheme={undefined as any}
         >
-          <RecordingPlayer sessionId={'1'} onUpdateCurrentTime={jest.fn()} onMetadataAvailable={jest.fn()} />
+          <RecordingPlayer
+            sessionId={'1'}
+            onUpdateCurrentTime={jest.fn()}
+            onMetadataAvailable={jest.fn()}
+          />
         </ColorSchemeProvider>
       </Provider>
     )
   })
 
   it('renders the logs', () => {
-    (rrwebPlayer as any).mockImplementation(() => {
+    ;(rrwebPlayer as any).mockImplementation(() => {
       return {
         getMetaData: () => ({
           startTime: 0,
-          endTime: 10
+          endTime: 10,
         }),
-        addEventListener: jest.fn()
+        addEventListener: jest.fn(),
       }
     })
 
@@ -74,8 +77,8 @@ describe('RecordingPlayer', () => {
         recording: `[
           {"timestamp": 0, "payload": {"level": "error", "payload": "Test Log"}, "data": {"plugin": "rrweb/console@1"}},
         ]`,
-        createdAt: Symbol() as any
-      }
+        createdAt: Symbol() as any,
+      },
     ]
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
@@ -95,7 +98,11 @@ describe('RecordingPlayer', () => {
           colorScheme={undefined as any}
           toggleColorScheme={undefined as any}
         >
-          <RecordingPlayer sessionId={'1'} onUpdateCurrentTime={jest.fn()} onMetadataAvailable={jest.fn()} />
+          <RecordingPlayer
+            sessionId={'1'}
+            onUpdateCurrentTime={jest.fn()}
+            onMetadataAvailable={jest.fn()}
+          />
         </ColorSchemeProvider>
       </Provider>
     )

@@ -10,7 +10,11 @@ import { TemplateQueryList } from '@components/shared/app/template-query/Templat
 import { Client, Provider } from 'urql'
 import { act } from 'react-dom/test-utils'
 import { fromValue } from 'wonka'
-import { DeleteTemplateMutation, TemplateQueryListQuery, TemplateQueryType } from '@generated/graphql'
+import {
+  DeleteTemplateMutation,
+  TemplateQueryListQuery,
+  TemplateQueryType,
+} from '@generated/graphql'
 
 describe('TemplateQueryList', () => {
   const templateQuery = {
@@ -77,7 +81,7 @@ describe('TemplateQueryList', () => {
     executeMutation.mockReturnValue(
       fromValue<{ data: DeleteTemplateMutation }>({
         data: {
-          deleteTemplate: true
+          deleteTemplate: true,
         },
       })
     )

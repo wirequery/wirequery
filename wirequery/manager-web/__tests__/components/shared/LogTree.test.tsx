@@ -49,9 +49,7 @@ describe('LogTree', () => {
       </ColorSchemeProvider>
     )
 
-    expect(
-      screen.getByText('1970', { exact: false })
-    ).not.toBeNull()
+    expect(screen.getByText('1970', { exact: false })).not.toBeNull()
   })
 
   it('renders end time if set', () => {

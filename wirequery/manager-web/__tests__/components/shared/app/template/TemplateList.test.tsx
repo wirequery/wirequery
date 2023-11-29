@@ -21,7 +21,7 @@ describe('TemplateList', () => {
     nameTemplate: 'Some nameTemplate',
     descriptionTemplate: 'Some descriptionTemplate',
     allowUserInitiation: true,
-    createdAt: '1970-01-01T00:00:00Z'
+    createdAt: '1970-01-01T00:00:00Z',
   }
 
   it('forwards to template page on Show', () => {
@@ -90,7 +90,7 @@ describe('TemplateList', () => {
     executeMutation.mockReturnValue(
       fromValue<{ data: DeleteTemplateMutation }>({
         data: {
-          deleteTemplate: true
+          deleteTemplate: true,
         },
       })
     )

@@ -29,7 +29,7 @@ describe('QueryLogList', () => {
   it('renders entries when data is fetched', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue<{data: QueryLogListQuery}>({
+      fromValue<{ data: QueryLogListQuery }>({
         data: {
           queryLogs: [queryLog],
         },

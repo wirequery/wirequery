@@ -18,7 +18,7 @@ describe('UserList', () => {
     username: 'Some username',
     enabled: true,
     roles: 'Some roles',
-    createdAt: '1970-01-01T00:00:00Z'
+    createdAt: '1970-01-01T00:00:00Z',
   }
 
   it('forwards to user page on Show', () => {
@@ -87,7 +87,7 @@ describe('UserList', () => {
     executeMutation.mockReturnValue(
       fromValue<{ data: DeleteUserMutation }>({
         data: {
-          deleteUser: true
+          deleteUser: true,
         },
       })
     )
@@ -131,7 +131,7 @@ describe('UserList', () => {
     executeMutation.mockReturnValue(
       fromValue<{ data: DeleteUserMutation }>({
         data: {
-          deleteUser: true
+          deleteUser: true,
         },
       })
     )

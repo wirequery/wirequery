@@ -10,7 +10,10 @@ import { ApplicationList } from '@components/ce/app/application/ApplicationList'
 import { Client, Provider } from 'urql'
 import { act } from 'react-dom/test-utils'
 import { fromValue } from 'wonka'
-import { ApplicationsQuery, DeleteApplicationMutation } from '@generated/graphql'
+import {
+  ApplicationsQuery,
+  DeleteApplicationMutation,
+} from '@generated/graphql'
 
 describe('ApplicationList', () => {
   const application = {
@@ -18,7 +21,7 @@ describe('ApplicationList', () => {
     name: 'Some name',
     description: 'Some description',
     inQuarantine: false,
-    createdAt: '1970-01-01T00:00:00Z'
+    createdAt: '1970-01-01T00:00:00Z',
   }
 
   it('forwards to application page on Show', () => {

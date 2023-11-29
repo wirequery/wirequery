@@ -28,7 +28,7 @@ describe('TemplateDetails', () => {
   it('renders details when data is fetched', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue<{data: TemplateDetailsQuery}>({
+      fromValue<{ data: TemplateDetailsQuery }>({
         data: { template },
       })
     )

@@ -35,8 +35,8 @@ describe('StoredQueryForm', () => {
       fromValue<{ data: CreateStoredQueryMutation }>({
         data: {
           createStoredQuery: {
-            id: '1'
-          }
+            id: '1',
+          },
         },
       })
     )

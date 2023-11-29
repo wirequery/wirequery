@@ -39,8 +39,8 @@ describe('TemplateQueryForm', () => {
       fromValue<{ data: UpdateTemplateMutation }>({
         data: {
           updateTemplate: {
-            id: '1'
-          }
+            id: '1',
+          },
         },
       })
     )

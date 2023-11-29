@@ -9,7 +9,11 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { SessionForm } from '@components/shared/app/session/SessionForm'
 import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'
-import { CreateSessionMutation, FieldType, TemplatesForSessionOptionsQuery } from '@generated/graphql'
+import {
+  CreateSessionMutation,
+  FieldType,
+  TemplatesForSessionOptionsQuery,
+} from '@generated/graphql'
 
 describe('SessionForm', () => {
   it('renders the form', () => {
@@ -107,8 +111,8 @@ describe('SessionForm', () => {
       fromValue<{ data: CreateSessionMutation }>({
         data: {
           createSession: {
-            id: '1'
-          }
+            id: '1',
+          },
         },
       })
     )
