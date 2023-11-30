@@ -28,9 +28,20 @@ class StatisticListener(
                         mapOf(
                             "storedQueryId" to "" + it.storedQueryId,
                             "appName" to it.appName,
-                            "length" to "" + it.message.length,
                         ),
                     amount = 1,
+                ),
+            )
+
+            statisticService.increment(
+                StatisticService.IncrementStatisticInput(
+                    type = QUERY_LOG,
+                    metadata =
+                        mapOf(
+                            "storedQueryId" to "" + it.storedQueryId,
+                            "appName" to it.appName,
+                        ),
+                    amount = it.message.length / 4096 + 1,
                 ),
             )
         }

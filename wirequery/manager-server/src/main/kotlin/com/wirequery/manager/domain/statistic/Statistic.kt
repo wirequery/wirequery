@@ -19,6 +19,7 @@ data class Statistic(
 ) {
     enum class TypeEnum {
         QUERY_LOG,
+        QUERY_LOG_CHUNKS,
         LOGIN,
         RECORDING,
     }
