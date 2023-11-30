@@ -32,7 +32,7 @@ class AdminController(
     @PostMapping("/api/internal/admin/new-env/{name}")
     fun admin(
         @PathVariable name: String,
-        @RequestBody params: NewEnvParamsRequest
+        @RequestBody params: NewEnvParamsRequest,
     ) {
         tenantRequestContext.tenantId = 0
         tenantRequestContext.tenantId =
@@ -50,6 +50,6 @@ class AdminController(
     }
 
     data class NewEnvParamsRequest(
-        val adminPassword: String
+        val adminPassword: String,
     )
 }

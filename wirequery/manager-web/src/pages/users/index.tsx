@@ -13,16 +13,17 @@ import DashboardLayout from '@components/ce/layout/DashboardLayout'
 import { Button, Grid, Menu, Modal, Tabs, Title } from '@mantine/core'
 import { IconChevronDown, IconUser, IconUserCheck } from '@tabler/icons-react'
 import { useState } from 'react'
+import { StatisticList } from '@components/shared/app/statistic/StatisticList'
 
 export default function Users() {
   const [userModalActive, setUserModalActive] = useState(false)
   const [roleModalActive, setRoleModalActive] = useState(false)
   return (
     <>
-      <DashboardLayout active="User Management">
+      <DashboardLayout active="Management">
         <Grid>
           <Grid.Col span="auto">
-            <Title order={2}>User Management</Title>
+            <Title order={2}>Management</Title>
           </Grid.Col>
           <Grid.Col span="content">
             <Menu shadow="md" width={200}>
@@ -54,12 +55,16 @@ export default function Users() {
           <Tabs.List>
             <Tabs.Tab value="users">Users</Tabs.Tab>
             <Tabs.Tab value="roles">User Roles</Tabs.Tab>
+            <Tabs.Tab value="statistics">Statistics</Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="users">
             <UserList />
           </Tabs.Panel>
           <Tabs.Panel value="roles">
             <RoleList />
+          </Tabs.Panel>
+          <Tabs.Panel value="statistics">
+            <StatisticList />
           </Tabs.Panel>
         </Tabs>
       </DashboardLayout>

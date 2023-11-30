@@ -165,6 +165,7 @@ export function ApplicationDetails(props: ApplicationDetailsProps) {
       )}
 
       <Modal
+        transitionProps={{ duration: 0 }}
         opened={modalActive}
         title="Edit Application"
         onClose={() => setEditModalActive(false)}

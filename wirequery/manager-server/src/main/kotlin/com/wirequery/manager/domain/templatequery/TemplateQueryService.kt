@@ -77,7 +77,7 @@ class TemplateQueryService(
                 nameTemplate = input.nameTemplate,
                 queryTemplate = input.queryTemplate,
                 queryLimit = input.queryLimit,
-                type = input.type
+                type = input.type,
             )
         val templateQuery = toDomainObject(templateQueryRepository.save(templateQueryEntity))
         publisher.publishEvent(TemplateQuerysCreatedEvent(this, listOf(templateQuery)))

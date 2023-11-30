@@ -1,0 +1,14 @@
+extend type Query {
+    statistics: [Statistic!]!
+}
+
+type Statistic {
+    id: ID!
+    moment: Date!
+    hour: Int!
+    type: String!
+    metadata: String!
+    amount: Int!
+    createdAt: DateTime!
+    updatedAt: DateTime
+}

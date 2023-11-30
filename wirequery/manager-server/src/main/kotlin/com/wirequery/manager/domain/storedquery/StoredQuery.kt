@@ -25,6 +25,6 @@ data class StoredQuery(
 ) {
     enum class Type {
         QUERY,
-        QUERY_WITH_TRACING
+        QUERY_WITH_TRACING,
     }
 }

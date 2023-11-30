@@ -228,7 +228,7 @@ export function NavbarSimpleColored({
     },
     {
       link: '/users',
-      label: 'User Management',
+      label: 'Management',
       icon: IconUsers,
       visible: authorisations['MANAGE_USERS'] || authorisations['MANAGE_ROLES'],
     },

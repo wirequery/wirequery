@@ -152,7 +152,7 @@ describe('ApplicationDetails', () => {
         </Provider>
       )
     })
-    window.prompt = jest.fn(() => undefined)
+    window.prompt = jest.fn(() => null)
     expect(mockClient.executeMutation).not.toHaveBeenCalled()
     expect(screen.getAllByText('Unquarantine')).not.toHaveLength(0)
     fireEvent.click(screen.getByText('Unquarantine'))

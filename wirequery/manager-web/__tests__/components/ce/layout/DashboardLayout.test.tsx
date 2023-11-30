@@ -100,7 +100,7 @@ describe('DashboardLayout', () => {
       renderDashboardLayout({})
       expect(screen.queryByText('ADMINISTRATION')).toBeNull()
       expect(screen.queryByText('Applications')).toBeNull()
-      expect(screen.queryByText('User Management')).toBeNull()
+      expect(screen.queryByText('Management')).toBeNull()
     })
 
     it('renders ADMINISTRATION and Explore if VIEW_APPLICATIONS authorisation is present', () => {
@@ -112,13 +112,13 @@ describe('DashboardLayout', () => {
     it('renders ADMINISTRATION and Queries if MANAGE_USERS authorisation is present', () => {
       renderDashboardLayout({ MANAGE_USERS: true })
       expect(screen.queryByText('ADMINISTRATION')).not.toBeNull()
-      expect(screen.queryByText('User Management')).not.toBeNull()
+      expect(screen.queryByText('Management')).not.toBeNull()
     })
 
     it('renders ADMINISTRATION and Queries if MANAGE_ROLES authorisation is present', () => {
       renderDashboardLayout({ MANAGE_ROLES: true })
       expect(screen.queryByText('ADMINISTRATION')).not.toBeNull()
-      expect(screen.queryByText('User Management')).not.toBeNull()
+      expect(screen.queryByText('Management')).not.toBeNull()
     })
   })
 

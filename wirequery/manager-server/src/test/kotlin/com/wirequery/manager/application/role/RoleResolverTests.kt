@@ -13,8 +13,6 @@ import com.netflix.graphql.dgs.autoconfig.DgsExtendedScalarsAutoConfiguration
 import com.netflix.graphql.dgs.exceptions.QueryException
 import com.wirequery.manager.application.ResolverTestContext
 import com.wirequery.manager.application.graphql.GraphQLExceptionHandler
-import com.wirequery.manager.application.role.RoleDataLoader
-import com.wirequery.manager.application.role.RoleResolver
 import com.wirequery.manager.domain.authorisation.AuthorisationEnum
 import com.wirequery.manager.domain.authorisation.AuthorisationService
 import com.wirequery.manager.domain.role.RoleFixtures.CREATE_ROLE_FIXTURE_1

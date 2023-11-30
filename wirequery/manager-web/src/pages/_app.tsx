@@ -98,6 +98,13 @@ function App({
                   primaryColor: 'purple',
                   primaryShade: 4,
                   defaultRadius: 0,
+                  components: {
+                    Modal: {
+                      defaultProps: {
+                        transitionProps: { duration: 0 },
+                      },
+                    },
+                  },
                   spacing: { xs: '.4rem' },
                   globalStyles: (theme) => ({
                     body: {

@@ -11,8 +11,6 @@ import com.wirequery.manager.domain.application.ApplicationFixtures.APPLICATION_
 import com.wirequery.manager.domain.global.PubSubService
 import com.wirequery.manager.domain.query.QueryEvent
 import com.wirequery.manager.domain.query.QueryParserService
-import com.wirequery.manager.domain.query.QueryParserService.Query
-import com.wirequery.manager.domain.query.QueryParserService.QueryHead
 import com.wirequery.manager.domain.query.QueryReport
 import com.wirequery.manager.domain.query.QueryService.QueryMutation.QueryOneTrace
 import com.wirequery.manager.domain.storedquery.StoredQuery

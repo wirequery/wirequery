@@ -44,11 +44,9 @@ class ApplicationResolver(
 
     @DgsMutation
     @PreAuthorize(
-        """hasAuthority(T(com.wirequery.manager.domain.authorisation.AuthorisationEnum).CREATE_GROUP)"""
+        """hasAuthority(T(com.wirequery.manager.domain.authorisation.AuthorisationEnum).CREATE_GROUP)""",
     )
-    fun createApplication(
-        input: CreateApplicationInput,
-    ): Application? {
+    fun createApplication(input: CreateApplicationInput): Application? {
         return applicationService.create(input)
     }
 

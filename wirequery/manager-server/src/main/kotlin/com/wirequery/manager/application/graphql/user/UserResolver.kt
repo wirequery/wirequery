@@ -9,8 +9,10 @@ package com.wirequery.manager.application.graphql.user
 
 import com.netflix.graphql.dgs.*
 import com.wirequery.manager.domain.user.User
+import com.wirequery.manager.domain.user.UserEvent.UsersLoggedInEvent
 import com.wirequery.manager.domain.user.UserService
 import com.wirequery.manager.domain.user.UserService.*
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -21,6 +23,7 @@ import java.util.concurrent.CompletableFuture
 @DgsComponent
 class UserResolver(
     private val userService: UserService,
+    private val publisher: ApplicationEventPublisher,
     private val authenticationProvider: AuthenticationProvider,
 ) {
     @DgsQuery
@@ -44,8 +47,11 @@ class UserResolver(
     @DgsMutation
     fun login(input: LoginInput): User? {
         return try {
+            // TODO this should either move to service entirely, or at least the event publishing, as it breaks
+            //  abstraction currently.
             val credentials = UsernamePasswordAuthenticationToken(input.username, input.password)
             SecurityContextHolder.getContext().authentication = authenticationProvider.authenticate(credentials)
+            publisher.publishEvent(UsersLoggedInEvent(this, listOf(input.username)))
             currentUser()
         } catch (e: AuthenticationException) {
             null
