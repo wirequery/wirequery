@@ -8,8 +8,8 @@
 package com.wirequery.manager.domain.statistic
 
 import com.wirequery.manager.domain.querylog.QueryLogEvent
-import com.wirequery.manager.domain.statistic.Statistic.TypeEnum.LOGIN
-import com.wirequery.manager.domain.statistic.Statistic.TypeEnum.QUERY_LOG
+import com.wirequery.manager.domain.recording.RecordingEvent
+import com.wirequery.manager.domain.statistic.Statistic.TypeEnum.*
 import com.wirequery.manager.domain.user.UserEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
@@ -28,6 +28,7 @@ class StatisticListener(
                         mapOf(
                             "storedQueryId" to "" + it.storedQueryId,
                             "appName" to it.appName,
+                            "length" to "" + it.message.length,
                         ),
                     amount = 1,
                 ),
@@ -44,6 +45,23 @@ class StatisticListener(
                     metadata =
                         mapOf(
                             "username" to it,
+                        ),
+                    amount = 1,
+                ),
+            )
+        }
+    }
+
+    @EventListener
+    fun onEvent(event: RecordingEvent.RecordingsCreatedEvent) {
+        event.entities.forEach {
+            statisticService.increment(
+                StatisticService.IncrementStatisticInput(
+                    type = RECORDING,
+                    metadata =
+                        mapOf(
+                            "id" to "" + it.id,
+                            "sessionId" to "" + it.sessionId,
                         ),
                     amount = 1,
                 ),
