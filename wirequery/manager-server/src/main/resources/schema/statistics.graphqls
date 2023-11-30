@@ -9,6 +9,4 @@ type Statistic {
     type: String!
     metadata: String!
     amount: Int!
-    createdAt: DateTime!
-    updatedAt: DateTime
 }
