@@ -7,8 +7,10 @@
 
 import { DetailsTable } from '@components/shared/DetailsTable'
 import { Query } from '@generated/graphql'
-import { Flex, SimpleGrid, useMantineTheme } from '@mantine/core'
-import { DateTimePicker } from '@mantine/dates'
+import { incrementHourValues, zeroesForEachHour } from '@lib/chart-helpers'
+import { startOfMonth, startOfNextMonth, startOfLastMonth, toDate, toDay } from '@lib/date-helpers'
+import { Button, Flex, SimpleGrid, useMantineTheme } from '@mantine/core'
+import { DatePickerInput } from '@mantine/dates'
 import dynamic from 'next/dynamic'
 import { useMemo, useState } from 'react'
 import { gql, useQuery } from 'urql'
@@ -17,8 +19,47 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 export function StatisticList() {
   const theme = useMantineTheme()
-  const [earliest, setEarliest] = useState(undefined)
-  const [latest, setLatest] = useState(undefined)
+
+  const defaultEarliest = useMemo(() => toDate({
+    day: startOfMonth(toDay(new Date())),
+    hour: 0,
+    value: 0
+  }), [])
+
+  const defaultLatest = useMemo(() => toDate({
+    day: startOfNextMonth(toDay(new Date())),
+    hour: 0,
+    value: 0
+  }), [])
+
+  const [earliest, setEarliest] = useState(defaultEarliest)
+  const [latest, setLatest] = useState(defaultLatest)
+
+  const setLastMonth = () => {
+    setEarliest(toDate({
+      day: startOfLastMonth(toDay(new Date())),
+      hour: 0,
+      value: 0
+    }))
+    setLatest(toDate({
+      day: startOfMonth(toDay(new Date())),
+      hour: 0,
+      value: 0
+    }))
+  }
+
+  const setThisMonth = () => {
+    setEarliest(toDate({
+      day: startOfMonth(toDay(new Date())),
+      hour: 0,
+      value: 0
+    }))
+    setLatest(toDate({
+      day: startOfNextMonth(toDay(new Date())),
+      hour: 0,
+      value: 0
+    }))
+  }
 
   const [{ data, error, fetching }] = useQuery<Query>({
     query: gql`
@@ -49,17 +90,36 @@ export function StatisticList() {
     return <div>{error?.message}</div>
   }
 
-  const getMomentAsDateTime = (s: any) =>
-    new Date(s.moment + 'T' + s.hour + ':00:00')
+  const getMomentAsDateTime = (s: any) => {
+    if (s.hour < 10) {
+      return new Date(s.moment + 'T0' + s.hour + ':00:00')
+    }
+    return new Date(s.moment + 'T' + s.hour + ':00:00')
+  }
 
   const statisticsInRange = (data?.statistics ?? [])
     .filter((s) => !earliest || getMomentAsDateTime(s) >= (earliest as any))
-    .filter((s) => !latest || getMomentAsDateTime(s) <= (latest as any))
+    .filter((s) => !latest || getMomentAsDateTime(s) < (latest as any))
 
-  const getStatistics = (type: string) =>
-    statisticsInRange
+  const getStatistics = (type: string) => {
+    const statsInHourValueFormat = (data?.statistics ?? [])
       .filter((s) => s.type === type)
-      .map((s) => ({ y: s.amount, x: getMomentAsDateTime(s) })) ?? []
+      .map(s => {
+        return {
+          day: toDay(new Date(s.moment)),
+          hour: s.hour,
+          value: s.amount
+        }
+      })
+
+    return incrementHourValues(zeroesForEachHour(toDay(earliest), toDay(latest)), statsInHourValueFormat)
+      .map(hourValue => (
+        {
+          x: toDate(hourValue),
+          y: hourValue.value
+        }
+      ))
+  }
 
   const uniqueLogins: any = {}
   statisticsInRange
@@ -72,21 +132,24 @@ export function StatisticList() {
   return (
     <>
       <Flex gap={'xs'} m={'xs'}>
-        <DateTimePicker
+        <Button onClick={() => setLastMonth()}>Last Month</Button>
+        <Button onClick={() => setThisMonth()}>This Month</Button>
+      </Flex>
+
+      <Flex gap={'xs'} m={'xs'}>
+        <DatePickerInput
           w={200}
           dropdownType="modal"
-          label="Earliest"
-          clearable
+          label="From"
           placeholder="Earliest"
           value={earliest}
           onChange={(e) => setEarliest(e as any)}
         />
 
-        <DateTimePicker
+        <DatePickerInput
           w={200}
           dropdownType="modal"
-          label="Latest"
-          clearable
+          label="To, exclusive"
           placeholder="Latest"
           value={latest}
           onChange={(e) => setLatest(e as any)}
@@ -111,7 +174,7 @@ export function StatisticList() {
               type: 'datetime',
             },
             chart: {
-              type: 'line',
+              type: 'scatter',
               toolbar: {
                 show: false,
               },
@@ -142,7 +205,7 @@ export function StatisticList() {
               type: 'datetime',
             },
             chart: {
-              type: 'line',
+              type: 'scatter',
               toolbar: {
                 show: false,
               },
@@ -152,32 +215,6 @@ export function StatisticList() {
             },
           }}
         />
-        <ReactApexChart
-          series={[{ name: 'Logins', data: getStatistics('LOGIN') }]}
-          height={250}
-          options={{
-            title: {
-              text: 'Logins',
-            },
-            subtitle: {
-              text: 'Total number of Login events',
-            },
-            colors: [(theme.colors as any)?.purple?.[6]],
-            xaxis: {
-              type: 'datetime',
-            },
-            chart: {
-              type: 'line',
-              toolbar: {
-                show: false,
-              },
-              zoom: {
-                enabled: false,
-              },
-            },
-          }}
-        />
-
         <ReactApexChart
           series={[{ name: 'Recordings', data: getStatistics('RECORDING') }]}
           height={250}
@@ -193,7 +230,7 @@ export function StatisticList() {
               type: 'datetime',
             },
             chart: {
-              type: 'line',
+              type: 'scatter',
               toolbar: {
                 show: false,
               },

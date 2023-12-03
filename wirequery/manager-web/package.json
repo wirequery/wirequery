@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "npm run generate:schema && TZ=UTC NODE_ENV=test jest --passWithNoTests --coverage --collectCoverageFrom='./src/components/**'",
+    "test": "npm run generate:schema && TZ=UTC NODE_ENV=test jest --passWithNoTests --coverage --collectCoverageFrom='./src/components/**' --collectCoverageFrom='./src/lib/**'",
     "test:dev": "npm run generate:schema && TZ=UTC NODE_ENV=test jest --watchAll",
     "start": "NODE_ENV=production PORT=$PORT next start",
     "build": "npm run generate:schema && rm -rf .next && next build",

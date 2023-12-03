@@ -29,8 +29,41 @@ internal class StatisticListenerUnitTests {
     private lateinit var statisticListener: StatisticListener
 
     @Test
-    fun `When QueryLogsCreatedEvent is triggered, the related statistic is incremented`() {
-        statisticListener.onEvent(QueryLogEvent.QueryLogsCreatedEvent(this, listOf(QUERY_LOG_FIXTURE_WITH_ID_1)))
+    fun `When QueryLogsCreatedEvent is triggered, the related statistics are incremented`() {
+        statisticListener.onEvent(QueryLogEvent.QueryLogsCreatedEvent(this,
+            listOf(QUERY_LOG_FIXTURE_WITH_ID_1.copy(message = " ".repeat(4095)))))
+
+        verify(statisticService)
+            .increment(
+                StatisticService.IncrementStatisticInput(
+                    type = Statistic.TypeEnum.QUERY_LOG,
+                    metadata =
+                    mapOf(
+                        "storedQueryId" to "" + QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId,
+                        "appName" to QUERY_LOG_FIXTURE_WITH_ID_1.appName,
+                    ),
+                    amount = 1,
+                ),
+            )
+
+        verify(statisticService)
+            .increment(
+                StatisticService.IncrementStatisticInput(
+                    type = Statistic.TypeEnum.QUERY_LOG_CHUNKS,
+                    metadata =
+                    mapOf(
+                        "storedQueryId" to "" + QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId,
+                        "appName" to QUERY_LOG_FIXTURE_WITH_ID_1.appName,
+                    ),
+                    amount = 1,
+                ),
+            )
+    }
+
+    @Test
+    fun `When QueryLogsCreatedEvent is triggered, chunks are incremented by 2 for each multiple of 4096`() {
+        statisticListener.onEvent(QueryLogEvent.QueryLogsCreatedEvent(this,
+            listOf(QUERY_LOG_FIXTURE_WITH_ID_1.copy(message = " ".repeat(4096)))))
 
         verify(statisticService)
             .increment(
@@ -40,9 +73,21 @@ internal class StatisticListenerUnitTests {
                         mapOf(
                             "storedQueryId" to "" + QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId,
                             "appName" to QUERY_LOG_FIXTURE_WITH_ID_1.appName,
-                            "length" to "" + QUERY_LOG_FIXTURE_WITH_ID_1.message.length,
                         ),
                     amount = 1,
+                ),
+            )
+
+        verify(statisticService)
+            .increment(
+                StatisticService.IncrementStatisticInput(
+                    type = Statistic.TypeEnum.QUERY_LOG_CHUNKS,
+                    metadata =
+                    mapOf(
+                        "storedQueryId" to "" + QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId,
+                        "appName" to QUERY_LOG_FIXTURE_WITH_ID_1.appName,
+                    ),
+                    amount = 2,
                 ),
             )
     }

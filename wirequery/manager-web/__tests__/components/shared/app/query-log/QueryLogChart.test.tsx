@@ -15,7 +15,7 @@ jest.mock('react-apexcharts', () => () => <div>ReactApexChart</div>)
 // However, it may be nice at some point to also test that the start and end times overlap in the eventual chart.
 
 describe('QueryLogChart', () => {
-  it('calculates overlaps between different datapoints, adds them together and shows a chart', () => {
+  it('renders', () => {
     render(
       <ColorSchemeProvider
         colorScheme={undefined as any}
