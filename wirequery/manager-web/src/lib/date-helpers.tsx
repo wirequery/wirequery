@@ -6,14 +6,14 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 export interface Day {
-  year: number;
-  month: number;
-  day: number;
+  year: number
+  month: number
+  day: number
 }
 
 export interface HourValue {
-  day: Day;
-  hour: number;
+  day: Day
+  hour: number
   value: number
 }
 
@@ -37,14 +37,14 @@ export const nextDay = (day: Day): Day => {
     return {
       year: day.year + 1,
       month: 1,
-      day: 1
+      day: 1,
     }
   }
   if (endOfTheMonth) {
     return {
       year: day.year,
       month: day.month + 1,
-      day: 1
+      day: 1,
     }
   }
   return {
@@ -76,14 +76,19 @@ export const toDay = (date: Date): Day => {
 }
 
 export const toDate = (hourValue: HourValue): Date => {
-  return new Date(hourValue.day.year, hourValue.day.month - 1, hourValue.day.day, hourValue.hour)
+  return new Date(
+    hourValue.day.year,
+    hourValue.day.month - 1,
+    hourValue.day.day,
+    hourValue.hour
+  )
 }
 
 export const startOfMonth = (day: Day): Day => {
   return {
     year: day.year,
     month: day.month,
-    day: 1
+    day: 1,
   }
 }
 
@@ -92,13 +97,13 @@ export const startOfNextMonth = (day: Day): Day => {
     return {
       year: day.year,
       month: day.month + 1,
-      day: 1
+      day: 1,
     }
   }
   return {
     year: day.year + 1,
     month: 1,
-    day: 1
+    day: 1,
   }
 }
 
@@ -107,12 +112,12 @@ export const startOfLastMonth = (day: Day): Day => {
     return {
       year: day.year,
       month: day.month - 1,
-      day: 1
+      day: 1,
     }
   }
   return {
     year: day.year - 1,
     month: 12,
-    day: 1
+    day: 1,
   }
 }

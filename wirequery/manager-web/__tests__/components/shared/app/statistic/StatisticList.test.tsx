@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { StatisticList } from '@components/shared/app/statistic/StatisticList'
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'

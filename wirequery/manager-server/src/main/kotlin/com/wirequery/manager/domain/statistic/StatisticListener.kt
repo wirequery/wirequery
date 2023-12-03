@@ -25,10 +25,10 @@ class StatisticListener(
                 StatisticService.IncrementStatisticInput(
                     type = QUERY_LOG,
                     metadata =
-                    mapOf(
-                        "storedQueryId" to "" + it.storedQueryId,
-                        "appName" to it.appName,
-                    ),
+                        mapOf(
+                            "storedQueryId" to "" + it.storedQueryId,
+                            "appName" to it.appName,
+                        ),
                     amount = 1,
                 ),
             )
@@ -54,7 +54,7 @@ class StatisticListener(
                 StatisticService.IncrementStatisticInput(
                     type = LOGIN,
                     metadata =
-                    mapOf("username" to it),
+                        mapOf("username" to it),
                     amount = 1,
                 ),
             )
@@ -68,10 +68,10 @@ class StatisticListener(
                 StatisticService.IncrementStatisticInput(
                     type = RECORDING,
                     metadata =
-                    mapOf(
-                        "id" to "" + it.id,
-                        "sessionId" to "" + it.sessionId,
-                    ),
+                        mapOf(
+                            "id" to "" + it.id,
+                            "sessionId" to "" + it.sessionId,
+                        ),
                     amount = 1,
                 ),
             )

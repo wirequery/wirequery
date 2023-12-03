@@ -11,6 +11,7 @@ import { useMantineTheme } from '@mantine/core'
 
 interface TimelineEvent {
   name: string
+  onClick?: () => void
   events: { start: number; end: number }[]
 }
 
@@ -149,7 +150,7 @@ export const SessionTimeline: React.FC<TimelineProps> = ({
 
     svg
       .append('g')
-      .style('font', '13px arial')
+      .style('font', '15px arial')
       .attr(
         'color',
         theme.colorScheme === 'dark'
@@ -160,6 +161,10 @@ export const SessionTimeline: React.FC<TimelineProps> = ({
       .call((g) =>
         g
           .selectAll('.tick > text')
+          .data(data)
+          .on('click', (_, event: any) => event.onClick?.())
+          .attr('text-decoration', 'underline')
+          .attr('cursor', 'pointer')
           .attr('fill', () =>
             theme.colorScheme === 'dark'
               ? theme.colors.gray[6]

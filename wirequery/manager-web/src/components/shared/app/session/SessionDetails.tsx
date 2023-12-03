@@ -16,12 +16,14 @@ import { gql, useQuery } from 'urql'
 import { RecordingPlayer } from '../recording/RecordingPlayer'
 import { TraceDetails } from '../trace/TraceDetails'
 import { SessionTimeline } from './SessionTimeline'
+import { useRouter } from 'next/router'
 
 export interface SessionDetailsProps {
   id: string | number
 }
 
 export function SessionDetails(props: SessionDetailsProps) {
+  const router = useRouter()
   const [selectedItem, setSelectedItem] = useState<any>(undefined)
   const [currentTime, setCurrentTime] = useState(0)
   const [metadata, setMetadata] = useState<any>(undefined)
@@ -39,6 +41,7 @@ export function SessionDetails(props: SessionDetailsProps) {
           storedQuerys {
             id
             name
+            sessionId
             queryLogs {
               startTime
               endTime
@@ -68,6 +71,9 @@ export function SessionDetails(props: SessionDetailsProps) {
   const queryLogEvents =
     data?.session?.storedQuerys?.map((sq) => ({
       name: sq.name,
+      onClick: () => {
+        router.push('/sessions/' + sq.sessionId + '/stored-querys/' + sq.id)
+      },
       events: sq.queryLogs.map((ql) => ({
         start: ql.startTime,
         end: ql.endTime,

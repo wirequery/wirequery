@@ -8,7 +8,13 @@
 import { DetailsTable } from '@components/shared/DetailsTable'
 import { Query } from '@generated/graphql'
 import { incrementHourValues, zeroesForEachHour } from '@lib/chart-helpers'
-import { startOfMonth, startOfNextMonth, startOfLastMonth, toDate, toDay } from '@lib/date-helpers'
+import {
+  startOfMonth,
+  startOfNextMonth,
+  startOfLastMonth,
+  toDate,
+  toDay,
+} from '@lib/date-helpers'
 import { Button, Flex, SimpleGrid, useMantineTheme } from '@mantine/core'
 import { DatePickerInput } from '@mantine/dates'
 import dynamic from 'next/dynamic'
@@ -20,45 +26,61 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 export function StatisticList() {
   const theme = useMantineTheme()
 
-  const defaultEarliest = useMemo(() => toDate({
-    day: startOfMonth(toDay(new Date())),
-    hour: 0,
-    value: 0
-  }), [])
+  const defaultEarliest = useMemo(
+    () =>
+      toDate({
+        day: startOfMonth(toDay(new Date())),
+        hour: 0,
+        value: 0,
+      }),
+    []
+  )
 
-  const defaultLatest = useMemo(() => toDate({
-    day: startOfNextMonth(toDay(new Date())),
-    hour: 0,
-    value: 0
-  }), [])
+  const defaultLatest = useMemo(
+    () =>
+      toDate({
+        day: startOfNextMonth(toDay(new Date())),
+        hour: 0,
+        value: 0,
+      }),
+    []
+  )
 
   const [earliest, setEarliest] = useState(defaultEarliest)
   const [latest, setLatest] = useState(defaultLatest)
 
   const setLastMonth = () => {
-    setEarliest(toDate({
-      day: startOfLastMonth(toDay(new Date())),
-      hour: 0,
-      value: 0
-    }))
-    setLatest(toDate({
-      day: startOfMonth(toDay(new Date())),
-      hour: 0,
-      value: 0
-    }))
+    setEarliest(
+      toDate({
+        day: startOfLastMonth(toDay(new Date())),
+        hour: 0,
+        value: 0,
+      })
+    )
+    setLatest(
+      toDate({
+        day: startOfMonth(toDay(new Date())),
+        hour: 0,
+        value: 0,
+      })
+    )
   }
 
   const setThisMonth = () => {
-    setEarliest(toDate({
-      day: startOfMonth(toDay(new Date())),
-      hour: 0,
-      value: 0
-    }))
-    setLatest(toDate({
-      day: startOfNextMonth(toDay(new Date())),
-      hour: 0,
-      value: 0
-    }))
+    setEarliest(
+      toDate({
+        day: startOfMonth(toDay(new Date())),
+        hour: 0,
+        value: 0,
+      })
+    )
+    setLatest(
+      toDate({
+        day: startOfNextMonth(toDay(new Date())),
+        hour: 0,
+        value: 0,
+      })
+    )
   }
 
   const [{ data, error, fetching }] = useQuery<Query>({
@@ -104,21 +126,21 @@ export function StatisticList() {
   const getStatistics = (type: string) => {
     const statsInHourValueFormat = (data?.statistics ?? [])
       .filter((s) => s.type === type)
-      .map(s => {
+      .map((s) => {
         return {
           day: toDay(new Date(s.moment)),
           hour: s.hour,
-          value: s.amount
+          value: s.amount,
         }
       })
 
-    return incrementHourValues(zeroesForEachHour(toDay(earliest), toDay(latest)), statsInHourValueFormat)
-      .map(hourValue => (
-        {
-          x: toDate(hourValue),
-          y: hourValue.value
-        }
-      ))
+    return incrementHourValues(
+      zeroesForEachHour(toDay(earliest), toDay(latest)),
+      statsInHourValueFormat
+    ).map((hourValue) => ({
+      x: toDate(hourValue),
+      y: hourValue.value,
+    }))
   }
 
   const uniqueLogins: any = {}

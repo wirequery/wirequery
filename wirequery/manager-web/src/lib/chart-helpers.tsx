@@ -5,11 +5,14 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { Day, HourValue, isBefore, nextDay } from "./date-helpers";
+import { Day, HourValue, isBefore, nextDay } from './date-helpers'
 
-export const zeroesForEachHour = (start: Day, endExclusive: Day): HourValue[] => {
+export const zeroesForEachHour = (
+  start: Day,
+  endExclusive: Day
+): HourValue[] => {
   let currentDay = start
-  const days: HourValue[] = [];
+  const days: HourValue[] = []
   while (isBefore(currentDay, endExclusive)) {
     for (let i = 0; i < 24; i++) {
       days.push({ day: currentDay, hour: i, value: 0 })
@@ -20,13 +23,24 @@ export const zeroesForEachHour = (start: Day, endExclusive: Day): HourValue[] =>
 }
 
 const createKey = (hourValue: HourValue): string => {
-  return hourValue.day.year + ':' + hourValue.day.month + ':' + hourValue.day.day + ':' + hourValue.hour
+  return (
+    hourValue.day.year +
+    ':' +
+    hourValue.day.month +
+    ':' +
+    hourValue.day.day +
+    ':' +
+    hourValue.hour
+  )
 }
 
-export const incrementHourValues = (hourValues: HourValue[], incrementByHourValues: HourValue[]) => {
-  const valueByHourValueKey: {[key: string]: number} = {}
-  
-  incrementByHourValues.forEach(hourValue => {
+export const incrementHourValues = (
+  hourValues: HourValue[],
+  incrementByHourValues: HourValue[]
+) => {
+  const valueByHourValueKey: { [key: string]: number } = {}
+
+  incrementByHourValues.forEach((hourValue) => {
     const key = createKey(hourValue)
     if (valueByHourValueKey[key] === undefined) {
       valueByHourValueKey[key] = 0
@@ -35,11 +49,11 @@ export const incrementHourValues = (hourValues: HourValue[], incrementByHourValu
   })
 
   const result: HourValue[] = []
-  hourValues.forEach(hourValue => {
+  hourValues.forEach((hourValue) => {
     result.push({
       day: hourValue.day,
       hour: hourValue.hour,
-      value: hourValue.value + (valueByHourValueKey[createKey(hourValue)] ?? 0)
+      value: hourValue.value + (valueByHourValueKey[createKey(hourValue)] ?? 0),
     })
   })
   return result
