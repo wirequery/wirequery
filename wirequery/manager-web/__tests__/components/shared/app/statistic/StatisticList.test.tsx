@@ -13,6 +13,10 @@ import { fromValue } from 'wonka'
 
 jest.mock('react-apexcharts', () => () => <div>ReactApexChart</div>)
 
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(() => ({ push: jest.fn() })),
+}))
+
 describe('StatisticList', () => {
   const statistic = {
     id: '1',
