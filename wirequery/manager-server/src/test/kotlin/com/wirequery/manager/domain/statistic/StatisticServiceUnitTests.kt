@@ -21,12 +21,16 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.time.*
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 internal class StatisticServiceUnitTests {
     @Mock
     private lateinit var statisticRepository: StatisticRepository
+
+    @Mock
+    private lateinit var clock: Clock
 
     @InjectMocks
     private lateinit var statisticService: StatisticService
@@ -43,15 +47,21 @@ internal class StatisticServiceUnitTests {
 
     @Test
     fun `increment calls incrementOrCreate on repository if all requirements are met and publishes an event`() {
+        whenever(clock.zone).thenReturn(ZoneId.systemDefault())
+
+        whenever(clock.instant()).thenReturn(Instant.now())
+
         whenever(statisticRepository.incrementOrCreate(any(), any(), any(), any(), any()))
             .thenReturn(true)
 
         statisticService.increment(INCREMENT_STATISTIC_FIXTURE_1)
 
+        val moment = LocalDateTime.now(clock)
+
         verify(statisticRepository)
             .incrementOrCreate(
-                moment = STATISTIC_ENTITY_FIXTURE_1.moment,
-                hour = STATISTIC_ENTITY_FIXTURE_1.hour,
+                moment = moment.toLocalDate(),
+                hour = moment.hour,
                 type = STATISTIC_ENTITY_FIXTURE_1.type.name,
                 metadata = STATISTIC_ENTITY_FIXTURE_1.metadata,
                 amount = STATISTIC_ENTITY_FIXTURE_1.amount,
@@ -60,15 +70,21 @@ internal class StatisticServiceUnitTests {
 
     @Test
     fun `set calls replace on repository if all requirements are met and publishes an event`() {
+        whenever(clock.zone).thenReturn(ZoneId.systemDefault())
+
+        whenever(clock.instant()).thenReturn(Instant.now())
+
         whenever(statisticRepository.replace(any(), any(), any(), any(), any()))
             .thenReturn(true)
 
         statisticService.set(SET_STATISTIC_FIXTURE_1)
 
+        val moment = LocalDateTime.now(clock)
+
         verify(statisticRepository)
             .replace(
-                moment = STATISTIC_ENTITY_FIXTURE_1.moment,
-                hour = STATISTIC_ENTITY_FIXTURE_1.hour,
+                moment = moment.toLocalDate(),
+                hour = moment.hour,
                 type = STATISTIC_ENTITY_FIXTURE_1.type.name,
                 metadata = STATISTIC_ENTITY_FIXTURE_1.metadata,
                 amount = STATISTIC_ENTITY_FIXTURE_1.amount,
