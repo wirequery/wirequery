@@ -14,7 +14,7 @@ class StreamOperationEvaluator {
     fun evaluate(compiledOperation: CompiledQuery.CompiledOperation, context: Map<String, Any>): List<Any> {
         val celExpression = compiledOperation.celExpression
             ?: error("No expression provided")
-        val expressionResult = celExpression.execute(Any::class.java, context)
+        val expressionResult = celExpression.eval(context)
         return when (compiledOperation.name) {
             "map" -> evaluateMap(expressionResult)
             "flatMap" -> evaluateFlatMap(expressionResult)

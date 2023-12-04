@@ -10,6 +10,7 @@ package com.wirequery.core.query
 import com.wirequery.core.query.context.QueryHead
 import com.wirequery.core.query.context.CompiledQuery
 import com.wirequery.core.query.context.Query
+import dev.cel.runtime.CelRuntime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -20,7 +21,6 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import org.projectnessie.cel.tools.Script
 
 @ExtendWith(MockitoExtension::class)
 internal class QueryCompilerTest {
@@ -89,9 +89,9 @@ internal class QueryCompilerTest {
         whenever(queryAuthorizer.isAuthorized(any(), any()))
             .thenReturn(true)
 
-        val scriptMock = mock<Script>()
+        val programMock = mock<CelRuntime.Program>()
         whenever(expressionCompiler.compile("1 + 1"))
-            .thenReturn(scriptMock)
+            .thenReturn(programMock)
 
         val query = Query(
             queryHead = SOME_APP_HEAD,
@@ -104,7 +104,7 @@ internal class QueryCompilerTest {
         val actual = queryCompiler.compile(query).streamOperations.single()
 
         assertThat(actual.name).isEqualTo("map")
-        assertThat(actual.celExpression).isEqualTo(scriptMock)
+        assertThat(actual.celExpression).isEqualTo(programMock)
     }
 
     @Test
@@ -112,10 +112,10 @@ internal class QueryCompilerTest {
         whenever(queryAuthorizer.isAuthorized(any(), any()))
             .thenReturn(true)
 
-        val scriptMock = mock<Script>()
+        val programMock = mock<CelRuntime.Program>()
 
         whenever(expressionCompiler.compile("1 + 1"))
-            .thenReturn(scriptMock)
+            .thenReturn(programMock)
 
         val query = Query(
             queryHead = SOME_APP_HEAD,
@@ -126,7 +126,7 @@ internal class QueryCompilerTest {
         val actual = queryCompiler.compile(query).aggregatorOperation
 
         assertThat(actual!!.name).isEqualTo("distinctBy")
-        assertThat(actual.celExpression).isEqualTo(scriptMock)
+        assertThat(actual.celExpression).isEqualTo(programMock)
     }
 
     private companion object {

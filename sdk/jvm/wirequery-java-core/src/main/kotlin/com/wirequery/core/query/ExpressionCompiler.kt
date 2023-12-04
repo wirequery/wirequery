@@ -7,23 +7,28 @@
 
 package com.wirequery.core.query
 
-import org.projectnessie.cel.checker.Decls
-import org.projectnessie.cel.tools.Script
-import org.projectnessie.cel.tools.ScriptHost
-import org.projectnessie.cel.types.jackson.JacksonRegistry
+import dev.cel.common.types.SimpleType
+import dev.cel.compiler.CelCompilerFactory
+import dev.cel.runtime.CelRuntime.Program
+import dev.cel.runtime.CelRuntimeFactory
 
 class ExpressionCompiler {
-    private val scriptHost = ScriptHost.newBuilder()
-        .registry(JacksonRegistry.newRegistry())
-        .build()
+    fun compile(expression: String): Program {
+        return CEL_RUNTIME.createProgram(CEL_COMPILER.compile(expression).ast)
+    }
 
-    fun compile(expression: String): Script {
-        return scriptHost
-            .buildScript(expression)
-            .withDeclarations(
-                Decls.newVar("it", Decls.Any),
-                Decls.newVar("context", Decls.Any),
-            )
-            .build()
+    private companion object {
+        private val CEL_COMPILER =
+            CelCompilerFactory
+                .standardCelCompilerBuilder()
+                .addVar("it", SimpleType.ANY)
+                .addVar("context", SimpleType.ANY)
+                .build()
+
+        private val CEL_RUNTIME =
+            CelRuntimeFactory
+                .standardCelRuntimeBuilder()
+                .build()
+
     }
 }

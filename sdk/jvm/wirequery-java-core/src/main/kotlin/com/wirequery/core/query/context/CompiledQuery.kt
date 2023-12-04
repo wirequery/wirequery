@@ -7,7 +7,7 @@
 
 package com.wirequery.core.query.context
 
-import org.projectnessie.cel.tools.Script
+import dev.cel.runtime.CelRuntime
 
 data class CompiledQuery(
     val queryHead: QueryHead,
@@ -17,7 +17,7 @@ data class CompiledQuery(
 
     data class CompiledOperation(
         val name: String,
-        val celExpression: Script?
+        val celExpression: CelRuntime.Program?
     )
 
     /** Memory to be used in the compiled query's entire lifespan for aggregation. */

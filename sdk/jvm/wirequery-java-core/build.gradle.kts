@@ -30,9 +30,7 @@ repositories {
 
 dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	api("org.projectnessie.cel:cel-core:0.3.15")
-	api("org.projectnessie.cel:cel-tools:0.3.15")
-	api("org.projectnessie.cel:cel-jackson:0.3.15")
+	implementation("dev.cel:cel:0.2.0")
 	implementation("com.fasterxml.jackson.core:jackson-databind:2.15.0")
 	testImplementation("org.mockito:mockito-core:5.3.1")
 	testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")

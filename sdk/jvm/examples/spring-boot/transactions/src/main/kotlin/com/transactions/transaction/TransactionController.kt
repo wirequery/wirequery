@@ -7,6 +7,7 @@
 
 package com.transactions.transaction
 
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @CrossOrigin
@@ -17,7 +18,7 @@ class TransactionController(
 ) {
 
     @GetMapping
-    fun findByAccount(@RequestHeader accountId: String) =
-        transactionRepository.findAll(accountId)
+    fun findByAccount(@RequestHeader accountId: String): ResponseEntity<List<Transaction>> =
+        ResponseEntity.ok(transactionRepository.findAll(accountId))
 
 }

@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { StatisticList } from '@components/shared/app/statistic/StatisticList'
+import { StatisticsQuery } from '@generated/graphql'
 import { render } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { Client, Provider } from 'urql'
@@ -27,12 +28,12 @@ describe('StatisticList', () => {
     amount: 10,
   }
 
-  // Most of the code in this component is visual, so we only check if no error occures when rendered.
+  // Most of the code in this component is visual, so we only check if no error occures when rendering.
 
   it('renders', () => {
     const executeQuery = jest.fn()
     executeQuery.mockReturnValue(
-      fromValue({
+      fromValue<{ data: StatisticsQuery }>({
         data: {
           statistics: [statistic],
         },
