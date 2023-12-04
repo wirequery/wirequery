@@ -32,6 +32,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("dev.cel:cel:0.2.0")
 	implementation("com.fasterxml.jackson.core:jackson-databind:2.15.0")
+	api("com.google.guava:guava:32.1.3-jre")
 	testImplementation("org.mockito:mockito-core:5.3.1")
 	testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
 	testImplementation("org.mockito:mockito-junit-jupiter:5.3.1")
