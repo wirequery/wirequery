@@ -20,6 +20,10 @@ jest.mock('@components/shared/app/recording/RecordingPlayer', () => ({
   RecordingPlayer: () => <></>,
 }))
 
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(() => ({ push: jest.fn() })),
+}))
+
 describe('SessionDetails', () => {
   const session = {
     id: '1',
