@@ -7,17 +7,58 @@
 
 package com.wirequery.manager.domain.statistic
 
+import com.wirequery.manager.domain.query.QueryEvent
+import com.wirequery.manager.domain.query.QueryParserService
 import com.wirequery.manager.domain.querylog.QueryLogEvent
 import com.wirequery.manager.domain.recording.RecordingEvent
 import com.wirequery.manager.domain.statistic.Statistic.TypeEnum.*
+import com.wirequery.manager.domain.storedquery.StoredQueryService
 import com.wirequery.manager.domain.user.UserEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 
 @Component
 class StatisticListener(
+    private val queryParserService: QueryParserService,
     private val statisticService: StatisticService,
 ) {
+    @EventListener
+    fun onEvent(event: QueryEvent.QueryEnteredEvent) {
+        statisticService.increment(
+            StatisticService.IncrementStatisticInput(
+                type = INSTANT_QUERY,
+                metadata =
+                    mapOf("appName" to queryParserService.parse(event.query).queryHead.appName),
+                amount = 1,
+            ),
+        )
+    }
+
+    @EventListener
+    fun onEvent(event: QueryEvent.QueryReportedEvent) {
+        if (event.report.queryId.startsWith(StoredQueryService.STORED_QUERY_PREFIX)) {
+            // This is already being picked up by QueryLogsCreatedEvent.
+            return
+        }
+        statisticService.increment(
+            StatisticService.IncrementStatisticInput(
+                type = INSTANT_QUERY_LOG,
+                metadata =
+                    mapOf("appName" to event.report.appName),
+                amount = 1,
+            ),
+        )
+
+        statisticService.increment(
+            StatisticService.IncrementStatisticInput(
+                type = INSTANT_QUERY_LOG_CHUNKS,
+                metadata =
+                    mapOf("appName" to event.report.appName),
+                amount = event.report.message.length / 4096 + 1,
+            ),
+        )
+    }
+
     @EventListener
     fun onEvent(event: QueryLogEvent.QueryLogsCreatedEvent) {
         event.entities.forEach {

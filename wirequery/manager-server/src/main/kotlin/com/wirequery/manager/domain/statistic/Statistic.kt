@@ -18,6 +18,9 @@ data class Statistic(
     val amount: Int,
 ) {
     enum class TypeEnum {
+        INSTANT_QUERY,
+        INSTANT_QUERY_LOG,
+        INSTANT_QUERY_LOG_CHUNKS,
         QUERY_LOG,
         QUERY_LOG_CHUNKS,
         LOGIN,

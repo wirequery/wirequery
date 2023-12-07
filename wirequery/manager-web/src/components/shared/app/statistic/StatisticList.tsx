@@ -15,7 +15,7 @@ import {
   toDate,
   toDay,
 } from '@lib/date-helpers'
-import { Button, Flex, SimpleGrid, useMantineTheme } from '@mantine/core'
+import { Button, Flex, SimpleGrid, Title, useMantineTheme } from '@mantine/core'
 import { DatePickerInput } from '@mantine/dates'
 import dynamic from 'next/dynamic'
 import { useMemo, useState } from 'react'
@@ -178,6 +178,106 @@ export function StatisticList() {
         />
       </Flex>
 
+      <Title my="xl" m="xs" order={2}>
+        Instant Queries
+      </Title>
+
+      <SimpleGrid cols={2}>
+        <ReactApexChart
+          series={[
+            { name: 'Instant Queries', data: getStatistics('INSTANT_QUERY') },
+          ]}
+          height={250}
+          options={{
+            title: {
+              text: 'Instant Queries',
+            },
+            subtitle: {
+              text: 'Total number of Instant Queries',
+            },
+            colors: [(theme.colors as any)?.purple?.[6]],
+            xaxis: {
+              type: 'datetime',
+            },
+            chart: {
+              type: 'scatter',
+              toolbar: {
+                show: false,
+              },
+              zoom: {
+                enabled: false,
+              },
+            },
+          }}
+        />
+
+        <ReactApexChart
+          series={[
+            {
+              name: 'Instant Query Log Events',
+              data: getStatistics('INSTANT_QUERY_LOG'),
+            },
+          ]}
+          height={250}
+          options={{
+            title: {
+              text: 'Instant Query Log Events',
+            },
+            subtitle: {
+              text: 'Total number of Instant Query Log Events',
+            },
+            colors: [(theme.colors as any)?.purple?.[6]],
+            xaxis: {
+              type: 'datetime',
+            },
+            chart: {
+              type: 'scatter',
+              toolbar: {
+                show: false,
+              },
+              zoom: {
+                enabled: false,
+              },
+            },
+          }}
+        />
+
+        <ReactApexChart
+          series={[
+            {
+              name: 'Instant Query Log Chunks',
+              data: getStatistics('INSTANT_QUERY_LOG_CHUNKS'),
+            },
+          ]}
+          height={250}
+          options={{
+            title: {
+              text: 'Instant Query Log Chunks',
+            },
+            subtitle: {
+              text: 'Counted as chunks of 4KB.',
+            },
+            colors: [(theme.colors as any)?.purple?.[6]],
+            xaxis: {
+              type: 'datetime',
+            },
+            chart: {
+              type: 'scatter',
+              toolbar: {
+                show: false,
+              },
+              zoom: {
+                enabled: false,
+              },
+            },
+          }}
+        />
+      </SimpleGrid>
+
+      <Title my="xl" m="xs" order={2}>
+        Query Logs
+      </Title>
+
       <SimpleGrid cols={2}>
         <ReactApexChart
           series={[
@@ -237,6 +337,13 @@ export function StatisticList() {
             },
           }}
         />
+      </SimpleGrid>
+
+      <Title my="xl" m="xs" order={2}>
+        Recordings
+      </Title>
+
+      <SimpleGrid cols={2}>
         <ReactApexChart
           series={[{ name: 'Recordings', data: getStatistics('RECORDING') }]}
           height={250}
@@ -264,7 +371,11 @@ export function StatisticList() {
         />
       </SimpleGrid>
 
-      <DetailsTable w={350} striped withBorder>
+      <Title my="xl" m="xs" order={2}>
+        Counters
+      </Title>
+
+      <DetailsTable m="xs" w={350} striped withBorder>
         <thead>
           <tr>
             <th></th>

@@ -104,7 +104,7 @@ describe('CurrentUserSettings', () => {
     const saveFn = jest.fn()
     render(
       <Provider value={mockClient as Client}>
-        <CurrentUserSettings onSave={saveFn} onCancel={jest.fn()} />
+        <CurrentUserSettings onSave={saveFn} />
       </Provider>
     )
     const labelCurrentPassword = screen.getByLabelText('Current Password')
