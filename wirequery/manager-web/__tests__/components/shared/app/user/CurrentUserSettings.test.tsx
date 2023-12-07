@@ -79,7 +79,9 @@ describe('CurrentUserSettings', () => {
       </Provider>
     )
     const labelCurrentPassword = screen.getByLabelText('Current Password')
-    fireEvent.change(labelCurrentPassword, { target: { value: 'Some Current password' } })
+    fireEvent.change(labelCurrentPassword, {
+      target: { value: 'Some Current password' },
+    })
     const labelNewPassword = screen.getByLabelText('New Password')
     fireEvent.change(labelNewPassword, { target: { value: 'Some password' } })
     const labelConfirmPassword = screen.getByLabelText('Confirm Password')
@@ -106,7 +108,9 @@ describe('CurrentUserSettings', () => {
       </Provider>
     )
     const labelCurrentPassword = screen.getByLabelText('Current Password')
-    fireEvent.change(labelCurrentPassword, { target: { value: 'Some Current password' } })
+    fireEvent.change(labelCurrentPassword, {
+      target: { value: 'Some Current password' },
+    })
     const labelNewPassword = screen.getByLabelText('New Password')
     fireEvent.change(labelNewPassword, { target: { value: 'Some password' } })
     const labelConfirmPassword = screen.getByLabelText('Confirm Password')

@@ -49,7 +49,12 @@ export function CurrentUserSettings(props: CurrentUserSettingsProps) {
         return
       }
     }
-    executeUpdateMutation({ input: { password: formData.newPassword, currentPassword: formData.currentPassword } })
+    executeUpdateMutation({
+      input: {
+        password: formData.newPassword,
+        currentPassword: formData.currentPassword,
+      },
+    })
       .then(
         (result) =>
           handleMutationResult(result) &&
