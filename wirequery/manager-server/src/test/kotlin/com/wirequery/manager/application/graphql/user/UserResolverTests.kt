@@ -358,6 +358,7 @@ class UserResolverTests : ResolverTestContext() {
         val updateUserInput =
             mapOf(
                 "password" to "Some password",
+                "currentPassword" to "Some current password",
             )
 
         val result =

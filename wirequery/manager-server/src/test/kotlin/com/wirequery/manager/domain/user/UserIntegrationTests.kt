@@ -31,7 +31,7 @@ class UserIntegrationTests : IntegrationTestContext() {
 
         var user = userService.register(REGISTER_USER_FIXTURE_1)
         userService.update(user.id, UPDATE_USER_FIXTURE_1)!!
-        user = userService.updateCurrentUser(UPDATE_CURRENT_USER_FIXTURE_1)!!
+        user = userService.updateCurrentUser(UPDATE_CURRENT_USER_FIXTURE_1.copy(currentPassword = REGISTER_USER_FIXTURE_1.password))!!
 
         assertThat(userService.findAll()).isNotEmpty
         assertThat(userService.findCurrentUser()).isNotNull
