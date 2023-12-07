@@ -30,6 +30,7 @@ describe('CurrentUserSettings', () => {
         <CurrentUserSettings onSave={jest.fn()} />
       </Provider>
     )
+    expect(screen.queryByText('Current Password')).not.toBeNull()
     expect(screen.queryByText('New Password')).not.toBeNull()
     expect(screen.queryByText('Confirm Password')).not.toBeNull()
   })
@@ -77,6 +78,8 @@ describe('CurrentUserSettings', () => {
         <CurrentUserSettings onSave={saveFn} />
       </Provider>
     )
+    const labelCurrentPassword = screen.getByLabelText('Current Password')
+    fireEvent.change(labelCurrentPassword, { target: { value: 'Some Current password' } })
     const labelNewPassword = screen.getByLabelText('New Password')
     fireEvent.change(labelNewPassword, { target: { value: 'Some password' } })
     const labelConfirmPassword = screen.getByLabelText('Confirm Password')
@@ -102,6 +105,8 @@ describe('CurrentUserSettings', () => {
         <CurrentUserSettings onSave={saveFn} onCancel={jest.fn()} />
       </Provider>
     )
+    const labelCurrentPassword = screen.getByLabelText('Current Password')
+    fireEvent.change(labelCurrentPassword, { target: { value: 'Some Current password' } })
     const labelNewPassword = screen.getByLabelText('New Password')
     fireEvent.change(labelNewPassword, { target: { value: 'Some password' } })
     const labelConfirmPassword = screen.getByLabelText('Confirm Password')

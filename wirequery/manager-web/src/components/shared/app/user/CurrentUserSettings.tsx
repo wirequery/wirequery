@@ -21,6 +21,7 @@ export interface CurrentUserSettingsProps {
 }
 
 interface CurrentUserSettingsData {
+  currentPassword: string
   newPassword: string | undefined
   confirmPassword: string | undefined
 }
@@ -48,7 +49,7 @@ export function CurrentUserSettings(props: CurrentUserSettingsProps) {
         return
       }
     }
-    executeUpdateMutation({ input: { password: formData.newPassword } })
+    executeUpdateMutation({ input: { password: formData.newPassword, currentPassword: formData.currentPassword } })
       .then(
         (result) =>
           handleMutationResult(result) &&
@@ -61,6 +62,7 @@ export function CurrentUserSettings(props: CurrentUserSettingsProps) {
 
   const form = useForm<CurrentUserSettingsData>({
     initialValues: {
+      currentPassword: '',
       newPassword: '',
       confirmPassword: '',
     },
@@ -69,6 +71,10 @@ export function CurrentUserSettings(props: CurrentUserSettingsProps) {
   return (
     <>
       <form role="form" onSubmit={form.onSubmit(doSubmit)}>
+        <PasswordInput
+          label="Current Password"
+          {...form.getInputProps('currentPassword')}
+        />
         <PasswordInput
           label="New Password"
           {...form.getInputProps('newPassword')}
