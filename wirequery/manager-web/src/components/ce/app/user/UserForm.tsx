@@ -194,7 +194,7 @@ export function UserForm(props: UserFormProps) {
           {...form.getInputProps('enabled', { type: 'checkbox' })}
         />
         <MultiSelect
-          label="System Role(s)"
+          label="User Role(s)"
           description="Zero or more 'specialized' system-wide roles"
           placeholder="- Pick one or more roles or leave empty -"
           name="roles"

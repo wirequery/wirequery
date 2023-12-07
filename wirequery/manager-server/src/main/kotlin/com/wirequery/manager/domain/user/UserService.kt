@@ -10,6 +10,7 @@ package com.wirequery.manager.domain.user
 import com.wirequery.manager.application.security.CustomUserDetails
 import com.wirequery.manager.domain.FunctionalException
 import com.wirequery.manager.domain.FunctionalException.Companion.checkFunctional
+import com.wirequery.manager.domain.FunctionalException.Companion.functionalError
 import com.wirequery.manager.domain.role.RoleService
 import com.wirequery.manager.domain.tenant.TenantService
 import com.wirequery.manager.domain.user.UserEvent.*
@@ -128,6 +129,9 @@ class UserService(
             currentUserService.findCurrentUsername()
                 ?.let(userRepository::findByUsername)
                 ?: return null
+        if (!passwordEncoder.matches(input.currentPassword, userEntity.password)) {
+            functionalError("Current password does not match your actual current password.")
+        }
         val user =
             userRepository.save(
                 userEntity.copy(
@@ -228,6 +232,7 @@ class UserService(
 
     data class UpdateCurrentUserInput(
         val password: String?,
+        val currentPassword: String,
     ) {
         init {
             if (password != null) {

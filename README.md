@@ -14,19 +14,20 @@ application itself, so that sensitive data is stripped before ever reaching the 
 
 ## Feature Highlights
 
+- **Recording**: Record interactions on the frontend as if they were screen captures. Combined with backend
+  interactions, Get an end-to-end overview of how
+  a user got into a certain state. [Screenshot](screenshot_3.png)
 - **Explore**:
   After entering a query, the targeted production system will immediately start capturing data so that WireQuery can
   show it back to you.
 - **(Stored) Queries**: Occassionally, you may want to run a query for a longer time, or even indefinitely. (Stored)
   Queries allow you to do so.
 - **Extended Tracing**: Extended Tracing is similar to regular tracing, but adds request and response bodies and more
-  where confidential information is redacted, so you can see what *actually* happens during a call. [Screenshot](screenshot_2.png)
+  where confidential information is redacted, so you can see what *actually* happens during a
+  call. [Screenshot](screenshot_2.png)
 - **Sessions**: Allow users such as Support Engineers to spin up a group of queries that are
   instantiated by applying a template, so developers have all the knowledge they need to tackle any incident prior to
   getting started.
-- **Recording**: Record interactions on the frontend as if they were screen captures. WireQuery is the first tool in the
-  world to combine that data with the data on the backend, so you can get an end-to-end overview of what happened when a
-  user ended up in a certain state. [Screenshot](screenshot_3.png)
 - **Masking**: Each application can specify masking and unmasking rules, so that confidential information is hidden.
 
 ## Get Started
@@ -52,7 +53,7 @@ More SDKs will be added over time.
 
 ## Community
 
-- [Join our Discord Channel](https://discord.gg/ej7Rxwdd) for questions and support.
+- [Join our Discord Channel](https://discord.gg/HyF2zmzt) for questions and support.
 
 ## Contributing
 
@@ -61,7 +62,7 @@ for improvement, bugs, etc.) by opening an issue. Also, if you found a bug, you 
 the code. Before it can be merged, however, you need to sign a Contributors License Agreement, to make sure that we can
 serve our users with your code going forward.
 
-Also, please feel free to discuss ideas and feedback on our [Discord Channel](https://discord.gg/ej7Rxwdd).
+Also, please feel free to discuss ideas and feedback on our [Discord Channel](https://discord.gg/HyF2zmzt).
 
 ## License
 

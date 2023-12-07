@@ -8,6 +8,7 @@
 package com.wirequery.manager.application.rest
 
 import com.wirequery.manager.domain.authorisation.AuthorisationEnum
+import com.wirequery.manager.domain.authorisation.AuthorisationEnum.*
 import com.wirequery.manager.domain.role.RoleService
 import com.wirequery.manager.domain.role.RoleService.CreateRoleInput
 import com.wirequery.manager.domain.tenant.TenantRequestContext
@@ -46,6 +47,27 @@ class AdminController(
             ).id
 
         roleService.create(CreateRoleInput("Administrator", AuthorisationEnum.entries.map { it.name }))
+
+        roleService.create(
+            CreateRoleInput(
+                "Developer",
+                AuthorisationEnum.entries
+                    .asSequence()
+                    .filter { it != DELETE_STORED_QUERY }
+                    .filter { it != DELETE_SESSION }
+                    .filter { it != DELETE_TEMPLATE }
+                    .filter { it != DELETE_APPLICATION }
+                    .filter { it != DELETE_GROUP }
+                    .filter { it != MANAGE_USERS }
+                    .filter { it != MANAGE_ROLES }
+                    .filter { it != VIEW_AUDIT_LOGS }
+                    .filter { it != UNQUARANTINE_APPLICATIONS }
+                    .filter { it != MANAGE_QUARANTINE_RULES }
+                    .map { it.name }
+                    .toList(),
+            ),
+        )
+
         userService.register(RegisterInput("admin", params.adminPassword, true, "Administrator"))
     }
 

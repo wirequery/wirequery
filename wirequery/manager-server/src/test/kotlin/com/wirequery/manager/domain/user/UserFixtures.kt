@@ -82,6 +82,7 @@ object UserFixtures {
     val UPDATE_CURRENT_USER_FIXTURE_1 =
         UserService.UpdateCurrentUserInput(
             password = "Some password",
+            currentPassword = "Some current password",
         )
 
     val USER_ENTITY_FIXTURE_WITH_ID_1 =

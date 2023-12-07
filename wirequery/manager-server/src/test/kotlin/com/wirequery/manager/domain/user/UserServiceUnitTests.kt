@@ -252,10 +252,36 @@ internal class UserServiceUnitTests {
             .publishEvent(UserEvent.UsersUpdatedEvent(userService, listOf(USER_FIXTURE_WITH_ID_1)))
 
         verify(passwordEncoder, times(0)).encode(any())
+        verify(passwordEncoder, times(0)).matches(any(), any())
+    }
+
+    @Test
+    fun `updateCurrentUser throws functional error if current password does not match actual current password`() {
+        whenever(passwordEncoder.matches(UPDATE_CURRENT_USER_FIXTURE_1.currentPassword, USER_ENTITY_FIXTURE_WITH_ID_1.password))
+            .thenReturn(false)
+
+        whenever(currentUserService.findCurrentUsername())
+            .thenReturn(USER_ENTITY_FIXTURE_WITH_ID_1.username)
+
+        whenever(userRepository.findByUsername(USER_ENTITY_FIXTURE_WITH_ID_1.username))
+            .thenReturn(USER_ENTITY_FIXTURE_WITH_ID_1)
+
+        val exception =
+            assertThrows<FunctionalException> {
+                userService.updateCurrentUser(UPDATE_CURRENT_USER_FIXTURE_1)
+            }
+
+        assertThat(exception.message)
+            .isEqualTo("Current password does not match your actual current password.")
+
+        verifyNoMoreInteractions(userRepository, passwordEncoder)
     }
 
     @Test
     fun `updateCurrentUser calls save on repository if all requirements are met and publishes an event`() {
+        whenever(passwordEncoder.matches(UPDATE_CURRENT_USER_FIXTURE_1.currentPassword, USER_ENTITY_FIXTURE_WITH_ID_1.password))
+            .thenReturn(true)
+
         whenever(currentUserService.findCurrentUsername())
             .thenReturn(USER_ENTITY_FIXTURE_WITH_ID_1.username)
 
@@ -278,6 +304,9 @@ internal class UserServiceUnitTests {
 
     @Test
     fun `updateCurrentUser does not update password when blank`() {
+        whenever(passwordEncoder.matches(UPDATE_CURRENT_USER_FIXTURE_1.currentPassword, USER_ENTITY_FIXTURE_WITH_ID_1.password))
+            .thenReturn(true)
+
         whenever(currentUserService.findCurrentUsername())
             .thenReturn(USER_ENTITY_FIXTURE_WITH_ID_1.username)
 

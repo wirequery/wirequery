@@ -45,4 +45,5 @@ input UpdateUserInput {
 
 input UpdateCurrentUserInput {
     password: String
+    currentPassword: String!
 }

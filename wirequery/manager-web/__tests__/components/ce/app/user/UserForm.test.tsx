@@ -39,7 +39,7 @@ describe('UserForm', () => {
     expect(screen.queryByText('Username')).not.toBeNull()
     expect(screen.queryByText('Password')).not.toBeNull()
     expect(screen.queryByText('Enabled')).not.toBeNull()
-    expect(screen.queryByText('System Role(s)')).not.toBeNull()
+    expect(screen.queryByText('User Role(s)')).not.toBeNull()
   })
 
   it('renders form containing existing data if id is passed', () => {
