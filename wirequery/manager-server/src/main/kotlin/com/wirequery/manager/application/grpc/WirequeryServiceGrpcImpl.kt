@@ -98,9 +98,9 @@ class WirequeryServiceGrpcImpl(
                     return@withTenantContext
                 }
                 queryReportService.reportQueryResults(toDomainQueryReports(queryReports))
+                responseObserver.onNext(Wirequery.Empty.newBuilder().build())
             }
         } finally {
-            responseObserver.onNext(Wirequery.Empty.newBuilder().build())
             responseObserver.onCompleted()
         }
     }
