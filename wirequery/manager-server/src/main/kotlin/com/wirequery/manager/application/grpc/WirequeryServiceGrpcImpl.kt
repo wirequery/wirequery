@@ -91,12 +91,17 @@ class WirequeryServiceGrpcImpl(
         queryReports: Wirequery.QueryReports,
         responseObserver: StreamObserver<Wirequery.Empty>,
     ) {
-        withTenantContext(queryReports.apiKey) {
-            if (!applicationService.isApiKeyValid(queryReports.appName ?: "", queryReports.apiKey ?: "")) {
-                responseObserver.onError(StatusException(UNAUTHENTICATED))
-                return@withTenantContext
+        try {
+            withTenantContext(queryReports.apiKey) {
+                if (!applicationService.isApiKeyValid(queryReports.appName ?: "", queryReports.apiKey ?: "")) {
+                    responseObserver.onError(StatusException(UNAUTHENTICATED))
+                    return@withTenantContext
+                }
+                queryReportService.reportQueryResults(toDomainQueryReports(queryReports))
             }
-            queryReportService.reportQueryResults(toDomainQueryReports(queryReports))
+        } finally {
+            responseObserver.onNext(Wirequery.Empty.newBuilder().build())
+            responseObserver.onCompleted()
         }
     }
 

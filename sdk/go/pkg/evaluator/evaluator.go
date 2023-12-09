@@ -24,17 +24,17 @@ type CompiledQuery struct {
 }
 
 type Context struct {
-	Method          string
-	Path            string
-	StatusCode      int
-	QueryParameters map[string][]string
-	RequestBody     any
-	ResponseBody    any
-	RequestHeaders  map[string][]string
-	ResponseHeaders map[string][]string
-	Extensions      map[string]any
-	Took            int
-	TraceId         string
+	Method          string              `json:"method"`
+	Path            string              `json:"path"`
+	StatusCode      int                 `json:"statusCode"`
+	QueryParameters map[string][]string `json:"queryParameters"`
+	RequestBody     any                 `json:"requestBody"`
+	ResponseBody    any                 `json:"responseBody"`
+	RequestHeaders  map[string][]string `json:"requestHeaders"`
+	ResponseHeaders map[string][]string `json:"responseHeaders"`
+	Extensions      map[string]any      `json:"extensions"`
+	Took            int                 `json:"took"`
+	TraceId         string              `json:"traceId"`
 }
 
 type Function struct {
@@ -49,23 +49,26 @@ func CreateCelEnv() (*cel.Env, error) {
 	)
 }
 
-func Eval(queries *[]CompiledQuery, inputContext Context, maskSettings *masking.MaskSettings) ([]QueryReport, error) {
+func Eval(queries *[]CompiledQuery, inputContext Context, maskSettings *masking.MaskSettings) ([]*QueryReport, error) {
 	if !anyQueryMatchesResponse(queries, inputContext) {
 		return nil, nil
 	}
-	var queryReports []QueryReport
+	var queryReports []*QueryReport
 	for _, query := range *queries {
 		context := createContextObject(query, inputContext, maskSettings)
 		if !queryMatchesResponse(query, inputContext) {
 			continue
 		}
 		if len(query.Functions) == 0 {
-			queryReports = append(queryReports, createResultReport(query, context))
+			reports := createResultReport(query, context)
+			queryReports = append(queryReports, &reports)
 		} else if results, err := executeFunctions(&query, context); err != nil {
-			queryReports = append(queryReports, createErrorReport(query, err))
+			errorReport := createErrorReport(query, err)
+			queryReports = append(queryReports, &errorReport)
 		} else {
 			for _, result := range results {
-				queryReports = append(queryReports, createResultReport(query, result))
+				reports := createResultReport(query, result)
+				queryReports = append(queryReports, &reports)
 			}
 		}
 	}
@@ -87,7 +90,8 @@ func createContextObject(query CompiledQuery, context Context, maskSettings *mas
 		"took":            context.Took,
 		"traceId":         context.TraceId,
 	}
-	contextMap = masking.Mask(contextMap, *maskSettings).(map[string]interface{})
+	// TODO
+	//contextMap = masking.Mask(contextMap, *maskSettings).(map[string]interface{})
 	return contextMap
 }
 

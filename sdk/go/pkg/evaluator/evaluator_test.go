@@ -14,7 +14,7 @@ func Test_eval(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    []wirequerypb.QueryReport
+		want    []*wirequerypb.QueryReport
 		wantErr bool
 	}{
 		{
@@ -29,7 +29,7 @@ func Test_eval(t *testing.T) {
 				}},
 				context: Context{},
 			},
-			want: []wirequerypb.QueryReport{{
+			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
 				Message: "{\"result\":1}",
 			}},
@@ -48,7 +48,7 @@ func Test_eval(t *testing.T) {
 					StatusCode: 200,
 				},
 			},
-			want: []wirequerypb.QueryReport{{
+			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
 				Message: "{\"result\":1}",
 			}},
@@ -68,7 +68,7 @@ func Test_eval(t *testing.T) {
 					Path: "/abc/def",
 				},
 			},
-			want: []wirequerypb.QueryReport{{
+			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
 				Message: "{\"result\":\"/abc/{x}\"}",
 			}},
@@ -87,7 +87,7 @@ func Test_eval(t *testing.T) {
 					StatusCode: 200,
 				},
 			},
-			want: []wirequerypb.QueryReport{{
+			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
 				Message: "{\"result\":1}",
 			}},
@@ -106,7 +106,7 @@ func Test_eval(t *testing.T) {
 					StatusCode: 200,
 				},
 			},
-			want: []wirequerypb.QueryReport{{
+			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
 				Message: "{\"result\":1}",
 			}},
@@ -125,7 +125,7 @@ func Test_eval(t *testing.T) {
 					StatusCode: 300,
 				},
 			},
-			want: []wirequerypb.QueryReport{},
+			want: []*wirequerypb.QueryReport{},
 		}, {
 			name: "Method is taken into account if matching",
 			args: args{
@@ -141,7 +141,7 @@ func Test_eval(t *testing.T) {
 					Method: "GET",
 				},
 			},
-			want: []wirequerypb.QueryReport{{
+			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
 				Message: "{\"result\":1}",
 			}},
@@ -160,7 +160,7 @@ func Test_eval(t *testing.T) {
 					Method: "POST",
 				},
 			},
-			want: []wirequerypb.QueryReport{},
+			want: []*wirequerypb.QueryReport{},
 		}, {
 			name: "Path is taken into account if matching",
 			args: args{
@@ -176,7 +176,7 @@ func Test_eval(t *testing.T) {
 					Path: "/abc",
 				},
 			},
-			want: []wirequerypb.QueryReport{{
+			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
 				Message: "{\"result\":1}",
 			}},
@@ -195,7 +195,7 @@ func Test_eval(t *testing.T) {
 					Path: "/abc",
 				},
 			},
-			want: []wirequerypb.QueryReport{},
+			want: []*wirequerypb.QueryReport{},
 		}, {
 			name: "Path is taken into account if matching with wildcard",
 			args: args{
@@ -211,7 +211,7 @@ func Test_eval(t *testing.T) {
 					Path: "/abc/bcd",
 				},
 			},
-			want: []wirequerypb.QueryReport{{
+			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
 				Message: "{\"result\":1}",
 			}},
@@ -228,7 +228,7 @@ func Test_eval(t *testing.T) {
 				}},
 				context: Context{},
 			},
-			want: []wirequerypb.QueryReport{},
+			want: []*wirequerypb.QueryReport{},
 		}, {
 			name: "request and response body are passed",
 			args: args{
@@ -245,7 +245,7 @@ func Test_eval(t *testing.T) {
 					ResponseBody: "def",
 				},
 			},
-			want: []wirequerypb.QueryReport{{
+			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
 				Message: "{\"result\":1}",
 			}},
@@ -265,7 +265,7 @@ func Test_eval(t *testing.T) {
 					ResponseBody: map[string]interface{}{"b": true},
 				},
 			},
-			want: []wirequerypb.QueryReport{{
+			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
 				Message: "{\"result\":1}",
 			}},
@@ -285,7 +285,7 @@ func Test_eval(t *testing.T) {
 					ResponseHeaders: map[string][]string{"def": {"abc"}},
 				},
 			},
-			want: []wirequerypb.QueryReport{{
+			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
 				Message: "{\"result\":1}",
 			}},
@@ -306,7 +306,7 @@ func Test_eval(t *testing.T) {
 					ResponseHeaders: map[string][]string{"def": {"abc"}},
 				},
 			},
-			want: []wirequerypb.QueryReport{{
+			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
 				Message: "{\"result\":{\"extensions\":{},\"method\":\"\",\"path\":\"\",\"pathVariables\":null,\"queryParameters\":{},\"requestBody\":\"def\",\"requestHeaders\":{\"abc\":[\"def\"]},\"responseBody\":\"abc\",\"responseHeaders\":{\"def\":[\"abc\"]},\"statusCode\":0,\"took\":0,\"traceId\":\"\"}}",
 			}},
@@ -323,7 +323,7 @@ func Test_eval(t *testing.T) {
 				}},
 				context: Context{},
 			},
-			want: []wirequerypb.QueryReport{{
+			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
 				Message: "{\"error\":\"no such key: a\"}",
 			}},
@@ -340,7 +340,7 @@ func Test_eval(t *testing.T) {
 				}},
 				context: Context{},
 			},
-			want: []wirequerypb.QueryReport{{
+			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
 				Message: "{\"error\":\"no such key: a\"}",
 			}},
@@ -362,7 +362,7 @@ func Test_eval(t *testing.T) {
 	// TODO test masking
 }
 
-func equalQueryReports(got []wirequerypb.QueryReport, want []wirequerypb.QueryReport) bool {
+func equalQueryReports(got []*wirequerypb.QueryReport, want []*wirequerypb.QueryReport) bool {
 	if len(got) != len(want) {
 		return false
 	}
