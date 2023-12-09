@@ -174,6 +174,7 @@ class WirequeryServiceGrpcImplTest {
         verifyNoMoreInteractions(responseObserver)
     }
 
+    // TODO add tests for completing and sending result back in case of reportQueryResults
     @Test
     fun `reportQueryResults closes connection when unauthenticated`() {
         whenever(applicationService.isApiKeyValid(APP_NAME, API_KEY))
