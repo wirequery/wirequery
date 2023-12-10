@@ -3,7 +3,7 @@ package client
 import (
 	"github.com/google/cel-go/cel"
 	"github.com/wirequery/wirequery/sdk/go/pkg/evaluator"
-	. "github.com/wirequery/wirequery/sdk/go/pkg/wirequerypb"
+	proto "github.com/wirequery/wirequery/sdk/go/pkg/wirequerypb"
 	"reflect"
 	"testing"
 )
@@ -18,7 +18,7 @@ func TestCompileQuery(t *testing.T) {
 	}
 
 	type args struct {
-		addQuery *Query
+		addQuery *proto.Query
 	}
 	tests := []struct {
 		name    string
@@ -29,15 +29,15 @@ func TestCompileQuery(t *testing.T) {
 		{
 			name: "base case without functions",
 			args: args{
-				addQuery: &Query{
+				addQuery: &proto.Query{
 					QueryId: "123",
-					QueryHead: &QueryHead{
+					QueryHead: &proto.QueryHead{
 						AppName:    "app",
 						Method:     "GET",
 						Path:       "/",
 						StatusCode: "200",
 					},
-					StreamOperations:    []*Operation{},
+					StreamOperations:    []*proto.Operation{},
 					AggregatorOperation: nil,
 				},
 			},
@@ -53,15 +53,15 @@ func TestCompileQuery(t *testing.T) {
 		}, {
 			name: "functions are transformed, no body",
 			args: args{
-				addQuery: &Query{
+				addQuery: &proto.Query{
 					QueryId: "123",
-					QueryHead: &QueryHead{
+					QueryHead: &proto.QueryHead{
 						AppName:    "app",
 						Method:     "GET",
 						Path:       "/",
 						StatusCode: "200",
 					},
-					StreamOperations: []*Operation{
+					StreamOperations: []*proto.Operation{
 						{
 							Name:          "map",
 							CelExpression: "",
@@ -82,15 +82,15 @@ func TestCompileQuery(t *testing.T) {
 		}, {
 			name: "stream functions are transformed, with body",
 			args: args{
-				addQuery: &Query{
+				addQuery: &proto.Query{
 					QueryId: "123",
-					QueryHead: &QueryHead{
+					QueryHead: &proto.QueryHead{
 						AppName:    "app",
 						Method:     "GET",
 						Path:       "/",
 						StatusCode: "200",
 					},
-					StreamOperations: []*Operation{{
+					StreamOperations: []*proto.Operation{{
 						Name:          "map",
 						CelExpression: "it",
 					}},
@@ -109,16 +109,16 @@ func TestCompileQuery(t *testing.T) {
 		}, {
 			name: "aggregator functions are transformed, with body",
 			args: args{
-				addQuery: &Query{
+				addQuery: &proto.Query{
 					QueryId: "123",
-					QueryHead: &QueryHead{
+					QueryHead: &proto.QueryHead{
 						AppName:    "app",
 						Method:     "GET",
 						Path:       "/",
 						StatusCode: "200",
 					},
 					StreamOperations: nil,
-					AggregatorOperation: &Operation{
+					AggregatorOperation: &proto.Operation{
 						Name:          "map",
 						CelExpression: "it",
 					},

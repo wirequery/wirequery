@@ -360,6 +360,7 @@ func Test_eval(t *testing.T) {
 		})
 	}
 	// TODO test masking
+	// TODO test trace id, start time and end time are passed
 }
 
 func equalQueryReports(got []*wirequerypb.QueryReport, want []*wirequerypb.QueryReport) bool {

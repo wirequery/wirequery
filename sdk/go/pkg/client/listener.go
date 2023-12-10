@@ -4,7 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"github.com/wirequery/wirequery/sdk/go/pkg/evaluator"
-	. "github.com/wirequery/wirequery/sdk/go/pkg/wirequerypb"
+	proto "github.com/wirequery/wirequery/sdk/go/pkg/wirequerypb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/backoff"
 	"google.golang.org/grpc/credentials"
@@ -15,7 +15,7 @@ import (
 
 type WireQueryClient struct {
 	ctx     context.Context
-	client  WirequeryServiceClient
+	client  proto.WirequeryServiceClient
 	mutex   sync.Mutex
 	queries []evaluator.CompiledQuery
 	apiKey  string
@@ -24,7 +24,7 @@ type WireQueryClient struct {
 
 func Listen(host string, appName string, apiKey string) *WireQueryClient {
 	conn := dialWireQueryManager(host)
-	client := NewWirequeryServiceClient(conn)
+	client := proto.NewWirequeryServiceClient(conn)
 	wireQueryClient := WireQueryClient{ctx: context.Background(), client: client, apiKey: apiKey, appName: appName}
 	go wireQueryClient.listenForIncomingQueries(client, appName, apiKey)
 	return &wireQueryClient
@@ -49,28 +49,31 @@ func dialWireQueryManager(wireQueryServer string) *grpc.ClientConn {
 	return conn
 }
 
-func (w *WireQueryClient) listenForIncomingQueries(client WirequeryServiceClient, appName string, apiKey string) {
+func (w *WireQueryClient) listenForIncomingQueries(client proto.WirequeryServiceClient, appName string, apiKey string) {
 	for {
 		env, _ := evaluator.CreateCelEnv()
 		println("Listening for queries...")
 		w.queries = []evaluator.CompiledQuery{}
-		request := ListenForQueriesRequest{AppName: appName, ApiKey: apiKey}
+		request := proto.ListenForQueriesRequest{AppName: appName, ApiKey: apiKey}
 		stream, err := client.ListenForQueries(w.ctx, &request)
 		for {
 			if err != nil {
-				println("Reconnecting...")
+				println("An error occurred! Reconnecting in 3 seconds...")
+				time.Sleep(3 * time.Second)
 				break
 			}
 			in, err := stream.Recv()
 			if err != nil {
-				println("An error occurred! Reconnecting...")
+				print(err.Error())
+				println("An error occurred! Reconnecting in 3 seconds...")
+				time.Sleep(3 * time.Second)
 				break
 			}
 
 			switch choice := in.QueryMutationChoice.(type) {
-			case *QueryMutation_AddQuery:
+			case *proto.QueryMutation_AddQuery:
 				w.handleAddQuery(env, choice)
-			case *QueryMutation_RemoveQueryById:
+			case *proto.QueryMutation_RemoveQueryById:
 				w.handleRemoveQueryById(choice)
 			}
 		}

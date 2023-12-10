@@ -5,7 +5,7 @@ import (
 	"errors"
 	"github.com/google/cel-go/cel"
 	"github.com/wirequery/wirequery/sdk/go/pkg/masking"
-	. "github.com/wirequery/wirequery/sdk/go/pkg/wirequerypb"
+	proto "github.com/wirequery/wirequery/sdk/go/pkg/wirequerypb"
 	"google.golang.org/protobuf/types/known/structpb"
 	"reflect"
 	"regexp"
@@ -33,8 +33,9 @@ type Context struct {
 	RequestHeaders  map[string][]string `json:"requestHeaders"`
 	ResponseHeaders map[string][]string `json:"responseHeaders"`
 	Extensions      map[string]any      `json:"extensions"`
-	Took            int                 `json:"took"`
 	TraceId         string              `json:"traceId"`
+	StartTime       int64               `json:"startTime"`
+	EndTime         int64               `json:"endTime"`
 }
 
 type Function struct {
@@ -49,25 +50,25 @@ func CreateCelEnv() (*cel.Env, error) {
 	)
 }
 
-func Eval(queries *[]CompiledQuery, inputContext Context, maskSettings *masking.MaskSettings) ([]*QueryReport, error) {
+func Eval(queries *[]CompiledQuery, inputContext Context, maskSettings *masking.MaskSettings) ([]*proto.QueryReport, error) {
 	if !anyQueryMatchesResponse(queries, inputContext) {
 		return nil, nil
 	}
-	var queryReports []*QueryReport
+	var queryReports []*proto.QueryReport
 	for _, query := range *queries {
 		context := createContextObject(query, inputContext, maskSettings)
 		if !queryMatchesResponse(query, inputContext) {
 			continue
 		}
 		if len(query.Functions) == 0 {
-			reports := createResultReport(query, context)
+			reports := createResultReport(query, context, inputContext)
 			queryReports = append(queryReports, &reports)
 		} else if results, err := executeFunctions(&query, context); err != nil {
 			errorReport := createErrorReport(query, err)
 			queryReports = append(queryReports, &errorReport)
 		} else {
 			for _, result := range results {
-				reports := createResultReport(query, result)
+				reports := createResultReport(query, result, inputContext)
 				queryReports = append(queryReports, &reports)
 			}
 		}
@@ -87,7 +88,7 @@ func createContextObject(query CompiledQuery, context Context, maskSettings *mas
 		"responseBody":    context.ResponseBody,
 		"responseHeaders": context.ResponseHeaders,
 		"extensions":      context.Extensions,
-		"took":            context.Took,
+		"took":            context.EndTime - context.StartTime,
 		"traceId":         context.TraceId,
 	}
 	// TODO
@@ -175,20 +176,23 @@ func executeFunction(function Function, functionContext map[string]interface{}) 
 	return nil, errors.New("unknown function: " + function.Type)
 }
 
-func createErrorReport(query CompiledQuery, err error) QueryReport {
-	return QueryReport{
+func createErrorReport(query CompiledQuery, err error) proto.QueryReport {
+	return proto.QueryReport{
 		QueryId: query.QueryId,
 		Message: "{\"error\":\"" + err.Error() + "\"}",
 	}
 }
 
-func createResultReport(query CompiledQuery, value any) QueryReport {
+func createResultReport(query CompiledQuery, value any, inputContext Context) proto.QueryReport {
 	if result, err := json.Marshal(value); err != nil {
 		return createErrorReport(query, err)
 	} else {
-		return QueryReport{
-			QueryId: query.QueryId,
-			Message: "{\"result\":" + string(result) + "}",
+		return proto.QueryReport{
+			QueryId:   query.QueryId,
+			Message:   "{\"result\":" + string(result) + "}",
+			TraceId:   inputContext.TraceId,
+			StartTime: inputContext.StartTime,
+			EndTime:   inputContext.EndTime,
 		}
 	}
 }

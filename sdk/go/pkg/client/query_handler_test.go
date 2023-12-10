@@ -6,14 +6,14 @@ import (
 	"github.com/wirequery/wirequery/sdk/go/pkg/wirequerypb"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func Test_wireQueryClient_handleAddQuery(t *testing.T) {
 	t.Run("it adds a query if there are no errors", func(t *testing.T) {
-		w := WireQueryClient{}
-		env, _ := evaluator.CreateCelEnv()
-
 		client := mockWirequeryServiceClient{}
+		w := WireQueryClient{client: &client}
+		env, _ := evaluator.CreateCelEnv()
 
 		uncompiledQuery, _ := &wirequerypb.Query{
 			QueryId: "123",
@@ -41,10 +41,9 @@ func Test_wireQueryClient_handleAddQuery(t *testing.T) {
 	})
 
 	t.Run("it does not add a query and reports error if there are errors", func(t *testing.T) {
-		w := WireQueryClient{}
-		env, _ := evaluator.CreateCelEnv()
-
 		client := mockWirequeryServiceClient{}
+		w := WireQueryClient{client: &client}
+		env, _ := evaluator.CreateCelEnv()
 
 		uncompiledQuery, _ := &wirequerypb.Query{
 			QueryId: "123",
@@ -70,16 +69,17 @@ func Test_wireQueryClient_handleAddQuery(t *testing.T) {
 		if got != nil {
 			t.Errorf("CompileQuery() got = %v, want %v", got, nil)
 		}
-		assert.Equal(t, 1, client.reportQueryResultsCnt)
+		assert.EventuallyWithT(t, func(c *assert.CollectT) {
+			assert.Equal(t, 1, client.reportQueryResultsCnt)
+		}, 1*time.Second, 10*time.Millisecond)
 	})
 }
 
 func Test_wireQueryClient_handleRemoveQueryById(t *testing.T) {
 	t.Run("it removes queries with the same query id", func(t *testing.T) {
-		w := WireQueryClient{}
-		env, _ := evaluator.CreateCelEnv()
-
 		client := mockWirequeryServiceClient{}
+		w := WireQueryClient{client: &client}
+		env, _ := evaluator.CreateCelEnv()
 
 		uncompiledQuery, _ := &wirequerypb.Query{
 			QueryId: "123",
@@ -103,14 +103,15 @@ func Test_wireQueryClient_handleRemoveQueryById(t *testing.T) {
 		if !reflect.DeepEqual(got, want) {
 			t.Errorf("CompileQuery() got = %v, want %v", got, want)
 		}
-		assert.Equal(t, 0, client.reportQueryResultsCnt)
+		assert.EventuallyWithT(t, func(c *assert.CollectT) {
+			assert.Equal(t, 0, client.reportQueryResultsCnt)
+		}, 1*time.Second, 10*time.Millisecond)
 	})
 
 	t.Run("it does not add a query and reports error if there are errors", func(t *testing.T) {
-		w := WireQueryClient{}
-		env, _ := evaluator.CreateCelEnv()
-
 		client := mockWirequeryServiceClient{}
+		w := WireQueryClient{client: &client}
+		env, _ := evaluator.CreateCelEnv()
 
 		uncompiledQuery, _ := &wirequerypb.Query{
 			QueryId: "123",
@@ -136,6 +137,9 @@ func Test_wireQueryClient_handleRemoveQueryById(t *testing.T) {
 		if got != nil {
 			t.Errorf("CompileQuery() got = %v, want %v", got, nil)
 		}
-		assert.Equal(t, 1, client.reportQueryResultsCnt)
+
+		assert.EventuallyWithT(t, func(c *assert.CollectT) {
+			assert.Equal(t, 1, client.reportQueryResultsCnt)
+		}, 1*time.Second, 10*time.Millisecond)
 	})
 }

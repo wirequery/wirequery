@@ -3,10 +3,10 @@ package client
 import (
 	"github.com/google/cel-go/cel"
 	"github.com/wirequery/wirequery/sdk/go/pkg/evaluator"
-	. "github.com/wirequery/wirequery/sdk/go/pkg/wirequerypb"
+	proto "github.com/wirequery/wirequery/sdk/go/pkg/wirequerypb"
 )
 
-func CompileQuery(addQuery *Query, env *cel.Env) (*evaluator.CompiledQuery, error) {
+func CompileQuery(addQuery *proto.Query, env *cel.Env) (*evaluator.CompiledQuery, error) {
 	var aggregatorFunction *evaluator.Function
 	var functions []evaluator.Function
 	if addQuery.AggregatorOperation != nil {
