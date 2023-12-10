@@ -27,6 +27,7 @@ func main() {
 				_ = context.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
+			client.PutCache(body.TraceId, &body)
 			results, err := evaluator.Eval(&queries, body, nil)
 			if err != nil {
 				_ = context.AbortWithError(http.StatusBadRequest, err)

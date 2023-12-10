@@ -1,6 +1,7 @@
 package client
 
 import (
+	"encoding/json"
 	"github.com/google/cel-go/cel"
 	"github.com/wirequery/wirequery/sdk/go/pkg/evaluator"
 	proto "github.com/wirequery/wirequery/sdk/go/pkg/wirequerypb"
@@ -27,4 +28,19 @@ func (w *WireQueryClient) handleRemoveQueryById(choice *proto.QueryMutation_Remo
 		}
 	}
 	w.queries = newQueries
+}
+
+func (w *WireQueryClient) handleQueryOneTrace(choice *proto.QueryMutation_QueryOneTrace) {
+	cache := GetCache(choice.QueryOneTrace.TraceId)
+	if cache != nil {
+		if result, err := json.Marshal(cache); err == nil {
+			w.ReportResult([]*proto.QueryReport{{
+				QueryId:   choice.QueryOneTrace.QueryId,
+				Message:   "{\"result\":" + string(result) + "}",
+				StartTime: cache.StartTime,
+				EndTime:   cache.EndTime,
+				TraceId:   cache.TraceId,
+			}})
+		}
+	}
 }

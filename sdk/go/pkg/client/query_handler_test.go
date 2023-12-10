@@ -143,3 +143,7 @@ func Test_wireQueryClient_handleRemoveQueryById(t *testing.T) {
 		}, 1*time.Second, 10*time.Millisecond)
 	})
 }
+
+func Test_wireQueryClient_handleQueryOneTrace(t *testing.T) {
+	// TODO
+}

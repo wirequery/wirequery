@@ -9,10 +9,6 @@ type errorResult struct {
 	Error string `json:"error"`
 }
 
-type result struct {
-	Result any `json:"result"`
-}
-
 func (w *WireQueryClient) ReportError(queryId string, message string) {
 	go func() {
 		res, err := json.Marshal(errorResult{message})

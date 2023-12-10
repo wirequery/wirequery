@@ -75,6 +75,8 @@ func (w *WireQueryClient) listenForIncomingQueries(client proto.WirequeryService
 				w.handleAddQuery(env, choice)
 			case *proto.QueryMutation_RemoveQueryById:
 				w.handleRemoveQueryById(choice)
+			case *proto.QueryMutation_QueryOneTrace:
+				w.handleQueryOneTrace(choice)
 			}
 		}
 	}
