@@ -14,5 +14,8 @@ func PutCache(traceId string, value *evaluator.Context) {
 
 func GetCache(traceId string) *evaluator.Context {
 	res, _ := cache.Get(traceId)
-	return res.(*evaluator.Context)
+	if res != nil {
+		return res.(*evaluator.Context)
+	}
+	return nil
 }

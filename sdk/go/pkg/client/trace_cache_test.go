@@ -7,7 +7,15 @@ import (
 )
 
 func TestPutCache_GetCache(t *testing.T) {
-	context := evaluator.Context{}
-	PutCache("", &context)
-	assert.Equal(t, &context, GetCache(""))
+	t.Run("puts and gets from cache", func(t *testing.T) {
+		context := evaluator.Context{}
+		PutCache("123", &context)
+		assert.Equal(t, &context, GetCache("123"))
+	})
+
+	t.Run("returns nil if entry not in cache", func(t *testing.T) {
+		context := evaluator.Context{}
+		PutCache("123", &context)
+		assert.Nil(t, GetCache("456"))
+	})
 }
