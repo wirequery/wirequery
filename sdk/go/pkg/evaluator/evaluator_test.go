@@ -289,6 +289,27 @@ func Test_eval(t *testing.T) {
 				Message: "{\"result\":1}",
 			}},
 		}, {
+			name: "flatMap flattens after mapping",
+			args: args{
+				queries: []CompiledQuery{{
+					QueryId: "qid",
+					AppName: "app",
+					Functions: []Function{
+						compileFlatMapFunction("it.requestHeaders['abc']"),
+					},
+				}},
+				context: Context{
+					RequestHeaders: map[string][]string{"abc": {"def", "ghi"}},
+				},
+			},
+			want: []*wirequerypb.QueryReport{{
+				QueryId: "qid",
+				Message: "{\"result\":\"def\"}",
+			}, {
+				QueryId: "qid",
+				Message: "{\"result\":\"ghi\"}",
+			}},
+		}, {
 			name: "context contains headers, trace id, took and bodies",
 			args: args{
 				queries: []CompiledQuery{{
@@ -320,6 +341,23 @@ func Test_eval(t *testing.T) {
 					AppName: "app",
 					Functions: []Function{
 						compileFilterFunction("it.responseBody.a.b"),
+						compileMapFunction("true"),
+					},
+				}},
+				context: Context{},
+			},
+			want: []*wirequerypb.QueryReport{{
+				QueryId: "qid",
+				Message: "{\"error\":\"no such key: a\"}",
+			}},
+		}, {
+			name: "flatMap errors are passed back",
+			args: args{
+				queries: []CompiledQuery{{
+					QueryId: "qid",
+					AppName: "app",
+					Functions: []Function{
+						compileFlatMapFunction("it.responseBody.a.b"),
 						compileMapFunction("true"),
 					},
 				}},
@@ -382,6 +420,13 @@ func compileMapFunction(e string) Function {
 	ast, _ := env.Compile(e)
 	result, _ := env.Program(ast)
 	return Function{"map", result}
+}
+
+func compileFlatMapFunction(e string) Function {
+	env, _ := CreateCelEnv()
+	ast, _ := env.Compile(e)
+	result, _ := env.Program(ast)
+	return Function{"flatMap", result}
 }
 
 func compileFilterFunction(e string) Function {

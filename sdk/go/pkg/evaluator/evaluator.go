@@ -130,7 +130,6 @@ func executeFunctions(query *CompiledQuery, context map[string]interface{}) ([]a
 	return previousResults, nil
 }
 
-// TODO test flatMap
 func executeFunction(function Function, functionContext map[string]interface{}) ([]any, error) {
 	if function.Type == "map" {
 		result, _, err := function.Program.Eval(functionContext)

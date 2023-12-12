@@ -134,7 +134,6 @@ func TestCompileQuery(t *testing.T) {
 				AggregatorFunction: &evaluator.Function{Type: "map", Program: toProgram(createdEnv, "it")},
 			},
 		},
-		// TODO add error edge cases...
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -9,8 +9,8 @@ import (
 	"strconv"
 )
 
-var appName = flag.String("appName", "transactions", "App name")
-var apiKey = flag.String("apiKey", "1/0df82d0b-8dca-4002-8f47-0d210ab1c734", "Api key of app")
+var appName = flag.String("appName", "", "App name")
+var apiKey = flag.String("apiKey", "", "Api key of app")
 var port = flag.Int("local", 8091, "Port")
 var host = flag.String("host", "grpc.wirequery.io:443", "App name")
 
