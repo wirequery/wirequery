@@ -1,7 +1,6 @@
 package evaluator
 
 import (
-	"github.com/wirequery/wirequery/sdk/go/pkg/masking"
 	"github.com/wirequery/wirequery/sdk/go/pkg/wirequerypb"
 	"testing"
 )
@@ -290,7 +289,7 @@ func Test_eval(t *testing.T) {
 				Message: "{\"result\":1}",
 			}},
 		}, {
-			name: "context contains headers and bodies",
+			name: "context contains headers, trace id, took and bodies",
 			args: args{
 				queries: []CompiledQuery{{
 					QueryId: "qid",
@@ -304,11 +303,14 @@ func Test_eval(t *testing.T) {
 					RequestHeaders:  map[string][]string{"abc": {"def"}},
 					ResponseBody:    "abc",
 					ResponseHeaders: map[string][]string{"def": {"abc"}},
+					TraceId:         "123",
+					StartTime:       30,
+					EndTime:         40,
 				},
 			},
 			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
-				Message: "{\"result\":{\"extensions\":{},\"method\":\"\",\"path\":\"\",\"pathVariables\":null,\"queryParameters\":{},\"requestBody\":\"def\",\"requestHeaders\":{\"abc\":[\"def\"]},\"responseBody\":\"abc\",\"responseHeaders\":{\"def\":[\"abc\"]},\"statusCode\":0,\"took\":0,\"traceId\":\"\"}}",
+				Message: "{\"result\":{\"extensions\":{},\"method\":\"\",\"path\":\"\",\"pathVariables\":null,\"queryParameters\":{},\"requestBody\":\"def\",\"requestHeaders\":{\"abc\":[\"def\"]},\"responseBody\":\"abc\",\"responseHeaders\":{\"def\":[\"abc\"]},\"statusCode\":0,\"took\":10,\"traceId\":\"123\"}}",
 			}},
 		}, {
 			name: "filter errors are passed back",
@@ -346,10 +348,9 @@ func Test_eval(t *testing.T) {
 			}},
 		},
 	}
-	unmask := "UNMASK"
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := Eval(&tt.args.queries, tt.args.context, &masking.MaskSettings{Type: &unmask})
+			got, err := Eval(&tt.args.queries, tt.args.context)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("eval() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -359,8 +360,6 @@ func Test_eval(t *testing.T) {
 			}
 		})
 	}
-	// TODO test masking
-	// TODO test trace id, start time and end time are passed
 }
 
 func equalQueryReports(got []*wirequerypb.QueryReport, want []*wirequerypb.QueryReport) bool {

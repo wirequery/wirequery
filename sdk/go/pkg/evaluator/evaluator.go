@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/google/cel-go/cel"
-	"github.com/wirequery/wirequery/sdk/go/pkg/masking"
 	proto "github.com/wirequery/wirequery/sdk/go/pkg/wirequerypb"
 	"google.golang.org/protobuf/types/known/structpb"
 	"reflect"
@@ -50,13 +49,13 @@ func CreateCelEnv() (*cel.Env, error) {
 	)
 }
 
-func Eval(queries *[]CompiledQuery, inputContext Context, maskSettings *masking.MaskSettings) ([]*proto.QueryReport, error) {
+func Eval(queries *[]CompiledQuery, inputContext Context) ([]*proto.QueryReport, error) {
 	if !anyQueryMatchesResponse(queries, inputContext) {
 		return nil, nil
 	}
 	var queryReports []*proto.QueryReport
 	for _, query := range *queries {
-		context := createContextObject(query, inputContext, maskSettings)
+		context := createContextObject(query, inputContext)
 		if !queryMatchesResponse(query, inputContext) {
 			continue
 		}
@@ -76,7 +75,7 @@ func Eval(queries *[]CompiledQuery, inputContext Context, maskSettings *masking.
 	return queryReports, nil
 }
 
-func createContextObject(query CompiledQuery, context Context, maskSettings *masking.MaskSettings) map[string]interface{} {
+func createContextObject(query CompiledQuery, context Context) map[string]interface{} {
 	contextMap := map[string]interface{}{
 		"method":          context.Method,
 		"path":            query.Path,
@@ -91,8 +90,6 @@ func createContextObject(query CompiledQuery, context Context, maskSettings *mas
 		"took":            context.EndTime - context.StartTime,
 		"traceId":         context.TraceId,
 	}
-	// TODO
-	//contextMap = masking.Mask(contextMap, *maskSettings).(map[string]interface{})
 	return contextMap
 }
 
