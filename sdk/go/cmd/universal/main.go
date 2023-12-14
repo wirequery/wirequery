@@ -11,7 +11,7 @@ import (
 
 var appName = flag.String("appName", "", "App name")
 var apiKey = flag.String("apiKey", "", "Api key of app")
-var port = flag.Int("local", 8091, "Port")
+var port = flag.Int("port", 8091, "Port")
 var host = flag.String("host", "grpc.wirequery.io:443", "App name")
 
 func main() {
@@ -28,7 +28,7 @@ func main() {
 				return
 			}
 			client.PutCache(body.TraceId, &body)
-			results, err := evaluator.Eval(&queries, body, nil)
+			results, err := evaluator.Eval(&queries, body)
 			if err != nil {
 				_ = context.AbortWithError(http.StatusBadRequest, err)
 				return

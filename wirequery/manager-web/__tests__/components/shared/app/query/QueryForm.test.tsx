@@ -65,7 +65,7 @@ describe('QueryForm', () => {
         </Provider>
       </ColorSchemeProvider>
     )
-    const label = screen.getByLabelText('Search Query')
+    const label = screen.getByLabelText('Query')
     label.click()
     fireEvent.change(label, { target: { value: 'some query' } })
     expect(executeSubscription).not.toHaveBeenCalled()
@@ -93,7 +93,7 @@ describe('QueryForm', () => {
         </Provider>
       </ColorSchemeProvider>
     )
-    const label = screen.getByLabelText('Search Query')
+    const label = screen.getByLabelText('Query')
     label.click()
     act(() => {
       fireEvent.keyUp(label, { key: 'Enter', code: 'Enter', charCode: 13 })
@@ -130,7 +130,7 @@ describe('QueryForm', () => {
         </Provider>
       </ColorSchemeProvider>
     )
-    const label = screen.getByLabelText('Search Query')
+    const label = screen.getByLabelText('Query')
     label.click()
     fireEvent.change(label, { target: { value: 'some query' } })
     act(() => {

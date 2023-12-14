@@ -26,7 +26,7 @@ type Context struct {
 	Method          string              `json:"method"`
 	Path            string              `json:"path"`
 	StatusCode      int                 `json:"statusCode"`
-	QueryParameters map[string][]string `json:"queryParameters"`
+	QueryParameters map[string]any      `json:"queryParameters"`
 	RequestBody     any                 `json:"requestBody"`
 	ResponseBody    any                 `json:"responseBody"`
 	RequestHeaders  map[string][]string `json:"requestHeaders"`

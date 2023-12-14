@@ -53,7 +53,7 @@ More SDKs will be added over time.
 
 ## Community
 
-- [Join our Discord Channel](https://discord.gg/HyF2zmzt) for questions and support.
+- [Join our Discord Channel](https://discord.gg/BfaMCtkZe2) for questions and support.
 
 ## Contributing
 
@@ -62,7 +62,7 @@ for improvement, bugs, etc.) by opening an issue. Also, if you found a bug, you 
 the code. Before it can be merged, however, you need to sign a Contributors License Agreement, to make sure that we can
 serve our users with your code going forward.
 
-Also, please feel free to discuss ideas and feedback on our [Discord Channel](https://discord.gg/HyF2zmzt).
+Also, please feel free to discuss ideas and feedback on our [Discord Channel](https://discord.gg/BfaMCtkZe2).
 
 ## License
 

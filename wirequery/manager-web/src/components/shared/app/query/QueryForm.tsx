@@ -109,7 +109,7 @@ export const QueryForm = (props: QueryFormProps) => {
             fontFamily: theme.fontFamilyMonospace,
           },
         }}
-        label="Search Query"
+        label="Query"
         autoFocus
         onChange={(e) => setNewExpression(e.target.value)}
         onKeyUp={(e) => {
