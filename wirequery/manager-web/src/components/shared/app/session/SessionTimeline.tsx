@@ -18,13 +18,11 @@ interface TimelineEvent {
 interface TimelineProps {
   data: TimelineEvent[]
   currentTime?: number
-  onEventClick: (event: TimelineEvent) => void
 }
 
 export const SessionTimeline: React.FC<TimelineProps> = ({
   currentTime,
   data,
-  onEventClick,
 }) => {
   const parentRef = useRef<HTMLDivElement | null>(null)
   const svgRef = useRef<SVGSVGElement | null>(null)
@@ -186,7 +184,7 @@ export const SessionTimeline: React.FC<TimelineProps> = ({
           : theme.colors.gray[6]
       )
       .style('stroke-dasharray', '5,5')
-  }, [data, onEventClick, currentTime])
+  }, [data, currentTime])
 
   return (
     <div ref={parentRef}>

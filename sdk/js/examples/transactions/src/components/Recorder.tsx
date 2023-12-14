@@ -11,6 +11,7 @@ import { record, getRecordConsolePlugin } from "rrweb";
 import { useSWRConfig } from "swr";
 
 const events: any = [];
+const wireQueryBackendPath = 'http://localhost:8080';
 
 export const Recorder = () => {
   const [isRecordingModalOpen, setIsRecordingModalOpen] = useState(false);
@@ -22,12 +23,8 @@ export const Recorder = () => {
 
   const start = () => {
     setIsRecordingModalOpen(true)
-    console.log("effect");
     const destructor = startRecording();
-    return () => {
-      console.log("unmount");
-      destructor?.();
-    };
+    return () => destructor?.();
   };
 
   const startRecording = () => {
@@ -41,16 +38,15 @@ export const Recorder = () => {
         args: {
           accountId: "NL69FAKE8085990849",
         },
-        lookbackSecs: 0,
-        timeoutSecs: 30,
       }),
     }).then((res) => res.json().then((json) => {
-      console.log(json)
       setRecording(json);
+
+      // Refresh all calls once, so that they will be intercepted by WireQuery.
       setTimeout(() => {
         clearCache()
         setIsRecordingModalOpen(false)
-      }, 1000) // Trigger all calls once more
+      }, 1000)
     }));
     return record({
       emit: (event) => {
@@ -63,7 +59,7 @@ export const Recorder = () => {
   const send = () => {
     if (recording) {
       setRecording(undefined);
-      fetch(`http://localhost:8080/api/v1/recordings/${recording.id}/finish`, {
+      fetch(`${wireQueryBackendPath}/api/v1/recordings/${recording.id}/finish`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

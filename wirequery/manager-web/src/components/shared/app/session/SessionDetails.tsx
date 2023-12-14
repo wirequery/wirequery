@@ -126,7 +126,6 @@ export function SessionDetails(props: SessionDetailsProps) {
         <SessionTimeline
           currentTime={currentTime}
           data={sessionData}
-          onEventClick={(x) => console.log(x)}
         />
       )}
 
