@@ -6,9 +6,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { ApplicationDetails } from '@components/ce/app/application/ApplicationDetails'
-import { StoredQueryList } from '@components/shared/app/stored-query/StoredQueryList'
 import DashboardLayout from '@components/ce/layout/DashboardLayout'
-import { Anchor, Breadcrumbs, Tabs } from '@mantine/core'
+import { Anchor, Breadcrumbs } from '@mantine/core'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -26,14 +25,6 @@ export default function ShowApplication() {
         </Anchor>
       </Breadcrumbs>
       {applicationId && <ApplicationDetails id={applicationId as string} />}
-      <Tabs defaultValue="storedQueries">
-        <Tabs.List>
-          <Tabs.Tab value="storedQueries">Queries</Tabs.Tab>
-        </Tabs.List>
-        <Tabs.Panel value="storedQueries">
-          <StoredQueryList applicationId={'' + applicationId} />
-        </Tabs.Panel>
-      </Tabs>
     </DashboardLayout>
   )
 }
