@@ -14,22 +14,13 @@ application itself, so that sensitive data is stripped before ever reaching the 
 
 ## Feature Highlights
 
-- **Recording**: Record interactions on the frontend as if they were screen captures. Combined with backend
-  interactions, Get an end-to-end overview of how
-  a user got into a certain state. [Screenshot](screenshot_3.png)
-- **Explore**:
-  After entering a query, the targeted production system will immediately start capturing data so that WireQuery can
-  show it back to you.
-- **(Stored) Queries**: Occassionally, you may want to run a query for a longer time, or even indefinitely. (Stored)
-  Queries allow you to do so.
-- **Extended Tracing**: Extended Tracing is similar to regular tracing, but adds request and response bodies and more
-  where confidential information is redacted, so you can see what *actually* happens during a
-  call. [Screenshot](screenshot_2.png)
-- **Sessions**: Allow users such as Support Engineers to spin up a group of queries that are
-  instantiated by applying a template, so developers have all the knowledge they need to tackle any incident prior to
-  getting started.
-- **Masking**: Each application can specify masking and unmasking rules, so that confidential information is hidden.
-
+- **Explore**: Enter a query to let the targeted (production) system start capturing HTTP requests immediately.
+- **(Stored) Queries**: Store queries so that you can run them in the background.
+- **Extended Tracing**: Trace the results with their bodies, so you can see what happens in your entire stack. [Screenshot](screenshot_3.png)
+- **Sessions**: Allow non-technical users to start multiple queries at the same time.
+- **Full-Stack Recording**: Record the frontend like a video while capturing the related backend requests. [Screenshot](screenshot_2.png)
+- **Masking**: Easily mask confidential information, so you can query with peace of mind.
+ 
 ## Get Started
 
 - You can follow the Installation Guide [here](docs/installation.md).

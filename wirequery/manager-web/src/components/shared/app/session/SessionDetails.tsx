@@ -123,10 +123,7 @@ export function SessionDetails(props: SessionDetailsProps) {
         )}
       </div>
       {data?.session?.storedQuerys && (
-        <SessionTimeline
-          currentTime={currentTime}
-          data={sessionData}
-        />
+        <SessionTimeline currentTime={currentTime} data={sessionData} />
       )}
 
       <Modal
