@@ -16,9 +16,9 @@ application itself, so that sensitive data is stripped before ever reaching the 
 
 - **Explore**: Enter a query to let the targeted (production) system start capturing HTTP requests immediately.
 - **(Stored) Queries**: Store queries so that you can run them in the background.
-- **Extended Tracing**: Trace the results with their bodies, so you can see what happens in your entire stack. [Screenshot](screenshot_3.png)
+- **Extended Tracing**: Trace the results with their bodies, so you can see what happens in your [entire stack](screenshot_3.png). 
 - **Sessions**: Allow non-technical users to start multiple queries at the same time.
-- **Full-Stack Recording**: Record the frontend like a video while capturing the related backend requests. [Screenshot](screenshot_2.png)
+- **Full-Stack Recording**: Record the frontend [like a video](screenshot_2.png) while capturing the related backend requests.
 - **Masking**: Easily mask confidential information, so you can query with peace of mind.
  
 ## Get Started
@@ -38,12 +38,11 @@ WireQuery's SDKs are offered in the following variants:
 
 More SDKs will be added over time.
 
-## Guides
+## Links
 
+- [Official Website](https://www.wirequery.io)
+- [Documentation](https://www.wirequery.io/docs)
 - [Writing Queries](/docs/writing-queries.md)
-
-## Community
-
 - [Join our Discord Channel](https://discord.gg/BfaMCtkZe2) for questions and support.
 
 ## Contributing

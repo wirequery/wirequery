@@ -1,0 +1,6 @@
+apiVersion: v2
+name: wirequery
+description: Capture, explore, and analyze data flowing in and out of your applications - without compromising privacy.
+type: application
+version: 0.1.0
+appVersion: main

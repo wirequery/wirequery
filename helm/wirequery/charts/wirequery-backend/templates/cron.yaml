@@ -1,0 +1,24 @@
+{{ $name := include "application.fullname" . }}
+{{ $port := .Values.service.port }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: wirequery-cron
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 10
+      backoffLimit: 0
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+{{- range $i, $v := .Values.global.hosts }}
+            - name: {{ $name }}-cronjob-{{ $i }}
+              image: curlimages/curl:7.72.0
+              args:
+                - /bin/sh
+                - -ec
+                - "curl --verbose --max-time 10 -X POST {{ $name }}:{{ $port }}/api/internal/jobs --header 'Host: {{ $v.host }}'"
+{{- end }}

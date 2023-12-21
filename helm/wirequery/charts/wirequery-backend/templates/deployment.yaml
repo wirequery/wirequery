@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "application.fullname" . }}
+  labels:
+    {{- include "application.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "application.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "application.selectorLabels" . | nindent 8 }}
+    spec:
+      imagePullSecrets:
+        - name: {{ include "application.fullname" . }}-image-pull-secret
+      {{- with .Values.imagePullSecrets }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "application.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}/{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            failureThreshold: 10
+            periodSeconds: 10
+          env:
+            - name: SPRING_FLYWAY_USER
+              value: {{ .Values.settings.dbMigrateUser }}
+            - name: SPRING_FLYWAY_PASSWORD
+              value: {{ .Values.settings.dbMigratePassword }}
+            - name: SPRING_FLYWAY_URL
+              value: {{ .Values.settings.dbMigrateJdbcUrl }}
+            - name: WIREQUERY_REDIS_HOSTNAME
+              value: {{ .Values.settings.redisHostName }}
+            - name: WIREQUERY_REDIS_PORT
+              value: {{ .Values.settings.redisPort | quote }}
+            - name: WIREQUERY_DB_USER
+              value: {{ .Values.settings.dbUser }}
+            - name: WIREQUERY_DB_PASSWORD
+              value: {{ .Values.settings.dbPassword }}
+            - name: WIREQUERY_DB_URL
+              value: {{ .Values.settings.dbUrl }}
+            - name: WIREQUERY_ADMIN_ENABLED
+              value: {{ .Values.settings.adminEnabled | quote }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
