@@ -42,7 +42,7 @@ spec:
     - host: {{ .host | quote }}
       http:
         paths:
-{{ range $path := list "/graphql" "/subscriptions" "/api/v1/recordings" }}
+{{ range $path := list "/graphql" "/subscriptions" "/api/v1" }}
           - path: {{ $path }}
             {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
             pathType: Prefix

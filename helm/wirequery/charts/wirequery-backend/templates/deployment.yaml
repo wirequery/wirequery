@@ -71,6 +71,8 @@ spec:
               value: {{ .Values.settings.dbUrl }}
             - name: WIREQUERY_ADMIN_ENABLED
               value: {{ .Values.settings.adminEnabled | quote }}
+            - name: WIREQUERY_TENANT_ID
+              value: {{ .Values.settings.tenantId | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

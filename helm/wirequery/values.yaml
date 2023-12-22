@@ -29,6 +29,7 @@ wirequery-backend:
     dbPassword: wirequery-multitenant
     dbUrl: "jdbc:postgresql://wirequery-postgresql:5432/wirequery"
     adminEnabled: "true"
+    tenantId: ""
 
   replicaCount: 1
   image:
