@@ -1,4 +1,4 @@
-# Getting Started
+# Java Virtual Machine
 
 ## Adding Dependencies
 
@@ -56,9 +56,9 @@ public class User {
 }
 ```
 
-# Additional Configuration
+## Additional Configuration
 
-## Masking using Application Config
+### Masking using Application Config
 
 Besides `@Mask` and `@Unmask`, you can also mask and unmask fields using the `wirequery.maskSettings.classes` property.
 This property takes a list of objects containing:
@@ -67,9 +67,9 @@ This property takes a list of objects containing:
 - `unmask` - Whether or not to unmask (unless overridden by field settings) all fields in this class
 - `name` - The fully qualified name of the class
 - `fields` - A list of fields to set masking rules
-    - `mask` - Whether or not to mask this field
-    - `unmask` - Whether or not to unmask this field
-    - `name` - The name of the field
+  - `mask` - Whether or not to mask this field
+  - `unmask` - Whether or not to unmask this field
+  - `name` - The name of the field
 
 Here, `mask` and `unmask` cannot be used at the same time.
 
@@ -87,7 +87,7 @@ wirequery:
             mask: true
 ```
 
-## Limiting Access
+### Limiting Access
 
 Access to resources can be limited using either the `allowedResources` or `unallowedResources` properties. These
 properties cannot be used at the same time. Both properties take a list of objects containing the path and a list of
@@ -110,7 +110,7 @@ wirequery:
         - POST
 ```
 
-## Extending WireQuery
+### Extending WireQuery
 
 WireQuery can be extended to provide more information than only the incoming request and response using extensions.
 You can extend WireQuery by using the `RequestData` object, which can be injected into a bean. The `RequestData` object,
@@ -134,7 +134,7 @@ var maskedResponseHeaders = headersMasker.maskResponseHeaders(myResponseHeaders)
 var maskedObject = objectMasker.mask(myObject);
 ```
 
-# Configuration Properties
+## Configuration Properties
 
 The following settings can be used to configure WireQuery in your `application.yml` file:
 
@@ -147,15 +147,15 @@ The following settings can be used to configure WireQuery in your `application.y
 | wirequery.allowedResources             | path, methods              | null    | Determines which resources are allowed to be accessed.                                                |
 | wirequery.unallowedResources           | path, methods              | null    | Determines which resources are allowed to be accessed.                                                |
 
-# Limitations
+## Limitations
 
 Current limitations include:
 
 - If the request body is malformed, it cannot be parsed and therefore not intercepted. As such, it will end up as `null` in the `context`.
 
-# Examples
+## Examples
 
-Two examples may exemplify how WireQuery can be used in a Spring Boot project.
+The following examples demonstrate how WireQuery can be used within a Spring Boot application:
 
-- [Transaction Service](examples/spring-boot/transactions) - simulates a financial system that can create and retrieve transactions.
-- [Balance Calculator](examples/spring-boot/balance-calculator) - calculates a user's balance based on the transactions from the `transactions` service. Exemplifies how to use `extensions`.
+- [Transaction Service](https://github.com/wirequery/wirequery/tree/main/sdk/jvm/examples/spring-boot/transactions) - simulates a financial system that can create and retrieve transactions.
+- [Balance Calculator](https://github.com/wirequery/wirequery/tree/main/sdk/jvm/examples/spring-boot/balance-calculator) - calculates a user's balance based on the transactions from the `transactions` service. Exemplifies how to use `extensions`.

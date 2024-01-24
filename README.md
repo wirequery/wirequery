@@ -16,11 +16,13 @@ application itself, so that sensitive data is stripped before ever reaching the 
 
 - **Explore**: Enter a query to let the targeted (production) system start capturing HTTP requests immediately.
 - **(Stored) Queries**: Store queries so that you can run them in the background.
-- **Extended Tracing**: Trace the results with their bodies, so you can see what happens in your [entire stack](screenshot_3.png). 
+- **Extended Tracing**: Trace the results with their bodies, so you can see what happens in
+  your [entire stack](screenshot_3.png).
 - **Sessions**: Allow non-technical users to start multiple queries at the same time.
-- **Full-Stack Recording**: Record the frontend [like a video](screenshot_2.png) while capturing the related backend requests.
+- **Full-Stack Recording**: Record the frontend [like a video](screenshot_2.png) while capturing the related backend
+  requests.
 - **Masking**: Easily mask confidential information, so you can query with peace of mind.
- 
+
 ## Get Started
 
 - You can follow the Installation Guide [here](docs/installation.md).
@@ -30,11 +32,12 @@ application itself, so that sensitive data is stripped before ever reaching the 
 
 WireQuery's SDKs are offered in the following variants:
 
-| Technology                  | Description                                                       |
-|-----------------------------|-------------------------------------------------------------------|
-| [JVM](/sdk/jvm)             | Library for vanilla Java, Spring Boot 2 and 3                     |
-| [JS (Browser)](/sdk/js)     | Integration with Javascript in the Browser for frontend recording |
-| [Universal](/sdk/universal) | Universal SDK for every other programming language                |                                                    |
+| Technology                  | Description                                                       | Notes                                                        | Resources                                            |
+|-----------------------------|-------------------------------------------------------------------|--------------------------------------------------------------|------------------------------------------------------|
+| [JVM](/sdk/jvm)             | Library for vanilla Java, Spring Boot 2 and 3                     |                                                              | [Docs](https://www.wirequery.io/docs/sdks/jvm)       |
+| [JS (Browser)](/sdk/js)     | Integration with Javascript in the Browser for frontend recording | Not a library, but integration guide and examples            | [Docs](https://www.wirequery.io/docs/sdks/js)        |
+| [Go](/sdk/go)               | Library for Go.                                                   | Highly experimental and masking not built-in yet             | [Docs](https://www.wirequery.io/docsdks/js)          |
+| [Universal](/sdk/universal) | Universal SDK for every other programming language.               | Highly experimental and masking should be done by the client | [Docs](https://www.wirequery.io/docs/sdks/universal) |
 
 More SDKs will be added over time.
 
