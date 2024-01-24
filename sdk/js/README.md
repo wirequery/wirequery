@@ -57,7 +57,7 @@ const recording = await res.json()
 
 The actual recording needs to be taken care by `rrweb`. A guide on `rrweb` can be found on
 [GitHub](https://github.com/rrweb-io/rrweb/blob/master/guide.md), and an example can be found
-in the [Transactions](https://github.com/wirequery/wirequery/tree/main/sdk/js/examples/transactions) example.
+in the [Shop](https://github.com/wirequery/wirequery/tree/main/sdk/js/examples/shop) example.
 
 ## Finish Recording
 
@@ -79,12 +79,12 @@ fetch(`<WireQuery Host>/api/v1/recordings/${recording.id}/finish`, {
 ```
 Where `events` represent `rrweb` events and `<WireQuery Host>` is the host of WireQuery, such as `https://demo.wirequery.io`.
 
-An example of how `rrweb` can be used, can be found in the `sdk/js/examples/transactions` in the [WireQuery](https://github.com/wirequery/wirequery) repository.
+An example of how `rrweb` can be used, can be found in the `sdk/js/examples/shop` in the [WireQuery](https://github.com/wirequery/wirequery) repository.
 
 ## Examples
 
 The following examples demonstrate how WireQuery can be used within a Frontend application:
 
-- [Transactions](https://github.com/wirequery/wirequery/tree/main/sdk/js/examples/transactions) - simulates a financial system that can create and retrieve transactions. Requires two backends to function properly:
-    - [Transaction Service](https://github.com/wirequery/wirequery/tree/main/sdk/jvm/examples/spring-boot/transactions) - simulates a financial system that can create and retrieve transactions.
-    - [Balance Calculator](https://github.com/wirequery/wirequery/tree/main/sdk/jvm/examples/spring-boot/balance-calculator) - calculates a user's balance based on the transactions from the `transactions` service. Exemplifies how to use `extensions`.
+- [Shop](https://github.com/wirequery/wirequery/tree/main/sdk/js/examples/shop) - simulates a webshop.
+    - [Products Service](https://github.com/wirequery/wirequery/tree/main/sdk/jvm/examples/spring-boot/products) - simulates a product catalogue.
+    - [Basket](https://github.com/wirequery/wirequery/tree/main/sdk/jvm/examples/spring-boot/basket) - simulates an order basket. Connects to the products service.

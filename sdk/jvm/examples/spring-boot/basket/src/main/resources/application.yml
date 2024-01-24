@@ -1,0 +1,21 @@
+server.port: 9100
+
+wirequery:
+  connection:
+    secure: true
+    host: grpc.wirequery.io:443
+    appName: basket
+    apiKey: 1/3629bca7-8e6f-4ee8-98ea-741e6a23d1ea # Usually this should be injected as an environment variable
+  maskSettings:
+    requestHeaders:
+      - accountid
+
+#wirequery:
+#  connection:
+#    secure: false
+#    host: localhost:9090
+#    appName: basket
+#    apiKey: 1/a5eb574c-7420-4d9e-ae0d-67082cccad20 # Usually this should be injected as an environment variable
+#  maskSettings:
+#    requestHeaders:
+#      - accountid

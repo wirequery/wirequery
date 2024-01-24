@@ -73,7 +73,7 @@ This property takes a list of objects containing:
 
 Here, `mask` and `unmask` cannot be used at the same time.
 
-For example, the following example would unmask every field in the `Transaction` class, except for `description`:
+For example, the following example would unmask every field in the `Product` class, except for `description`:
 
 ```
 wirequery:
@@ -81,7 +81,7 @@ wirequery:
   maskSettings:
     classes:
       - unmask: true
-        name: com.transactions.transaction.Transaction
+        name: com.products.product.Product
         fields:
           - name: description
             mask: true
@@ -99,13 +99,13 @@ For example:
 wirequery:
   ...
   allowedResources:
-    - path: /transactions
+    - path: /products
       methods:
         - GET
-    - path: /transactions/{transactionId}
+    - path: /products/{productId}
       methods:
         - PUT
-    - path: /transactions/**
+    - path: /products/**
       methods:
         - POST
 ```
@@ -157,5 +157,5 @@ Current limitations include:
 
 The following examples demonstrate how WireQuery can be used within a Spring Boot application:
 
-- [Transaction Service](https://github.com/wirequery/wirequery/tree/main/sdk/jvm/examples/spring-boot/transactions) - simulates a financial system that can create and retrieve transactions.
-- [Balance Calculator](https://github.com/wirequery/wirequery/tree/main/sdk/jvm/examples/spring-boot/balance-calculator) - calculates a user's balance based on the transactions from the `transactions` service. Exemplifies how to use `extensions`.
+- [Products Service](https://github.com/wirequery/wirequery/tree/main/sdk/jvm/examples/spring-boot/products) - simulates a product catalogue.
+- [Basket Service](https://github.com/wirequery/wirequery/tree/main/sdk/jvm/examples/spring-boot/balance-calculator) - simulates an order basket. Connects to the products service.

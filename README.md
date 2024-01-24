@@ -17,9 +17,9 @@ application itself, so that sensitive data is stripped before ever reaching the 
 - **Explore**: Enter a query to let the targeted (production) system start capturing HTTP requests immediately.
 - **(Stored) Queries**: Store queries so that you can run them in the background.
 - **Extended Tracing**: Trace the results with their bodies, so you can see what happens in
-  your [entire stack](screenshot_3.png).
+  your [entire stack](screenshot_2.png).
 - **Sessions**: Allow non-technical users to start multiple queries at the same time.
-- **Full-Stack Recording**: Record the frontend [like a video](screenshot_2.png) while capturing the related backend
+- **Full-Stack Recording**: Record the frontend [like a video](screenshot_3.png) while capturing the related backend
   requests.
 - **Masking**: Easily mask confidential information, so you can query with peace of mind.
 

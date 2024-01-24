@@ -30,11 +30,11 @@ jobs:
       - name: Run Gradle test on WireQuery Spring 3 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-3-starter
         run: ./gradlew test && ./gradlew publishToMavenLocal --no-daemon
-      - name: Run Gradle test on the Transaction Example
-        working-directory: ./sdk/jvm/examples/spring-boot/transactions
+      - name: Run Gradle test on the Products Example
+        working-directory: ./sdk/jvm/examples/spring-boot/products
         run: ./gradlew build
-      - name: Run Gradle build on the Balance Calculator Example
-        working-directory: ./sdk/jvm/examples/spring-boot/balance-calculator
+      - name: Run Gradle build on the Basket Example
+        working-directory: ./sdk/jvm/examples/spring-boot/basket
         run: ./gradlew build
       - name: Run Gradle build on Wirequery's manager-server
         working-directory: ./wirequery/manager-server
