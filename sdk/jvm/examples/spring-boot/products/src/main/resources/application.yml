@@ -5,7 +5,7 @@ wirequery:
     secure: true
     host: grpc.wirequery.io:443
     appName: products
-    apiKey: 1/0df82d0b-8dca-4002-8f47-0d210ab1c734
+    apiKey: 1/6cc07572-ea9f-468a-b6c4-fea745a4044d
   maskSettings:
     requestHeaders:
       - accountid

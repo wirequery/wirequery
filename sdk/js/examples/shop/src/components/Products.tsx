@@ -14,12 +14,12 @@ interface Product {
   price: number,
 }
 
-
 export const Products = () => {
-  const { data: products } = useSWR<Product[]>("/products");
+  const { data: products } = useSWR<Product[]>('/products');
   const { mutate } = useSWRConfig()
 
-  const addToCart = (productId: string) => {
+  const addToBasket = (productId: string) => {
+    console.log('Adding to basket: ' + productId)
     fetch(`/basket-entries/${productId}`, {
       method: "POST",
       headers: { 'Content-Type': 'application/json', accountId: "123" },
@@ -42,7 +42,7 @@ export const Products = () => {
             }).format(product.price / 100)}</Text>
           </div>
           <Text fw={500} size="lg" mt="md">{product.name}</Text>
-          <Button onClick={() => addToCart(product.id)}>Add To Cart</Button>
+          <Button onClick={() => addToBasket(product.id)}>Add To Basket</Button>
         </div>
       ))}</>
   );

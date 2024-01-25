@@ -20,7 +20,8 @@ export const Basket = () => {
   const { data: entries } = useSWR<BasketEntry[]>('/basket-entries');
   const { mutate } = useSWRConfig()
 
-  const removeFromCart = (productId: string) => {
+  const removeFromBasket = (productId: string) => {
+    console.log('Removing from basket: ' + productId)
     fetch(`/basket-entries/${productId}`, {
       method: "DELETE",
       headers: { accountId: "123" },
@@ -49,7 +50,7 @@ export const Basket = () => {
           <Table.Td>{Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(entry.unitPrice / 100)}</Table.Td>
           <Table.Td>{Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(entry.totalPrice / 100)}</Table.Td>
           <Table.Td>
-            <Button onClick={() => removeFromCart(entry.id)}>Remove from Cart</Button>
+            <Button onClick={() => removeFromBasket(entry.id)}>Remove from Basket</Button>
           </Table.Td>
         </Table.Tr>
       ))}

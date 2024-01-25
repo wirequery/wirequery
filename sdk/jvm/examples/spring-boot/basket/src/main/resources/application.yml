@@ -5,7 +5,7 @@ wirequery:
     secure: true
     host: grpc.wirequery.io:443
     appName: basket
-    apiKey: 1/3629bca7-8e6f-4ee8-98ea-741e6a23d1ea # Usually this should be injected as an environment variable
+    apiKey: 1/e74a706f-4443-49f9-bb6a-e6d1a762b711 # Usually this should be injected as an environment variable
   maskSettings:
     requestHeaders:
       - accountid
