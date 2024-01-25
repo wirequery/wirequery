@@ -13,7 +13,7 @@ import com.wirequery.core.annotations.Unmask
 data class Entry(
     val id: String,
     val name: String,
-    val amount: Int,
+    val quantity: Int,
     val unitPrice: Int,
     val totalPrice: Int,
 )

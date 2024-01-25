@@ -5,26 +5,45 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { Divider, Text } from "@mantine/core";
+import { Button, Text } from "@mantine/core";
+import useSWR, { useSWRConfig } from "swr"
 
 interface Product {
-  id: number,
+  id: string,
   name: string,
   price: number,
 }
 
-export interface ShopProps {
-  data?: Product[];
-}
 
-export const Products = (props: ShopProps) => (
-  <>
-    {props.data?.map((t: Product, i) => (
-      <div key={i}>
-        <div style={{ float: 'right' }}>
-          <Text fw={500} size="lg" mt="md">{t.name}</Text>
+export const Products = () => {
+  const { data: products } = useSWR<Product[]>("/products");
+  const { mutate } = useSWRConfig()
+
+  const addToCart = (productId: string) => {
+    fetch(`/basket-entries/${productId}`, {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json', accountId: "123" },
+      body: JSON.stringify({ quantity: 1 })
+    }).then(() => mutate('/basket-entries'))
+  }
+
+  if (!products) {
+    return <></>
+  }
+
+  return (
+    <>
+      {products.map((product, i: number) => (
+        <div key={i}>
+          <div style={{ float: 'right' }}>
+            <Text fw={500} size="lg" mt="md">{Intl.NumberFormat("de-DE", {
+              style: "currency",
+              currency: "EUR"
+            }).format(product.price / 100)}</Text>
+          </div>
+          <Text fw={500} size="lg" mt="md">{product.name}</Text>
+          <Button onClick={() => addToCart(product.id)}>Add To Cart</Button>
         </div>
-        <Text fw={500} size="lg" mt="md">{t.price}</Text>
-      </div>
-    ))}</>
-);
+      ))}</>
+  );
+}

@@ -32,7 +32,7 @@ class EntryService(
                 Entry(
                     id = product.id,
                     name = product.name,
-                    amount = it.value,
+                    quantity = it.value,
                     unitPrice = product.price,
                     totalPrice = product.price * it.value
                 )
