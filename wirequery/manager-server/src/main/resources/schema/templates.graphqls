@@ -17,6 +17,7 @@ type Template {
     nameTemplate: String!
     descriptionTemplate: String!
     allowUserInitiation: Boolean!
+    apiKey: String!
     createdAt: DateTime!
     updatedAt: DateTime
     createdBy: String

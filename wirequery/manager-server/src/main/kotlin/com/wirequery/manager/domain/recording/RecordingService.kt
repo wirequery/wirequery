@@ -98,10 +98,7 @@ class RecordingService(
         return recording
     }
 
-    fun verifySecret(
-        id: Int,
-        secret: String,
-    ): Boolean {
+    fun verifySecret(id: Int, secret: String): Boolean {
         return findById(id)?.secret == secret
     }
 
@@ -214,6 +211,7 @@ class RecordingService(
 
     data class StartRecordingInput(
         val templateId: Int,
+        val apiKey: String,
         val args: Map<String, String>,
     )
 

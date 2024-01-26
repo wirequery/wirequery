@@ -14,6 +14,7 @@ import com.wirequery.manager.domain.recording.RecordingFixtures.RECORDING_ENTITY
 import com.wirequery.manager.domain.recording.RecordingFixtures.RECORDING_FIXTURE_WITH_ID_1
 import com.wirequery.manager.domain.recording.RecordingFixtures.START_RECORDING_FIXTURE_1
 import com.wirequery.manager.domain.recording.RecordingService
+import com.wirequery.manager.domain.template.TemplateService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -34,13 +35,16 @@ class RecordingControllerTest {
     @Mock
     private lateinit var recordingService: RecordingService
 
+    @Mock
+    private lateinit var templateService: TemplateService
+
     private lateinit var mockMvc: MockMvc
 
     @BeforeEach
     fun init() {
         mockMvc =
             MockMvcBuilders
-                .standaloneSetup(RecordingController(recordingService))
+                .standaloneSetup(RecordingController(recordingService, templateService))
                 .build()
     }
 
@@ -48,6 +52,9 @@ class RecordingControllerTest {
     fun `startRecording starts recording and returns result`() {
         whenever(recordingService.startRecording(START_RECORDING_FIXTURE_1))
             .thenReturn(RECORDING_FIXTURE_WITH_ID_1)
+
+        whenever(templateService.verifyApiKey(START_RECORDING_FIXTURE_1.templateId, START_RECORDING_FIXTURE_1.apiKey))
+            .thenReturn(true)
 
         mockMvc
             .post("/api/v1/recordings") {
@@ -61,6 +68,21 @@ class RecordingControllerTest {
                     jsonPath("$.secret") { value(RECORDING_FIXTURE_WITH_ID_1.secret) }
                 }
             }
+    }
+
+    @Test
+    fun `startRecording does not start recording if api key does not match`() {
+        whenever(templateService.verifyApiKey(START_RECORDING_FIXTURE_1.templateId, START_RECORDING_FIXTURE_1.apiKey))
+            .thenReturn(false)
+
+        mockMvc
+            .post("/api/v1/recordings") {
+                contentType = APPLICATION_JSON
+                content = jacksonObjectMapper().writeValueAsString(START_RECORDING_FIXTURE_1)
+            }
+            .andExpect { status { isUnauthorized() } }
+
+        verify(recordingService, times(0)).startRecording(any())
     }
 
     @Test

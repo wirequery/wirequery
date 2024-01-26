@@ -17,6 +17,7 @@ data class Template(
     val nameTemplate: String,
     val descriptionTemplate: String,
     val allowUserInitiation: Boolean,
+    val apiKey: String,
     val createdAt: OffsetDateTime,
     val updatedAt: OffsetDateTime? = null,
     val createdBy: String? = null,

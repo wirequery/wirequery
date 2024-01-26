@@ -7,6 +7,7 @@
 
 package com.wirequery.manager.domain.template
 
+import com.wirequery.manager.domain.application.ApiKeyGeneratorService
 import com.wirequery.manager.domain.template.TemplateFixtures.CREATE_TEMPLATE_FIXTURE_1
 import com.wirequery.manager.domain.template.TemplateFixtures.TEMPLATE_ENTITY_FIXTURE_1
 import com.wirequery.manager.domain.template.TemplateFixtures.TEMPLATE_ENTITY_FIXTURE_WITH_ID_1
@@ -15,6 +16,8 @@ import com.wirequery.manager.domain.template.TemplateFixtures.UPDATE_TEMPLATE_FI
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
@@ -29,6 +32,9 @@ internal class TemplateServiceUnitTests {
 
     @Mock
     private lateinit var templateRepository: TemplateRepository
+
+    @Mock
+    private lateinit var apiKeyGeneratorService: ApiKeyGeneratorService
 
     @InjectMocks
     private lateinit var templateService: TemplateService
@@ -78,6 +84,9 @@ internal class TemplateServiceUnitTests {
 
     @Test
     fun `create calls save on repository if all requirements are met and publishes an event`() {
+        whenever(apiKeyGeneratorService.generateApiKey())
+            .thenReturn(TEMPLATE_ENTITY_FIXTURE_WITH_ID_1.apiKey)
+
         whenever(templateRepository.save(TEMPLATE_ENTITY_FIXTURE_1))
             .thenReturn(TEMPLATE_ENTITY_FIXTURE_WITH_ID_1)
 
@@ -127,5 +136,18 @@ internal class TemplateServiceUnitTests {
 
         verify(templateRepository, times(0)).deleteById(1)
         verify(publisher, times(0)).publishEvent(any())
+    }
+
+    @CsvSource(
+        "123-456, 123-456, true",
+        "123-456, 234-567, false"
+    )
+    @ParameterizedTest
+    fun `verifyApiKey returns whether the api keys match`(argApiKey: String, dbApiKey: String, expected: Boolean) {
+        whenever(templateRepository.findById(TEMPLATE_FIXTURE_WITH_ID_1.id))
+            .thenReturn(Optional.of(TEMPLATE_ENTITY_FIXTURE_WITH_ID_1.copy(apiKey = dbApiKey)))
+
+        assertThat(templateService.verifyApiKey(TEMPLATE_FIXTURE_WITH_ID_1.id, argApiKey))
+            .isEqualTo(expected)
     }
 }

@@ -47,6 +47,7 @@ export function TemplateDetails(props: TemplateDetailsProps) {
           nameTemplate
           descriptionTemplate
           allowUserInitiation
+          apiKey
           createdAt
           updatedAt
           createdBy
@@ -154,6 +155,12 @@ export function TemplateDetails(props: TemplateDetailsProps) {
                   <b>Allow user initiation</b>
                 </td>
                 <td>{data?.template?.allowUserInitiation ? 'Yes' : 'No'}</td>
+              </tr>
+              <tr>
+                <td>
+                  <b>User initiation api key</b>
+                </td>
+                <td>{data?.template?.allowUserInitiation ? data.template.apiKey: 'No'}</td>
               </tr>
             </tbody>
           </DetailsTable>

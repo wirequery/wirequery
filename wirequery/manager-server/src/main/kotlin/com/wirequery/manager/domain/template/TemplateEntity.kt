@@ -23,6 +23,7 @@ data class TemplateEntity(
     val nameTemplate: String,
     val descriptionTemplate: String,
     val allowUserInitiation: Boolean,
+    val apiKey: String,
     @CreatedDate
     val createdAt: LocalDateTime? = null,
     @LastModifiedDate

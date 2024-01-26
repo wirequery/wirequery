@@ -10,6 +10,7 @@ package com.wirequery.manager.application.rest
 import com.wirequery.manager.domain.FunctionalException.Companion.functionalError
 import com.wirequery.manager.domain.recording.RecordingService
 import com.wirequery.manager.domain.recording.RecordingService.StartRecordingInput
+import com.wirequery.manager.domain.template.TemplateService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -19,15 +20,21 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class RecordingController(
     private val recordingService: RecordingService,
+    private val templateService: TemplateService,
 ) {
     @PostMapping
     fun startRecording(
         @RequestBody input: StartRecordingInput,
-    ): PublicRecordingSummary {
+    ): ResponseEntity<PublicRecordingSummary> {
+        if (!templateService.verifyApiKey(input.templateId, input.apiKey)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+        }
         return recordingService.startRecording(input).let {
-            PublicRecordingSummary(
-                id = it.id,
-                secret = it.secret,
+            ResponseEntity.ok(
+                PublicRecordingSummary(
+                    id = it.id,
+                    secret = it.secret,
+                )
             )
         }
     }

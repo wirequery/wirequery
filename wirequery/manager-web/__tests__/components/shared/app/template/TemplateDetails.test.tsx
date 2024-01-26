@@ -21,6 +21,7 @@ describe('TemplateDetails', () => {
     nameTemplate: 'Some nameTemplate',
     descriptionTemplate: 'Some descriptionTemplate',
     allowUserInitiation: true,
+    apiKey: '123-456',
     createdAt: '1970-01-01T00:00:00Z',
     updatedAt: '1970-02-02T00:00:00Z',
   }
@@ -56,5 +57,6 @@ describe('TemplateDetails', () => {
     expect(
       screen.getAllByText(template.allowUserInitiation ? 'Yes' : 'No')
     ).not.toHaveLength(0)
+    expect(screen.getAllByText(template.apiKey)).not.toHaveLength(0)
   })
 })

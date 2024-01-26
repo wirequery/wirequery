@@ -29,6 +29,7 @@ object TemplateFixtures {
             nameTemplate = "Some nameTemplate",
             descriptionTemplate = "Some descriptionTemplate",
             allowUserInitiation = true,
+            apiKey = "123-456",
             createdAt = OFFSET_DATE_TIME_FIXTURE,
         )
 
@@ -48,6 +49,7 @@ object TemplateFixtures {
             nameTemplate = "Some nameTemplate",
             descriptionTemplate = "Some descriptionTemplate",
             allowUserInitiation = true,
+            apiKey = "123-456"
         )
 
     val CREATE_TEMPLATE_FIXTURE_1 =

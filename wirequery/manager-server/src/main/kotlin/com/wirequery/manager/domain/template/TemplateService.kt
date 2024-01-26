@@ -7,6 +7,7 @@
 
 package com.wirequery.manager.domain.template
 
+import com.wirequery.manager.domain.application.ApiKeyGeneratorService
 import com.wirequery.manager.domain.template.TemplateEvent.*
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.repository.findByIdOrNull
@@ -19,6 +20,7 @@ import java.time.ZoneId
 class TemplateService(
     private val templateRepository: TemplateRepository,
     private val publisher: ApplicationEventPublisher,
+    private val apiKeyGeneratorService: ApiKeyGeneratorService
 ) {
     fun findById(id: Int): Template? {
         return templateRepository.findByIdOrNull(id)
@@ -51,6 +53,7 @@ class TemplateService(
                 nameTemplate = input.nameTemplate,
                 allowUserInitiation = input.allowUserInitiation,
                 descriptionTemplate = input.descriptionTemplate,
+                apiKey = apiKeyGeneratorService.generateApiKey(),
             )
         val template = toDomainObject(templateRepository.save(templateEntity))
         publisher.publishEvent(TemplatesCreatedEvent(this, listOf(template)))
@@ -94,6 +97,10 @@ class TemplateService(
         return true
     }
 
+    fun verifyApiKey(id: Int, apiKey: String): Boolean {
+        return findById(id)?.apiKey == apiKey
+    }
+
     private fun toDomainObject(entity: TemplateEntity) =
         Template(
             id = entity.id!!,
@@ -103,6 +110,7 @@ class TemplateService(
             nameTemplate = entity.nameTemplate,
             descriptionTemplate = entity.descriptionTemplate,
             allowUserInitiation = entity.allowUserInitiation,
+            apiKey = entity.apiKey,
             createdAt =
                 entity.createdAt!!
                     .atZone(ZoneId.systemDefault())
