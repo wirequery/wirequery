@@ -19,15 +19,15 @@ internal class ExpressionCompilerTest {
     fun `valid compiled expressions can be run`() {
         assertThat(
             expressionCompiler.compile("1 + 1")
-                .eval(mapOf<String, Any>())
+                .eval(mapOf<String, Any>()),
         ).isEqualTo(2L)
         assertThat(
             expressionCompiler.compile("it")
-                .eval(mapOf("it" to "some value"))
+                .eval(mapOf("it" to "some value")),
         ).isEqualTo("some value")
         assertThat(
             expressionCompiler.compile("context")
-                .eval(mapOf("context" to "some value"))
+                .eval(mapOf("context" to "some value")),
         ).isEqualTo("some value")
     }
 

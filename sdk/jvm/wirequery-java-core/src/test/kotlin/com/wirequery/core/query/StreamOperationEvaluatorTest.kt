@@ -21,7 +21,6 @@ import org.mockito.kotlin.whenever
 
 @ExtendWith(MockitoExtension::class)
 internal class StreamOperationEvaluatorTest {
-
     @InjectMocks
     private lateinit var streamOperationEvaluator: StreamOperationEvaluator
 
@@ -59,17 +58,24 @@ internal class StreamOperationEvaluatorTest {
     fun `flatMap returns all items of the value for arrayNodes`() {
         val scriptMock = mock<CelRuntime.Program>()
         whenever(scriptMock.eval(mapOf<String, Any>()))
-            .thenReturn(JsonNodeFactory.instance.arrayNode().also { it.addAll(
-                listOf(
-                    JsonNodeFactory.instance.textNode("a"),
-                    JsonNodeFactory.instance.textNode("b"),
-                )) })
+            .thenReturn(
+                JsonNodeFactory.instance.arrayNode().also {
+                    it.addAll(
+                        listOf(
+                            JsonNodeFactory.instance.textNode("a"),
+                            JsonNodeFactory.instance.textNode("b"),
+                        ),
+                    )
+                },
+            )
         val result = streamOperationEvaluator.evaluate(CompiledOperation("flatMap", scriptMock), mapOf())
 
-        assertThat(result).isEqualTo(listOf(
-            JsonNodeFactory.instance.textNode("a"),
-            JsonNodeFactory.instance.textNode("b"),
-        ))
+        assertThat(result).isEqualTo(
+            listOf(
+                JsonNodeFactory.instance.textNode("a"),
+                JsonNodeFactory.instance.textNode("b"),
+            ),
+        )
     }
 
     @Test
@@ -77,9 +83,10 @@ internal class StreamOperationEvaluatorTest {
         val scriptMock = mock<CelRuntime.Program>()
         whenever(scriptMock.eval(mapOf<String, Any>()))
             .thenReturn("a")
-        val result = assertThrows<RuntimeException> {
-            streamOperationEvaluator.evaluate(CompiledOperation("flatMap", scriptMock), mapOf())
-        }
+        val result =
+            assertThrows<RuntimeException> {
+                streamOperationEvaluator.evaluate(CompiledOperation("flatMap", scriptMock), mapOf())
+            }
         assertThat(result.message).isEqualTo("Unable to flatten flatMap result")
     }
 
@@ -108,26 +115,29 @@ internal class StreamOperationEvaluatorTest {
         val scriptMock = mock<CelRuntime.Program>()
         whenever(scriptMock.eval(mapOf("it" to "abc")))
             .thenReturn(5)
-        val result = assertThrows<RuntimeException> {
-            streamOperationEvaluator.evaluate(CompiledOperation("filter", scriptMock), mapOf("it" to "abc"))
-        }
+        val result =
+            assertThrows<RuntimeException> {
+                streamOperationEvaluator.evaluate(CompiledOperation("filter", scriptMock), mapOf("it" to "abc"))
+            }
         assertThat(result.message).isEqualTo("Return value of filter expression is not a boolean")
     }
 
     @Test
     fun `unknown operation throws error`() {
         val scriptMock = mock<CelRuntime.Program>()
-        val result = assertThrows<RuntimeException> {
-            streamOperationEvaluator.evaluate(CompiledOperation("slim", scriptMock), mapOf())
-        }
+        val result =
+            assertThrows<RuntimeException> {
+                streamOperationEvaluator.evaluate(CompiledOperation("slim", scriptMock), mapOf())
+            }
         assertThat(result.message).isEqualTo("Unknown operation")
     }
 
     @Test
     fun `no celExpression throws error`() {
-        val result = assertThrows<RuntimeException> {
-            streamOperationEvaluator.evaluate(CompiledOperation("slim", null), mapOf())
-        }
+        val result =
+            assertThrows<RuntimeException> {
+                streamOperationEvaluator.evaluate(CompiledOperation("slim", null), mapOf())
+            }
         assertThat(result.message).isEqualTo("No expression provided")
     }
 }

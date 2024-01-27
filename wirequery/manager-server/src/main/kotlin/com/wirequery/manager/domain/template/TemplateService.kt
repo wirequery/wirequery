@@ -20,7 +20,7 @@ import java.time.ZoneId
 class TemplateService(
     private val templateRepository: TemplateRepository,
     private val publisher: ApplicationEventPublisher,
-    private val apiKeyGeneratorService: ApiKeyGeneratorService
+    private val apiKeyGeneratorService: ApiKeyGeneratorService,
 ) {
     fun findById(id: Int): Template? {
         return templateRepository.findByIdOrNull(id)
@@ -97,7 +97,10 @@ class TemplateService(
         return true
     }
 
-    fun verifyApiKey(id: Int, apiKey: String): Boolean {
+    fun verifyApiKey(
+        id: Int,
+        apiKey: String,
+    ): Boolean {
         return findById(id)?.apiKey == apiKey
     }
 

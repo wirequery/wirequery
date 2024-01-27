@@ -7,9 +7,9 @@
 
 package com.wirequery.core.query
 
-import com.wirequery.core.query.context.QueryHead
 import com.wirequery.core.query.context.CompiledQuery
 import com.wirequery.core.query.context.Query
+import com.wirequery.core.query.context.QueryHead
 import dev.cel.runtime.CelRuntime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -24,7 +24,6 @@ import org.mockito.kotlin.whenever
 
 @ExtendWith(MockitoExtension::class)
 internal class QueryCompilerTest {
-
     @Mock
     private lateinit var expressionCompiler: ExpressionCompiler
 
@@ -39,19 +38,22 @@ internal class QueryCompilerTest {
         whenever(queryAuthorizer.isAuthorized("GET", "/abc"))
             .thenReturn(false)
 
-        val query = Query(
-            queryHead = QueryHead(
-                method = "GET",
-                path = "/abc",
-                statusCode = "123"
-            ),
-            streamOperations = listOf(),
-            aggregatorOperation = null
-        )
+        val query =
+            Query(
+                queryHead =
+                    QueryHead(
+                        method = "GET",
+                        path = "/abc",
+                        statusCode = "123",
+                    ),
+                streamOperations = listOf(),
+                aggregatorOperation = null,
+            )
 
-        val exception = assertThrows<IllegalStateException> {
-            queryCompiler.compile(query)
-        }
+        val exception =
+            assertThrows<IllegalStateException> {
+                queryCompiler.compile(query)
+            }
 
         assertThat(exception.message)
             .isEqualTo("Query not authorized for compilation.")
@@ -62,24 +64,27 @@ internal class QueryCompilerTest {
         whenever(queryAuthorizer.isAuthorized(any(), any()))
             .thenReturn(true)
 
-        val query = Query(
-            queryHead = QueryHead(
-                method = "GET",
-                path = "/abc",
-                statusCode = "123"
-            ),
-            streamOperations = listOf(),
-            aggregatorOperation = null
-        )
-        val expected = CompiledQuery(
-            QueryHead(
-                method = "GET",
-                path = "/abc",
-                statusCode = "123"
-            ),
-            streamOperations = listOf(),
-            aggregatorOperation = null
-        )
+        val query =
+            Query(
+                queryHead =
+                    QueryHead(
+                        method = "GET",
+                        path = "/abc",
+                        statusCode = "123",
+                    ),
+                streamOperations = listOf(),
+                aggregatorOperation = null,
+            )
+        val expected =
+            CompiledQuery(
+                QueryHead(
+                    method = "GET",
+                    path = "/abc",
+                    statusCode = "123",
+                ),
+                streamOperations = listOf(),
+                aggregatorOperation = null,
+            )
         val actual = queryCompiler.compile(query)
         assertThat(actual).isEqualTo(expected)
     }
@@ -93,13 +98,15 @@ internal class QueryCompilerTest {
         whenever(expressionCompiler.compile("1 + 1"))
             .thenReturn(programMock)
 
-        val query = Query(
-            queryHead = SOME_APP_HEAD,
-            streamOperations = listOf(
-                Query.Operation("map", "1 + 1")
-            ),
-            aggregatorOperation = null
-        )
+        val query =
+            Query(
+                queryHead = SOME_APP_HEAD,
+                streamOperations =
+                    listOf(
+                        Query.Operation("map", "1 + 1"),
+                    ),
+                aggregatorOperation = null,
+            )
 
         val actual = queryCompiler.compile(query).streamOperations.single()
 
@@ -117,11 +124,12 @@ internal class QueryCompilerTest {
         whenever(expressionCompiler.compile("1 + 1"))
             .thenReturn(programMock)
 
-        val query = Query(
-            queryHead = SOME_APP_HEAD,
-            streamOperations = listOf(),
-            aggregatorOperation = Query.Operation("distinctBy", "1 + 1")
-        )
+        val query =
+            Query(
+                queryHead = SOME_APP_HEAD,
+                streamOperations = listOf(),
+                aggregatorOperation = Query.Operation("distinctBy", "1 + 1"),
+            )
 
         val actual = queryCompiler.compile(query).aggregatorOperation
 
@@ -130,10 +138,11 @@ internal class QueryCompilerTest {
     }
 
     private companion object {
-        val SOME_APP_HEAD = QueryHead(
-            method = "GET",
-            path = "/abc",
-            statusCode = "123"
-        )
+        val SOME_APP_HEAD =
+            QueryHead(
+                method = "GET",
+                path = "/abc",
+                statusCode = "123",
+            )
     }
 }

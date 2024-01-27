@@ -18,50 +18,56 @@ import org.mockito.kotlin.mock
 
 @ExtendWith(MockitoExtension::class)
 internal class AggregatorOperationEvaluatorTest {
-
     @InjectMocks
     private lateinit var aggregatorOperationEvaluator: AggregatorOperationEvaluator
 
     @Test
     fun `empty aggregator returns input`() {
-        val compiledQuery = CompiledQuery(
-            queryHead = mock(),
-            streamOperations = listOf(),
-            aggregatorOperation = CompiledQuery.CompiledOperation(
-                name = "distinct",
-                celExpression = null
+        val compiledQuery =
+            CompiledQuery(
+                queryHead = mock(),
+                streamOperations = listOf(),
+                aggregatorOperation =
+                    CompiledQuery.CompiledOperation(
+                        name = "distinct",
+                        celExpression = null,
+                    ),
             )
-        )
         val result = aggregatorOperationEvaluator.evaluate(compiledQuery, mapOf("it" to "something"))
         assertThat(result).isEqualTo(listOf("something"))
     }
 
     @Test
     fun `unknown aggregator throws error`() {
-        val compiledQuery = CompiledQuery(
-            queryHead = mock(),
-            streamOperations = listOf(),
-            aggregatorOperation = CompiledQuery.CompiledOperation(
-                name = "iDontExist",
-                celExpression = null
+        val compiledQuery =
+            CompiledQuery(
+                queryHead = mock(),
+                streamOperations = listOf(),
+                aggregatorOperation =
+                    CompiledQuery.CompiledOperation(
+                        name = "iDontExist",
+                        celExpression = null,
+                    ),
             )
-        )
-        val caught = assertThrows<IllegalStateException> {
-            aggregatorOperationEvaluator.evaluate(compiledQuery, mapOf("it" to "something"))
-        }
+        val caught =
+            assertThrows<IllegalStateException> {
+                aggregatorOperationEvaluator.evaluate(compiledQuery, mapOf("it" to "something"))
+            }
         assertThat(caught.message).isEqualTo("Unknown operation: iDontExist")
     }
 
     @Test
     fun `distinct only returns elements that did not occur before`() {
-        val compiledQuery = CompiledQuery(
-            queryHead = mock(),
-            streamOperations = listOf(),
-            aggregatorOperation = CompiledQuery.CompiledOperation(
-                name = "distinct",
-                celExpression = null
+        val compiledQuery =
+            CompiledQuery(
+                queryHead = mock(),
+                streamOperations = listOf(),
+                aggregatorOperation =
+                    CompiledQuery.CompiledOperation(
+                        name = "distinct",
+                        celExpression = null,
+                    ),
             )
-        )
         var context = mapOf("it" to "something-1")
         val result1 = aggregatorOperationEvaluator.evaluate(compiledQuery, context)
         context = mapOf("it" to "something-2")
@@ -76,18 +82,20 @@ internal class AggregatorOperationEvaluatorTest {
 
     @Test
     fun `distinct does not support a celExpression`() {
-        val compiledQuery = CompiledQuery(
-            queryHead = mock(),
-            streamOperations = listOf(),
-            aggregatorOperation = CompiledQuery.CompiledOperation(
-                name = "distinct",
-                celExpression = mock()
+        val compiledQuery =
+            CompiledQuery(
+                queryHead = mock(),
+                streamOperations = listOf(),
+                aggregatorOperation =
+                    CompiledQuery.CompiledOperation(
+                        name = "distinct",
+                        celExpression = mock(),
+                    ),
             )
-        )
-        val exception = assertThrows<IllegalStateException> {
-            aggregatorOperationEvaluator.evaluate(compiledQuery, mapOf("it" to "it"))
-        }
+        val exception =
+            assertThrows<IllegalStateException> {
+                aggregatorOperationEvaluator.evaluate(compiledQuery, mapOf("it" to "it"))
+            }
         assertThat(exception.message).isEqualTo("Cel expression not allowed for 'distinct'")
     }
-
 }

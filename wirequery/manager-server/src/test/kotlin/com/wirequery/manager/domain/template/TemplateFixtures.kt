@@ -49,7 +49,7 @@ object TemplateFixtures {
             nameTemplate = "Some nameTemplate",
             descriptionTemplate = "Some descriptionTemplate",
             allowUserInitiation = true,
-            apiKey = "123-456"
+            apiKey = "123-456",
         )
 
     val CREATE_TEMPLATE_FIXTURE_1 =

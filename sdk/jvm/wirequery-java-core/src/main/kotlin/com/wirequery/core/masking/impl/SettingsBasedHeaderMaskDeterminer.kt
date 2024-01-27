@@ -21,6 +21,6 @@ class SettingsBasedHeaderMaskDeterminer(private val maskSettings: MaskSettings) 
     data class MaskSettings(
         val unmaskByDefault: Boolean,
         val requestHeaders: Set<String>,
-        val responseHeaders: Set<String>
+        val responseHeaders: Set<String>,
     )
 }

@@ -13,10 +13,12 @@ import com.wirequery.core.masking.ClassFieldMaskDeterminer
 
 class ClassAnalyzingMaskDeterminer(
     private val unmaskByDefault: Boolean,
-    private val additionalClasses: Map<String, AdditionalClass>
+    private val additionalClasses: Map<String, AdditionalClass>,
 ) : ClassFieldMaskDeterminer {
-
-    override fun shouldUnmask(value: Any, fieldName: String): Boolean {
+    override fun shouldUnmask(
+        value: Any,
+        fieldName: String,
+    ): Boolean {
         val fieldAnnotations = getAnnotationsByFieldName(fieldName, value.javaClass)
 
         verifyAnnotationsSetCorrectly(value.javaClass, fieldAnnotations, fieldName)
@@ -27,27 +29,32 @@ class ClassAnalyzingMaskDeterminer(
             ?: unmaskByDefault
     }
 
-    private fun determineShouldUnmaskUsingAdditionalClasses(value: Any, fieldName: String) =
-        additionalClasses[value::class.java.name]?.let { additionalClass ->
-            when {
-                additionalClass.fields[fieldName]?.unmask == true ->
-                    true
+    private fun determineShouldUnmaskUsingAdditionalClasses(
+        value: Any,
+        fieldName: String,
+    ) = additionalClasses[value::class.java.name]?.let { additionalClass ->
+        when {
+            additionalClass.fields[fieldName]?.unmask == true ->
+                true
 
-                additionalClass.fields[fieldName]?.mask == true ->
-                    false
+            additionalClass.fields[fieldName]?.mask == true ->
+                false
 
-                additionalClass.unmask == true ->
-                    true
+            additionalClass.unmask == true ->
+                true
 
-                additionalClass.mask == true ->
-                    false
+            additionalClass.mask == true ->
+                false
 
-                else ->
-                    null
-            }
+            else ->
+                null
         }
+    }
 
-    private fun determineShouldUnmaskUsingAnnotations(fieldAnnotations: Set<Annotation>, clazz: Class<Any>) = when {
+    private fun determineShouldUnmaskUsingAnnotations(
+        fieldAnnotations: Set<Annotation>,
+        clazz: Class<Any>,
+    ) = when {
         fieldAnnotations.any { it is Unmask } ->
             true
 
@@ -64,7 +71,10 @@ class ClassAnalyzingMaskDeterminer(
             null
     }
 
-    private fun verifyAdditionalClassesSetCorrectly(value: Any, fieldName: String) {
+    private fun verifyAdditionalClassesSetCorrectly(
+        value: Any,
+        fieldName: String,
+    ) {
         if (additionalClasses[value::class.java.name]?.unmask != null) {
             if (additionalClasses[value::class.java.name]?.mask != null) {
                 error("Class both masked and unmasked")
@@ -77,7 +87,11 @@ class ClassAnalyzingMaskDeterminer(
         }
     }
 
-    private fun verifyAnnotationsSetCorrectly(clazz: Class<Any>, annotations: Set<Annotation>, fieldName: String) {
+    private fun verifyAnnotationsSetCorrectly(
+        clazz: Class<Any>,
+        annotations: Set<Annotation>,
+        fieldName: String,
+    ) {
         if (clazz.annotations.any { it is Mask }) {
             if (clazz.annotations.any { it is Unmask }) {
                 error("Both @Mask and @Unmask annotations present on class ${clazz.name}")
@@ -92,25 +106,28 @@ class ClassAnalyzingMaskDeterminer(
 
     private fun getAnnotationsByFieldName(
         fieldName: String,
-        clazz: Class<Any>
+        clazz: Class<Any>,
     ): Set<Annotation> {
         val getterName = "get" + fieldName.replaceFirstChar { it.uppercase() }
 
-        val getterAnnotations = clazz.methods
-            .filter { it.name == getterName }
-            .flatMap { it.declaredAnnotations.toSet() }
-            .toSet()
+        val getterAnnotations =
+            clazz.methods
+                .filter { it.name == getterName }
+                .flatMap { it.declaredAnnotations.toSet() }
+                .toSet()
 
-        val declaredAnnotations = clazz.declaredFields
-            .filter { it.name == fieldName }
-            .flatMap { it.declaredAnnotations.toSet() }
-            .toSet()
+        val declaredAnnotations =
+            clazz.declaredFields
+                .filter { it.name == fieldName }
+                .flatMap { it.declaredAnnotations.toSet() }
+                .toSet()
 
-        val constructorAnnotations = clazz.constructors
-            .flatMap { it.parameters.toList() }
-            .filter { it.name == fieldName }
-            .flatMap { it.declaredAnnotations.toSet() }
-            .toSet()
+        val constructorAnnotations =
+            clazz.constructors
+                .flatMap { it.parameters.toList() }
+                .filter { it.name == fieldName }
+                .flatMap { it.declaredAnnotations.toSet() }
+                .toSet()
 
         return getterAnnotations + declaredAnnotations + constructorAnnotations
     }
@@ -118,7 +135,7 @@ class ClassAnalyzingMaskDeterminer(
     data class AdditionalClass(
         val mask: Boolean? = null,
         val unmask: Boolean? = null,
-        val fields: Map<String, AdditionalField>
+        val fields: Map<String, AdditionalField>,
     )
 
     data class AdditionalField(

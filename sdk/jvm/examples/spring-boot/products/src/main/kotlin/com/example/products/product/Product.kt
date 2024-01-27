@@ -13,5 +13,5 @@ import com.wirequery.core.annotations.Unmask
 data class Product(
     val id: String,
     val name: String,
-    val price: Int
+    val price: Int,
 )

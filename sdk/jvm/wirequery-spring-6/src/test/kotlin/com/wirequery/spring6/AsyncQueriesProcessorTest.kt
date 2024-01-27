@@ -23,7 +23,6 @@ import org.mockito.kotlin.whenever
 
 @ExtendWith(MockitoExtension::class)
 internal class AsyncQueriesProcessorTest {
-
     @Mock
     private lateinit var queryEvaluator: QueryEvaluator
 
@@ -79,5 +78,4 @@ internal class AsyncQueriesProcessorTest {
         const val SOME_RESULT = "some-result"
         const val SOME_ERROR_MESSAGE = "some-error"
     }
-
 }

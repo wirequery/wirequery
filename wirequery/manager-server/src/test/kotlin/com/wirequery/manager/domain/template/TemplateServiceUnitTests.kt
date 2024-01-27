@@ -140,10 +140,14 @@ internal class TemplateServiceUnitTests {
 
     @CsvSource(
         "123-456, 123-456, true",
-        "123-456, 234-567, false"
+        "123-456, 234-567, false",
     )
     @ParameterizedTest
-    fun `verifyApiKey returns whether the api keys match`(argApiKey: String, dbApiKey: String, expected: Boolean) {
+    fun `verifyApiKey returns whether the api keys match`(
+        argApiKey: String,
+        dbApiKey: String,
+        expected: Boolean,
+    ) {
         whenever(templateRepository.findById(TEMPLATE_FIXTURE_WITH_ID_1.id))
             .thenReturn(Optional.of(TEMPLATE_ENTITY_FIXTURE_WITH_ID_1.copy(apiKey = dbApiKey)))
 

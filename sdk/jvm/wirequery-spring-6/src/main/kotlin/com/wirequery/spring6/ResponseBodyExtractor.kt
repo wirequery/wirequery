@@ -17,10 +17,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 
 @ControllerAdvice
 class ResponseBodyExtractor(
-    private val requestData: RequestData
+    private val requestData: RequestData,
 ) : ResponseBodyAdvice<Any> {
-
-    override fun supports(returnType: MethodParameter, converterType: Class<out HttpMessageConverter<*>>): Boolean {
+    override fun supports(
+        returnType: MethodParameter,
+        converterType: Class<out HttpMessageConverter<*>>,
+    ): Boolean {
         return true
     }
 
@@ -30,10 +32,9 @@ class ResponseBodyExtractor(
         selectedContentType: MediaType,
         selectedConverterType: Class<out HttpMessageConverter<*>>,
         request: ServerHttpRequest,
-        response: ServerHttpResponse
+        response: ServerHttpResponse,
     ): Any? {
         requestData.responseBody = body
         return body
     }
-
 }

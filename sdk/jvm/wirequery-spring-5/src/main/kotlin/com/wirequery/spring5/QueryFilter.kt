@@ -18,13 +18,12 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class QueryFilter(
     private val interceptedQueryTrafficProcessor: InterceptedQueryTrafficProcessor,
-    private val requestData: RequestData
-): OncePerRequestFilter() {
-
+    private val requestData: RequestData,
+) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain
+        filterChain: FilterChain,
     ) {
         val wrappedRequest = ContentCachingRequestWrapper(request)
         val wrappedResponse = ContentCachingResponseWrapper(response)
@@ -35,5 +34,4 @@ class QueryFilter(
 
         interceptedQueryTrafficProcessor.processInterceptedTraffic(wrappedRequest, wrappedResponse)
     }
-
 }

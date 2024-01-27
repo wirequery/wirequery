@@ -11,9 +11,13 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.wirequery.core.query.context.CompiledQuery
 
 class StreamOperationEvaluator {
-    fun evaluate(compiledOperation: CompiledQuery.CompiledOperation, context: Map<String, Any>): List<Any> {
-        val celExpression = compiledOperation.celExpression
-            ?: error("No expression provided")
+    fun evaluate(
+        compiledOperation: CompiledQuery.CompiledOperation,
+        context: Map<String, Any>,
+    ): List<Any> {
+        val celExpression =
+            compiledOperation.celExpression
+                ?: error("No expression provided")
         val expressionResult = celExpression.eval(context)
         return when (compiledOperation.name) {
             "map" -> evaluateMap(expressionResult)
@@ -40,7 +44,10 @@ class StreamOperationEvaluator {
         error("Unable to flatten flatMap result")
     }
 
-    private fun evaluateFilter(result: Any, context: Map<String, Any>): List<Any> {
+    private fun evaluateFilter(
+        result: Any,
+        context: Map<String, Any>,
+    ): List<Any> {
         if (result == true) {
             return listOfNotNull(context["it"])
         } else if (result == false) {
@@ -48,5 +55,4 @@ class StreamOperationEvaluator {
         }
         error("Return value of filter expression is not a boolean")
     }
-
 }

@@ -23,7 +23,6 @@ import java.time.ZoneId
 
 @ExtendWith(MockitoExtension::class)
 internal class RequestBodyExtractorTest {
-
     @Mock
     private lateinit var requestData: RequestData
 
@@ -32,7 +31,7 @@ internal class RequestBodyExtractorTest {
 
     @BeforeEach
     fun init() {
-        requestBodyExtractor.clock = Clock.fixed(Instant.ofEpochMilli(10), ZoneId.systemDefault());
+        requestBodyExtractor.clock = Clock.fixed(Instant.ofEpochMilli(10), ZoneId.systemDefault())
     }
 
     @Test
@@ -49,5 +48,4 @@ internal class RequestBodyExtractorTest {
         verify(requestData).requestBody = body
         assertThat(returnValue).isEqualTo(body)
     }
-
 }

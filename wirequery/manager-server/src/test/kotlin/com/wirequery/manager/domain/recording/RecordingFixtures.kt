@@ -53,7 +53,7 @@ object RecordingFixtures {
         StartRecordingInput(
             templateId = 10,
             args = mapOf("a" to "b"),
-            apiKey = "123-456"
+            apiKey = "123-456",
         )
 
     val UPDATE_RECORDING_FIXTURE_1 =

@@ -16,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension
 
 @ExtendWith(MockitoExtension::class)
 internal class RequestDataTest {
-
     @InjectMocks
     private lateinit var requestData: RequestData
 
@@ -30,9 +29,10 @@ internal class RequestDataTest {
     @Test
     fun `putExtension throws an exception when a key is already set`() {
         requestData.putExtension("extension", SOME_EXTENSION)
-        val exception = assertThrows<IllegalStateException> {
-            requestData.putExtension("extension", SOME_EXTENSION)
-        }
+        val exception =
+            assertThrows<IllegalStateException> {
+                requestData.putExtension("extension", SOME_EXTENSION)
+            }
 
         assertThat(exception.message).isEqualTo("extension is already set")
     }
@@ -40,5 +40,4 @@ internal class RequestDataTest {
     private companion object {
         const val SOME_EXTENSION = "some-extension"
     }
-
 }

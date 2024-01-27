@@ -20,7 +20,6 @@ class AsyncQueriesProcessor(
     private val queryLoader: QueryLoader,
     private val resultPublisher: ResultPublisher,
 ) {
-
     @Async
     fun execute(intercepted: InterceptedRequestResponse) {
         queryLoader.getQueries().forEach { query ->

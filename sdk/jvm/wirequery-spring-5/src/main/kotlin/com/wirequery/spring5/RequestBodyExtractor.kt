@@ -17,15 +17,14 @@ import java.time.Clock
 
 @ControllerAdvice
 class RequestBodyExtractor(
-    private val requestData: RequestData
+    private val requestData: RequestData,
 ) : RequestBodyAdvice {
-
     internal var clock = Clock.systemDefaultZone()
 
     override fun supports(
         methodParameter: MethodParameter,
         targetType: Type,
-        converterType: Class<out HttpMessageConverter<*>>
+        converterType: Class<out HttpMessageConverter<*>>,
     ): Boolean {
         return true
     }
@@ -34,7 +33,7 @@ class RequestBodyExtractor(
         inputMessage: HttpInputMessage,
         parameter: MethodParameter,
         targetType: Type,
-        converterType: Class<out HttpMessageConverter<*>>
+        converterType: Class<out HttpMessageConverter<*>>,
     ): HttpInputMessage {
         return inputMessage
     }
@@ -44,7 +43,7 @@ class RequestBodyExtractor(
         inputMessage: HttpInputMessage,
         parameter: MethodParameter,
         targetType: Type,
-        converterType: Class<out HttpMessageConverter<*>>
+        converterType: Class<out HttpMessageConverter<*>>,
     ): Any {
         requestData.requestBody = body
         return body
@@ -55,9 +54,8 @@ class RequestBodyExtractor(
         inputMessage: HttpInputMessage,
         parameter: MethodParameter,
         targetType: Type,
-        converterType: Class<out HttpMessageConverter<*>>
+        converterType: Class<out HttpMessageConverter<*>>,
     ): Any? {
         return body
     }
 }
-

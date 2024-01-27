@@ -41,6 +41,5 @@ class ExpressionCompiler {
                 .addLibraries(CelExtensions.encoders())
                 .addLibraries(CelExtensions.math(CelOptions.DEFAULT))
                 .build()
-
     }
 }

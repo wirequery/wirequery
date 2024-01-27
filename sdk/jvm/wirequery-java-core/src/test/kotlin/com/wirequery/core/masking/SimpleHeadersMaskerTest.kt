@@ -21,6 +21,7 @@ import org.mockito.kotlin.whenever
 internal class SimpleHeadersMaskerTest {
     @Mock
     private lateinit var headerMaskDeterminer: HeaderMaskDeterminer
+
     @InjectMocks
     private lateinit var simpleHeadersMasker: SimpleHeadersMasker
 
@@ -55,5 +56,4 @@ internal class SimpleHeadersMaskerTest {
         assertThat(simpleHeadersMasker.maskResponseHeaders(mapOf("x" to listOf("y", "z"))))
             .isEqualTo(mapOf("x" to listOf("y", "z")))
     }
-
 }

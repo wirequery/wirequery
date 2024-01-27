@@ -13,4 +13,3 @@ interface QueryLoader {
      */
     fun getQueries(): List<TraceableQuery>
 }
-

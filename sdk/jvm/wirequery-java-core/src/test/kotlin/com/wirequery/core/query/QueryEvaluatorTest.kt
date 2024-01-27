@@ -7,8 +7,8 @@
 
 package com.wirequery.core.query
 
-import com.wirequery.core.query.context.QueryHead
 import com.wirequery.core.query.context.CompiledQuery
+import com.wirequery.core.query.context.QueryHead
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -21,12 +21,16 @@ import org.mockito.kotlin.*
 internal class QueryEvaluatorTest {
     @Mock
     private lateinit var appHeadEvaluator: AppHeadEvaluator
+
     @Mock
     private lateinit var streamOperationEvaluator: StreamOperationEvaluator
+
     @Mock
     private lateinit var aggregatorOperationEvaluator: AggregatorOperationEvaluator
+
     @Mock
     private lateinit var contextMapCreator: ContextMapCreator
+
     @InjectMocks
     private lateinit var queryEvaluator: QueryEvaluator
 
@@ -109,10 +113,11 @@ internal class QueryEvaluatorTest {
         val operationMock = mock<CompiledQuery.CompiledOperation>()
         val operationMockResult = mock<CompiledQuery.CompiledOperation>()
         val operationMockResult2 = mock<CompiledQuery.CompiledOperation>()
-        val query = SOME_COMPILED_QUERY.copy(
-            streamOperations = listOf(operationMock),
-            aggregatorOperation = operationMock
-        )
+        val query =
+            SOME_COMPILED_QUERY.copy(
+                streamOperations = listOf(operationMock),
+                aggregatorOperation = operationMock,
+            )
 
         whenever(streamOperationEvaluator.evaluate(any(), any()))
             .thenReturn(listOf(operationMockResult))
@@ -131,30 +136,33 @@ internal class QueryEvaluatorTest {
     }
 
     private companion object {
-        val SOME_COMPILED_QUERY = CompiledQuery(
-            queryHead = QueryHead(
+        val SOME_COMPILED_QUERY =
+            CompiledQuery(
+                queryHead =
+                    QueryHead(
+                        method = "GET",
+                        path = "/abc",
+                        statusCode = "2xx",
+                    ),
+                streamOperations = listOf(),
+                aggregatorOperation = null,
+            )
+
+        val SOME_INTERCEPTED =
+            QueryEvaluator.InterceptedRequestResponse(
                 method = "GET",
                 path = "/abc",
-                statusCode = "2xx"
-            ),
-            streamOperations = listOf(),
-            aggregatorOperation = null
-        )
-
-        val SOME_INTERCEPTED = QueryEvaluator.InterceptedRequestResponse(
-            method = "GET",
-            path = "/abc",
-            statusCode = 200,
-            queryParameters = mapOf("a" to listOf("b")),
-            requestBody = "",
-            responseBody = "",
-            requestHeaders = mapOf(),
-            responseHeaders = mapOf(),
-            extensions = mapOf(),
-            startTime = 0,
-            endTime = 0,
-            traceId = ""
-        )
+                statusCode = 200,
+                queryParameters = mapOf("a" to listOf("b")),
+                requestBody = "",
+                responseBody = "",
+                requestHeaders = mapOf(),
+                responseHeaders = mapOf(),
+                extensions = mapOf(),
+                startTime = 0,
+                endTime = 0,
+                traceId = "",
+            )
 
         val SOME_CONTEXT_MAP = mock<Map<String, Any>>()
     }

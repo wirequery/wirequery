@@ -18,7 +18,6 @@ import org.mockito.kotlin.whenever
 
 @ExtendWith(MockitoExtension::class)
 class TraceCacheTest {
-
     @Test
     fun `store saves by trace id if set, and can be retrieved with findByTraceId`() {
         val traceId = "abc"
@@ -32,5 +31,4 @@ class TraceCacheTest {
 
         assertThat(actual).isEqualTo(interceptedRequestResponse)
     }
-
 }

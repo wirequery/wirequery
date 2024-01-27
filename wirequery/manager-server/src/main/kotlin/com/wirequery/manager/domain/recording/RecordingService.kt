@@ -98,7 +98,10 @@ class RecordingService(
         return recording
     }
 
-    fun verifySecret(id: Int, secret: String): Boolean {
+    fun verifySecret(
+        id: Int,
+        secret: String,
+    ): Boolean {
         return findById(id)?.secret == secret
     }
 

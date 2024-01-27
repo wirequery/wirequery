@@ -19,7 +19,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 
 internal class ClassAnalyzingMaskDeterminerTest {
-
     private val determinerNoUnmaskByDefault =
         ClassAnalyzingMaskDeterminer(unmaskByDefault = false, additionalClasses = mapOf())
 
@@ -52,18 +51,22 @@ internal class ClassAnalyzingMaskDeterminerTest {
 
     @Test
     fun `shouldUnmask throws error if Unmask and Mask annotations are both present`() {
-        val ex1 = assertThrows<IllegalStateException> {
-            determinerNoUnmaskByDefault.shouldUnmask(errorCase1, "field")
-        }
-        val ex2 = assertThrows<IllegalStateException> {
-            determinerNoUnmaskByDefault.shouldUnmask(errorCase2, "field")
-        }
-        val ex3 = assertThrows<IllegalStateException> {
-            determinerNoUnmaskByDefault.shouldUnmask(errorCase3, "field")
-        }
-        val ex4 = assertThrows<IllegalStateException> {
-            determinerNoUnmaskByDefault.shouldUnmask(errorCase4, "field")
-        }
+        val ex1 =
+            assertThrows<IllegalStateException> {
+                determinerNoUnmaskByDefault.shouldUnmask(errorCase1, "field")
+            }
+        val ex2 =
+            assertThrows<IllegalStateException> {
+                determinerNoUnmaskByDefault.shouldUnmask(errorCase2, "field")
+            }
+        val ex3 =
+            assertThrows<IllegalStateException> {
+                determinerNoUnmaskByDefault.shouldUnmask(errorCase3, "field")
+            }
+        val ex4 =
+            assertThrows<IllegalStateException> {
+                determinerNoUnmaskByDefault.shouldUnmask(errorCase4, "field")
+            }
         assertThat(ex1.message).isEqualTo("Both @Mask and @Unmask annotations present on class ${ErrorCase1::class.java.name}")
         assertThat(ex2.message).isEqualTo("Both @Mask and @Unmask annotations present on field field")
         assertThat(ex3.message).isEqualTo("Both @Mask and @Unmask annotations present on field field")
@@ -78,15 +81,18 @@ internal class ClassAnalyzingMaskDeterminerTest {
 
     @Test
     fun `shouldUnmask prioritizes additionalClasses over annotations`() {
-        val determiner = ClassAnalyzingMaskDeterminer(
-            unmaskByDefault = false,
-            additionalClasses = mapOf(
-                ShouldUnmaskCase4::class.java.name to AdditionalClass(
-                    mask = true,
-                    fields = mapOf()
-                )
+        val determiner =
+            ClassAnalyzingMaskDeterminer(
+                unmaskByDefault = false,
+                additionalClasses =
+                    mapOf(
+                        ShouldUnmaskCase4::class.java.name to
+                            AdditionalClass(
+                                mask = true,
+                                fields = mapOf(),
+                            ),
+                    ),
             )
-        )
         assertThat(determiner.shouldUnmask(shouldUnmaskCase4, "field"))
             .isEqualTo(false)
     }
@@ -112,23 +118,28 @@ internal class ClassAnalyzingMaskDeterminerTest {
         unmaskClass: Boolean?,
         maskField: Boolean?,
         unmaskField: Boolean?,
-        expectedShouldUnmask: Boolean
+        expectedShouldUnmask: Boolean,
     ) {
-        val determiner = ClassAnalyzingMaskDeterminer(
-            unmaskByDefault = unmaskByDefault,
-            additionalClasses = mapOf(
-                AdditionalClass1::class.java.name to AdditionalClass(
-                    mask = maskClass,
-                    unmask = unmaskClass,
-                    fields = mapOf(
-                        "field" to AdditionalField(
-                            mask = maskField,
-                            unmask = unmaskField,
-                        )
-                    )
-                )
+        val determiner =
+            ClassAnalyzingMaskDeterminer(
+                unmaskByDefault = unmaskByDefault,
+                additionalClasses =
+                    mapOf(
+                        AdditionalClass1::class.java.name to
+                            AdditionalClass(
+                                mask = maskClass,
+                                unmask = unmaskClass,
+                                fields =
+                                    mapOf(
+                                        "field" to
+                                            AdditionalField(
+                                                mask = maskField,
+                                                unmask = unmaskField,
+                                            ),
+                                    ),
+                            ),
+                    ),
             )
-        )
 
         assertThat(determiner.shouldUnmask(additionalClass1, "field"))
             .isEqualTo(expectedShouldUnmask)
@@ -144,104 +155,110 @@ internal class ClassAnalyzingMaskDeterminerTest {
         unmaskClass: Boolean?,
         maskField: Boolean?,
         unmaskField: Boolean?,
-        expectedMessage: String
+        expectedMessage: String,
     ) {
-        val determiner = ClassAnalyzingMaskDeterminer(
-            unmaskByDefault = true,
-            additionalClasses = mapOf(
-                AdditionalClass1::class.java.name to AdditionalClass(
-                    mask = maskClass,
-                    unmask = unmaskClass,
-                    fields = mapOf(
-                        "field" to AdditionalField(
-                            mask = maskField,
-                            unmask = unmaskField,
-                        )
-                    )
-                )
+        val determiner =
+            ClassAnalyzingMaskDeterminer(
+                unmaskByDefault = true,
+                additionalClasses =
+                    mapOf(
+                        AdditionalClass1::class.java.name to
+                            AdditionalClass(
+                                mask = maskClass,
+                                unmask = unmaskClass,
+                                fields =
+                                    mapOf(
+                                        "field" to
+                                            AdditionalField(
+                                                mask = maskField,
+                                                unmask = unmaskField,
+                                            ),
+                                    ),
+                            ),
+                    ),
             )
-        )
 
-        val exception = assertThrows<IllegalStateException> {
-            determiner.shouldUnmask(additionalClass1, "field")
-        }
+        val exception =
+            assertThrows<IllegalStateException> {
+                determiner.shouldUnmask(additionalClass1, "field")
+            }
         assertThat(exception.message).isEqualTo(expectedMessage)
     }
 
     @Unmask
     @Mask
     data class ErrorCase1(
-        val field: String
+        val field: String,
     )
 
     data class ErrorCase2(
         @get:Unmask @get:Mask
-        val field: String
+        val field: String,
     )
 
     data class ErrorCase3(
         @field:Unmask @field:Mask
-        val field: String
+        val field: String,
     )
 
     data class ErrorCase4(
         @Unmask @Mask
-        val field: String
+        val field: String,
     )
 
     data class ShouldMaskCase1(
-        val field: String
+        val field: String,
     )
 
     @Unmask
     data class ShouldMaskCase2(
         @get:Mask
-        val field: String
+        val field: String,
     )
 
     @Unmask
     data class ShouldMaskCase3(
         @field:Mask
-        val field: String
+        val field: String,
     )
 
     @Unmask
     data class ShouldMaskCase4(
         @Mask
-        val field: String
+        val field: String,
     )
 
     @Mask
     data class ShouldMaskCase5(
-        val field: String
+        val field: String,
     )
 
     @Unmask
     data class ShouldUnmaskCase1(
-        val field: String
+        val field: String,
     )
 
     data class ShouldUnmaskCase2(
         @get:Unmask
-        val field: String
+        val field: String,
     )
 
     data class ShouldUnmaskCase3(
         @field:Unmask
-        val field: String
+        val field: String,
     )
 
     data class ShouldUnmaskCase4(
         @Unmask
-        val field: String
+        val field: String,
     )
 
     data class ShouldUnmaskCase5(
-        val field: String
+        val field: String,
     )
 
     data class AdditionalClass1(
-        val field: String
+        val field: String,
     )
 
     private companion object {
@@ -264,5 +281,4 @@ internal class ClassAnalyzingMaskDeterminerTest {
 
         val additionalClass1 = AdditionalClass1("")
     }
-
 }

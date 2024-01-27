@@ -28,7 +28,6 @@ import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 internal class InterceptedQueryTrafficProcessorTest {
-
     @Mock
     private lateinit var requestData: RequestData
 
@@ -46,7 +45,7 @@ internal class InterceptedQueryTrafficProcessorTest {
 
     @BeforeEach
     fun init() {
-        interceptedQueryTrafficProcessor.clock = Clock.fixed(ofEpochMilli(20), ZoneId.systemDefault());
+        interceptedQueryTrafficProcessor.clock = Clock.fixed(ofEpochMilli(20), ZoneId.systemDefault())
     }
 
     @Test
@@ -87,25 +86,25 @@ internal class InterceptedQueryTrafficProcessorTest {
         val someValueNode = mock<JsonNode>()
         whenever(requestData.extensions).thenReturn(mapOf("some-extension" to someValueNode))
 
-        val intercepted = QueryEvaluator.InterceptedRequestResponse(
-            method = "GET",
-            statusCode = 200,
-            path = "/abc",
-            queryParameters = mapOf("a" to listOf("b")),
-            requestBody = "hello",
-            requestHeaders = mapOf("Accept" to listOf("application/json"), "traceparent" to listOf("00-abc-def")),
-            responseBody = "world",
-            responseHeaders = mapOf("Content-Type" to listOf("application/json")),
-            extensions = mapOf("some-extension" to someValueNode),
-            startTime = 10,
-            endTime = 20,
-            traceId = "abc"
-        )
+        val intercepted =
+            QueryEvaluator.InterceptedRequestResponse(
+                method = "GET",
+                statusCode = 200,
+                path = "/abc",
+                queryParameters = mapOf("a" to listOf("b")),
+                requestBody = "hello",
+                requestHeaders = mapOf("Accept" to listOf("application/json"), "traceparent" to listOf("00-abc-def")),
+                responseBody = "world",
+                responseHeaders = mapOf("Content-Type" to listOf("application/json")),
+                extensions = mapOf("some-extension" to someValueNode),
+                startTime = 10,
+                endTime = 20,
+                traceId = "abc",
+            )
 
         interceptedQueryTrafficProcessor.processInterceptedTraffic(request, response)
 
         verify(traceCache).store(intercepted)
         verify(asyncQueriesProcessor).execute(intercepted)
     }
-
 }

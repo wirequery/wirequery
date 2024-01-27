@@ -9,16 +9,18 @@ package com.wirequery.core.query
 
 class QueryAuthorizer(
     private val allowedResources: Set<ResourceAuthorizationSetting>?,
-    private val unallowedResources: Set<ResourceAuthorizationSetting>?
+    private val unallowedResources: Set<ResourceAuthorizationSetting>?,
 ) {
-
     init {
         if (allowedResources != null && unallowedResources != null) {
             error("Both allowedResources and unallowedResources are set")
         }
     }
 
-    fun isAuthorized(method: String, path: String): Boolean {
+    fun isAuthorized(
+        method: String,
+        path: String,
+    ): Boolean {
         val sanitizedMethod = method.trim().uppercase()
         if (allowedResources == null && unallowedResources == null) {
             return true
@@ -36,33 +38,40 @@ class QueryAuthorizer(
         return !matchesPathAndMethod(method, pathWithoutQueryParams, unallowedResources!!)
     }
 
-    private fun matchesPathAndMethod(method: String, path: String, resourceAuthorizationSetting: Set<ResourceAuthorizationSetting>) =
-        resourceAuthorizationSetting.any {
-            (it.methods == null || method in it.methods.map { m -> m.uppercase().trim() })
-                    && pathMatches(path, it.path)
-        }
+    private fun matchesPathAndMethod(
+        method: String,
+        path: String,
+        resourceAuthorizationSetting: Set<ResourceAuthorizationSetting>,
+    ) = resourceAuthorizationSetting.any {
+        (it.methods == null || method in it.methods.map { m -> m.uppercase().trim() }) &&
+            pathMatches(path, it.path)
+    }
 
-    private fun pathMatches(path: String, pattern: String) = pattern
+    private fun pathMatches(
+        path: String,
+        pattern: String,
+    ) = pattern
         .replace("**", ".*")
         .replace(PATH_VARIABLE_REGEX, "[^/]*")
         .toRegex().matches(path)
 
     data class ResourceAuthorizationSetting(
         val path: String,
-        val methods: Set<String>?
+        val methods: Set<String>?,
     )
 
     private companion object {
         val PATH_VARIABLE_REGEX = "\\{\\w+}".toRegex()
-        val ALLOWED_METHODS = setOf(
-            "GET",
-            "HEAD",
-            "POST",
-            "PUT",
-            "DELETE",
-            "CONNECT",
-            "OPTIONS",
-            "TRACE",
-        )
+        val ALLOWED_METHODS =
+            setOf(
+                "GET",
+                "HEAD",
+                "POST",
+                "PUT",
+                "DELETE",
+                "CONNECT",
+                "OPTIONS",
+                "TRACE",
+            )
     }
 }

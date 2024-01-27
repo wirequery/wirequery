@@ -20,11 +20,13 @@ class RequestData {
 
     val extensions: Map<String, Any> = mutableMapOf()
 
-    fun putExtension(key: String, value: Any) {
+    fun putExtension(
+        key: String,
+        value: Any,
+    ) {
         if (extensions.containsKey(key)) {
             error("$key is already set")
         }
         (extensions as MutableMap<String, Any>)[key] = value
     }
-
 }

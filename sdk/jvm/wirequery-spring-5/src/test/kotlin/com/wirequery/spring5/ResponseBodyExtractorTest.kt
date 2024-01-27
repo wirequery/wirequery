@@ -19,7 +19,6 @@ import org.springframework.http.converter.HttpMessageConverter
 
 @ExtendWith(MockitoExtension::class)
 internal class ResponseBodyExtractorTest {
-
     @Mock
     private lateinit var requestData: RequestData
 

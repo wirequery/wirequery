@@ -9,6 +9,7 @@ package com.wirequery.spring5
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
@@ -18,12 +19,9 @@ import org.mockito.kotlin.verify
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.anyLong
 
 @ExtendWith(MockitoExtension::class)
 internal class QueryFilterTest {
-
     @Mock
     private lateinit var interceptedQueryTrafficProcessor: InterceptedQueryTrafficProcessor
 
@@ -46,5 +44,4 @@ internal class QueryFilterTest {
 
         verify(requestData).startTime = anyLong()
     }
-
 }

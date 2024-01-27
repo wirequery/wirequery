@@ -12,12 +12,11 @@ import com.wirequery.core.masking.ObjectMasker
 
 class ContextMapCreator(
     private val headersMasker: HeadersMasker,
-    private val objectMasker: ObjectMasker
+    private val objectMasker: ObjectMasker,
 ) {
-
     fun createContextMap(
         intercepted: QueryEvaluator.InterceptedRequestResponse,
-        appHeadEvaluationResult: AppHeadEvaluator.AppHeadEvaluationResult
+        appHeadEvaluationResult: AppHeadEvaluator.AppHeadEvaluationResult,
     ) = mapOf(
         "method" to intercepted.method,
         "path" to intercepted.path,
@@ -38,7 +37,7 @@ class ContextMapCreator(
 
     fun createMaskedContextMap(
         intercepted: QueryEvaluator.InterceptedRequestResponse,
-        appHeadEvaluationResult: AppHeadEvaluator.AppHeadEvaluationResult? = null
+        appHeadEvaluationResult: AppHeadEvaluator.AppHeadEvaluationResult? = null,
     ) = mapOf(
         "method" to intercepted.method,
         "path" to intercepted.path,
@@ -56,5 +55,4 @@ class ContextMapCreator(
         .filter { it.value != null }
         .map { it.key to it.value!! }
         .toMap()
-
 }

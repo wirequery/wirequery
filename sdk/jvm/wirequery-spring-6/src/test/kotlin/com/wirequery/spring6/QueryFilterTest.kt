@@ -7,23 +7,21 @@
 
 package com.wirequery.spring6
 
+import jakarta.servlet.FilterChain
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
-import jakarta.servlet.FilterChain
-import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
-import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.anyLong
 
 @ExtendWith(MockitoExtension::class)
 internal class QueryFilterTest {
-
     @Mock
     private lateinit var interceptedQueryTrafficProcessor: InterceptedQueryTrafficProcessor
 
@@ -46,5 +44,4 @@ internal class QueryFilterTest {
 
         verify(requestData).startTime = anyLong()
     }
-
 }

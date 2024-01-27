@@ -14,11 +14,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/products")
 @RestController
 class ProductController(
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
 ) {
-
     @GetMapping
-    fun findAll(): ResponseEntity<List<Product>> =
-        ResponseEntity.ok(productRepository.findAll())
-
+    fun findAll(): ResponseEntity<List<Product>> = ResponseEntity.ok(productRepository.findAll())
 }

@@ -23,10 +23,11 @@ internal class SimpleObjectMaskerTest {
     @BeforeEach
     fun init() {
         classFieldMaskDeterminer = mock()
-        simpleObjectMasker = SimpleObjectMasker(
-            objectMapper = objectMapper,
-            classFieldMaskDeterminer = classFieldMaskDeterminer
-        )
+        simpleObjectMasker =
+            SimpleObjectMasker(
+                objectMapper = objectMapper,
+                classFieldMaskDeterminer = classFieldMaskDeterminer,
+            )
     }
 
     @Test
@@ -134,8 +135,9 @@ internal class SimpleObjectMaskerTest {
         whenever(classFieldMaskDeterminer.shouldUnmask(any<ObjectWithAString>(), eq("someValue")))
             .thenReturn(false)
 
-        val actual = simpleObjectMasker
-            .mask(ObjectWithSubObjectArray(someObjects = arrayOf(ObjectWithAString(someValue = "x"))))
+        val actual =
+            simpleObjectMasker
+                .mask(ObjectWithSubObjectArray(someObjects = arrayOf(ObjectWithAString(someValue = "x"))))
 
         assertThat(actual).isEqualTo(mapOf("someObjects" to listOf(mapOf("someValue" to MASKING_LABEL))))
     }
@@ -145,8 +147,9 @@ internal class SimpleObjectMaskerTest {
         whenever(classFieldMaskDeterminer.shouldUnmask(any<ObjectWithAString>(), eq("someValue")))
             .thenReturn(true)
 
-        val actual = simpleObjectMasker
-            .mask(ObjectWithSubObjectArray(someObjects = arrayOf(ObjectWithAString(someValue = "x"))))
+        val actual =
+            simpleObjectMasker
+                .mask(ObjectWithSubObjectArray(someObjects = arrayOf(ObjectWithAString(someValue = "x"))))
 
         assertThat(actual).isEqualTo(mapOf("someObjects" to listOf(mapOf("someValue" to "x"))))
     }
@@ -156,8 +159,9 @@ internal class SimpleObjectMaskerTest {
         whenever(classFieldMaskDeterminer.shouldUnmask(any<ObjectWithAString>(), eq("someValue")))
             .thenReturn(false)
 
-        val actual = simpleObjectMasker
-            .mask(ObjectWithSubObjectList(someObjects = listOf(ObjectWithAString(someValue = "x"))))
+        val actual =
+            simpleObjectMasker
+                .mask(ObjectWithSubObjectList(someObjects = listOf(ObjectWithAString(someValue = "x"))))
 
         assertThat(actual).isEqualTo(mapOf("someObjects" to listOf(mapOf("someValue" to MASKING_LABEL))))
     }
@@ -167,8 +171,9 @@ internal class SimpleObjectMaskerTest {
         whenever(classFieldMaskDeterminer.shouldUnmask(any<ObjectWithAString>(), eq("someValue")))
             .thenReturn(true)
 
-        val actual = simpleObjectMasker
-            .mask(ObjectWithSubObjectList(someObjects = listOf(ObjectWithAString(someValue = "x"))))
+        val actual =
+            simpleObjectMasker
+                .mask(ObjectWithSubObjectList(someObjects = listOf(ObjectWithAString(someValue = "x"))))
 
         assertThat(actual).isEqualTo(mapOf("someObjects" to listOf(mapOf("someValue" to "x"))))
     }
@@ -178,8 +183,9 @@ internal class SimpleObjectMaskerTest {
         whenever(classFieldMaskDeterminer.shouldUnmask(any<ObjectWithList>(), eq("someValues")))
             .thenReturn(false)
 
-        val actual = simpleObjectMasker
-            .mask(ObjectWithList(someValues = listOf("x")))
+        val actual =
+            simpleObjectMasker
+                .mask(ObjectWithList(someValues = listOf("x")))
 
         assertThat(actual).isEqualTo(mapOf("someValues" to listOf(MASKING_LABEL)))
     }
@@ -189,8 +195,9 @@ internal class SimpleObjectMaskerTest {
         whenever(classFieldMaskDeterminer.shouldUnmask(any<ObjectWithList>(), eq("someValues")))
             .thenReturn(true)
 
-        val actual = simpleObjectMasker
-            .mask(ObjectWithList(someValues = listOf("x")))
+        val actual =
+            simpleObjectMasker
+                .mask(ObjectWithList(someValues = listOf("x")))
 
         assertThat(actual).isEqualTo(mapOf("someValues" to listOf("x")))
     }
@@ -200,8 +207,9 @@ internal class SimpleObjectMaskerTest {
         whenever(classFieldMaskDeterminer.shouldUnmask(any<ObjectWithSubObjectMap>(), eq("someObjects")))
             .thenReturn(false)
 
-        val actual = simpleObjectMasker
-            .mask(ObjectWithSubObjectMap(someObjects = mapOf("key" to ObjectWithAString(someValue = "x"))))
+        val actual =
+            simpleObjectMasker
+                .mask(ObjectWithSubObjectMap(someObjects = mapOf("key" to ObjectWithAString(someValue = "x"))))
 
         assertThat(actual).isEqualTo(mapOf("someObjects" to MASKING_LABEL))
     }
@@ -216,37 +224,38 @@ internal class SimpleObjectMaskerTest {
             .whenever(classFieldMaskDeterminer)
             .shouldUnmask(any<ObjectWithAString>(), eq("someValue"))
 
-        val actual = simpleObjectMasker
-            .mask(ObjectWithSubObjectMap(someObjects = mapOf("key" to ObjectWithAString(someValue = "x"))))
+        val actual =
+            simpleObjectMasker
+                .mask(ObjectWithSubObjectMap(someObjects = mapOf("key" to ObjectWithAString(someValue = "x"))))
 
         assertThat(actual).isEqualTo(mapOf("someObjects" to mapOf("key" to mapOf("someValue" to "x"))))
     }
 
     data class ObjectWithANumber(
-        val someValue: Int
+        val someValue: Int,
     )
 
     data class ObjectWithAString(
-        val someValue: String?
+        val someValue: String?,
     )
 
     data class ObjectWithSubObject(
-        val someObject: ObjectWithAString
+        val someObject: ObjectWithAString,
     )
 
     class ObjectWithSubObjectArray(
-        val someObjects: Array<ObjectWithAString>
+        val someObjects: Array<ObjectWithAString>,
     )
 
     data class ObjectWithList(
-        val someValues: List<String>
+        val someValues: List<String>,
     )
 
     data class ObjectWithSubObjectList(
-        val someObjects: List<ObjectWithAString>
+        val someObjects: List<ObjectWithAString>,
     )
 
     data class ObjectWithSubObjectMap(
-        val someObjects: Map<String, ObjectWithAString>
+        val someObjects: Map<String, ObjectWithAString>,
     )
 }

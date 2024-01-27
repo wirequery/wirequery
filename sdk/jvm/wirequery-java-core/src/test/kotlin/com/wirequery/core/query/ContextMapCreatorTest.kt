@@ -25,8 +25,10 @@ import org.mockito.kotlin.whenever
 internal class ContextMapCreatorTest {
     @Mock
     private lateinit var headersMasker: HeadersMasker
+
     @Mock
     private lateinit var objectMasker: ObjectMasker
+
     @InjectMocks
     private lateinit var contextMapCreator: ContextMapCreator
 
@@ -55,57 +57,61 @@ internal class ContextMapCreatorTest {
     }
 
     private companion object {
-        val SOME_APP_HEAD_EVALUATION_RESULT = AppHeadEvaluator.AppHeadEvaluationResult(
-            matches = true,
-            pathVariables = mapOf("a" to "b"),
-        )
+        val SOME_APP_HEAD_EVALUATION_RESULT =
+            AppHeadEvaluator.AppHeadEvaluationResult(
+                matches = true,
+                pathVariables = mapOf("a" to "b"),
+            )
 
-        val SOME_INTERCEPTED = QueryEvaluator.InterceptedRequestResponse(
-            method = "GET",
-            path = "/abc",
-            statusCode = 200,
-            queryParameters = mapOf("a" to listOf("b")),
-            requestBody = "requestBody",
-            responseBody = "responseBody",
-            requestHeaders = mapOf("c" to listOf("d")),
-            responseHeaders = mapOf("e" to listOf("f")),
-            extensions = mapOf("a" to "someExtension"),
-            startTime = 10,
-            endTime = 20,
-            traceId = "abc"
-        )
+        val SOME_INTERCEPTED =
+            QueryEvaluator.InterceptedRequestResponse(
+                method = "GET",
+                path = "/abc",
+                statusCode = 200,
+                queryParameters = mapOf("a" to listOf("b")),
+                requestBody = "requestBody",
+                responseBody = "responseBody",
+                requestHeaders = mapOf("c" to listOf("d")),
+                responseHeaders = mapOf("e" to listOf("f")),
+                extensions = mapOf("a" to "someExtension"),
+                startTime = 10,
+                endTime = 20,
+                traceId = "abc",
+            )
 
-        val SOME_CONTEXT_MAP = mapOf(
-            "method" to "GET",
-            "path" to "/abc",
-            "pathVariables" to mapOf("a" to "b"),
-            "statusCode" to 200,
-            "queryParameters" to mapOf("a" to listOf("b")),
-            "requestBody" to "requestBody",
-            "responseBody" to "responseBody",
-            "requestHeaders" to mapOf("c" to listOf("d")),
-            "responseHeaders" to mapOf("e" to listOf("f")),
-            "extensions" to mapOf("a" to "someExtension"),
-            "took" to 10L,
-            "traceId" to "abc"
-        )
+        val SOME_CONTEXT_MAP =
+            mapOf(
+                "method" to "GET",
+                "path" to "/abc",
+                "pathVariables" to mapOf("a" to "b"),
+                "statusCode" to 200,
+                "queryParameters" to mapOf("a" to listOf("b")),
+                "requestBody" to "requestBody",
+                "responseBody" to "responseBody",
+                "requestHeaders" to mapOf("c" to listOf("d")),
+                "responseHeaders" to mapOf("e" to listOf("f")),
+                "extensions" to mapOf("a" to "someExtension"),
+                "took" to 10L,
+                "traceId" to "abc",
+            )
 
         val SOME_MASKED_REQUEST_BODY = mock<JsonNode>()
         val SOME_MASKED_RESPONSE_BODY = mock<JsonNode>()
 
-        val SOME_MASKED_CONTEXT_MAP = mapOf(
-            "method" to "GET",
-            "path" to "/abc",
-            "pathVariables" to mapOf("a" to "b"),
-            "statusCode" to 200,
-            "queryParameters" to mapOf("a" to listOf("b")),
-            "requestBody" to SOME_MASKED_REQUEST_BODY,
-            "responseBody" to SOME_MASKED_RESPONSE_BODY,
-            "requestHeaders" to mapOf("c" to listOf(MASKING_LABEL)),
-            "responseHeaders" to mapOf("e" to listOf(MASKING_LABEL)),
-            "extensions" to mapOf("a" to "someExtension"),
-            "took" to 10L,
-            "traceId" to "abc"
-        )
+        val SOME_MASKED_CONTEXT_MAP =
+            mapOf(
+                "method" to "GET",
+                "path" to "/abc",
+                "pathVariables" to mapOf("a" to "b"),
+                "statusCode" to 200,
+                "queryParameters" to mapOf("a" to listOf("b")),
+                "requestBody" to SOME_MASKED_REQUEST_BODY,
+                "responseBody" to SOME_MASKED_RESPONSE_BODY,
+                "requestHeaders" to mapOf("c" to listOf(MASKING_LABEL)),
+                "responseHeaders" to mapOf("e" to listOf(MASKING_LABEL)),
+                "extensions" to mapOf("a" to "someExtension"),
+                "took" to 10L,
+                "traceId" to "abc",
+            )
     }
 }

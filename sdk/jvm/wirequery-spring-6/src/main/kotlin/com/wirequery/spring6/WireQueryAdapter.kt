@@ -31,9 +31,8 @@ class WireQueryAdapter(
     private val logger: Logger,
     private val traceCache: TraceCache,
     private val sleeper: Sleeper,
-    private val contextMapCreator: ContextMapCreator
+    private val contextMapCreator: ContextMapCreator,
 ) : QueryLoader, ResultPublisher {
-
     private var waitForNextMessageCycles = 0
 
     val lock = Any()
@@ -93,34 +92,43 @@ class WireQueryAdapter(
                     sleeper.sleep(5000)
                     listenForQueries()
                 }
-            })
+            },
+        )
     }
 
-    private fun createTraceableQuery(q: Wirequery.QueryMutation) = TraceableQuery(
-        queryId = q.addQuery.queryId,
-        compiledQuery = queryCompiler.compile(Query(
-            queryHead = QueryHead(
-                method = q.addQuery.queryHead.method,
-                path = q.addQuery.queryHead.path,
-                statusCode = q.addQuery.queryHead.statusCode
-            ),
-            streamOperations = q.addQuery.streamOperationsList.map {
-                Query.Operation(
-                    name = it.name,
-                    celExpression = it.celExpression.ifBlank { null }
-                )
-            },
-            aggregatorOperation = q.addQuery.aggregatorOperation?.let {
-                if (it.name.isBlank())
-                    null
-                else
-                    Query.Operation(
-                        name = it.name,
-                        celExpression = it.celExpression.ifBlank { null }
-                    )
-            }
-        ))
-    )
+    private fun createTraceableQuery(q: Wirequery.QueryMutation) =
+        TraceableQuery(
+            queryId = q.addQuery.queryId,
+            compiledQuery =
+                queryCompiler.compile(
+                    Query(
+                        queryHead =
+                            QueryHead(
+                                method = q.addQuery.queryHead.method,
+                                path = q.addQuery.queryHead.path,
+                                statusCode = q.addQuery.queryHead.statusCode,
+                            ),
+                        streamOperations =
+                            q.addQuery.streamOperationsList.map {
+                                Query.Operation(
+                                    name = it.name,
+                                    celExpression = it.celExpression.ifBlank { null },
+                                )
+                            },
+                        aggregatorOperation =
+                            q.addQuery.aggregatorOperation?.let {
+                                if (it.name.isBlank()) {
+                                    null
+                                } else {
+                                    Query.Operation(
+                                        name = it.name,
+                                        celExpression = it.celExpression.ifBlank { null },
+                                    )
+                                }
+                            },
+                    ),
+                ),
+        )
 
     private fun respondWithReportsByTrace(q: Wirequery.QueryMutation) {
         traceCache.findByTraceId(q.queryOneTrace.traceId)?.let {
@@ -137,9 +145,10 @@ class WireQueryAdapter(
                             .setEndTime(it.endTime)
                             .setTraceId(it.traceId)
                             .setMessage(message)
-                            .build()
+                            .build(),
                     )
-                    .build(), object : StreamObserver<Wirequery.Empty> {
+                    .build(),
+                object : StreamObserver<Wirequery.Empty> {
                     override fun onNext(value: Wirequery.Empty) {
                     }
 
@@ -149,7 +158,8 @@ class WireQueryAdapter(
 
                     override fun onCompleted() {
                     }
-                })
+                },
+            )
         }
     }
 
@@ -157,24 +167,38 @@ class WireQueryAdapter(
         return queries
     }
 
-    override fun publishResult(query: TraceableQuery, results: Any, startTime: Long, endTime: Long, traceId: String?) {
-        messageQueue += QueryReport.newBuilder()
-            .setMessage(objectMapper.writeValueAsString(mapOf("result" to results)))
-            .setQueryId(query.queryId)
-            .setStartTime(startTime)
-            .setEndTime(endTime)
-            .let { if (traceId != null) it.setTraceId(traceId) else it }
-            .build()
+    override fun publishResult(
+        query: TraceableQuery,
+        results: Any,
+        startTime: Long,
+        endTime: Long,
+        traceId: String?,
+    ) {
+        messageQueue +=
+            QueryReport.newBuilder()
+                .setMessage(objectMapper.writeValueAsString(mapOf("result" to results)))
+                .setQueryId(query.queryId)
+                .setStartTime(startTime)
+                .setEndTime(endTime)
+                .let { if (traceId != null) it.setTraceId(traceId) else it }
+                .build()
     }
 
-    override fun publishError(queryId: String, message: String, startTime: Long, endTime: Long, traceId: String?) {
-        messageQueue += QueryReport.newBuilder()
-            .setMessage(objectMapper.writeValueAsString(mapOf("error" to message)))
-            .setQueryId(queryId)
-            .setStartTime(startTime)
-            .setEndTime(endTime)
-            .let { if (traceId != null) it.setTraceId(traceId) else it }
-            .build()
+    override fun publishError(
+        queryId: String,
+        message: String,
+        startTime: Long,
+        endTime: Long,
+        traceId: String?,
+    ) {
+        messageQueue +=
+            QueryReport.newBuilder()
+                .setMessage(objectMapper.writeValueAsString(mapOf("error" to message)))
+                .setQueryId(queryId)
+                .setStartTime(startTime)
+                .setEndTime(endTime)
+                .let { if (traceId != null) it.setTraceId(traceId) else it }
+                .build()
     }
 
     @Scheduled(fixedRate = 200)
@@ -208,7 +232,8 @@ class WireQueryAdapter(
 
                     override fun onCompleted() {
                     }
-                })
+                },
+            )
         }
     }
 

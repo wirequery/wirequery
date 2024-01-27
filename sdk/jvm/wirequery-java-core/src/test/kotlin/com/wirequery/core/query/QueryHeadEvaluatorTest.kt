@@ -18,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension
 
 @ExtendWith(MockitoExtension::class)
 internal class QueryHeadEvaluatorTest {
-
     @InjectMocks
     private lateinit var appHeadEvaluator: AppHeadEvaluator
 
@@ -43,7 +42,7 @@ internal class QueryHeadEvaluatorTest {
         method: String,
         path: String,
         statusCode: Int,
-        expected: Boolean
+        expected: Boolean,
     ) {
         val queryHead = QueryHead(appHeadMethod, appHeadPath, appHeadStatusCode)
         val actual = appHeadEvaluator.evaluate(queryHead, method, path, statusCode)

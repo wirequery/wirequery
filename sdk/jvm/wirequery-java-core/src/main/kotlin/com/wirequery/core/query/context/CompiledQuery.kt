@@ -12,18 +12,15 @@ import dev.cel.runtime.CelRuntime
 data class CompiledQuery(
     val queryHead: QueryHead,
     val streamOperations: List<CompiledOperation>,
-    val aggregatorOperation: CompiledOperation?
+    val aggregatorOperation: CompiledOperation?,
 ) {
-
     data class CompiledOperation(
         val name: String,
-        val celExpression: CelRuntime.Program?
+        val celExpression: CelRuntime.Program?,
     )
 
     /** Memory to be used in the compiled query's entire lifespan for aggregation. */
     var aggregatorMemory: AggregatorMemory? = null
 
     interface AggregatorMemory
-
 }
-

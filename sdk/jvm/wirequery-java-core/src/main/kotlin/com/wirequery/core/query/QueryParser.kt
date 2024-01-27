@@ -7,12 +7,11 @@
 
 package com.wirequery.core.query
 
+import com.wirequery.core.query.context.Query
 import com.wirequery.core.query.context.Query.Operation
 import com.wirequery.core.query.context.QueryHead
-import com.wirequery.core.query.context.Query
 
 class QueryParser {
-
     fun parse(expression: String): Query {
         val streamParts = splitExpressionIntoStreamParts(expression).toList()
         val appHead = createAppHead(streamParts.first())
@@ -23,8 +22,7 @@ class QueryParser {
         return createQueryWithoutAggregatorOperation(appHead, operations)
     }
 
-    private fun splitExpressionIntoStreamParts(expression: String) =
-        QUERY_PARTS_PATTERN.findAll(expression).map { it.value }
+    private fun splitExpressionIntoStreamParts(expression: String) = QUERY_PARTS_PATTERN.findAll(expression).map { it.value }
 
     private fun createAppHead(value: String): QueryHead {
         var method = ""
@@ -47,7 +45,10 @@ class QueryParser {
         )
     }
 
-    private fun errorIfNonBlankString(name: String, checkAlreadySet: String) {
+    private fun errorIfNonBlankString(
+        name: String,
+        checkAlreadySet: String,
+    ) {
         if (checkAlreadySet.isNotBlank()) {
             error("$name is already set")
         }
@@ -63,22 +64,28 @@ class QueryParser {
             .let { Operation(it[0], it.getOrNull(1)) }
     }
 
-    private fun createQueryWithAggregatorOperation(queryHead: QueryHead, operations: List<Operation>): Query {
+    private fun createQueryWithAggregatorOperation(
+        queryHead: QueryHead,
+        operations: List<Operation>,
+    ): Query {
         val streamOperations = operations.dropLast(1)
         streamOperations.forEach { check(isStreamOperation(it)) }
         return Query(
             queryHead = queryHead,
             streamOperations = streamOperations,
-            aggregatorOperation = operations.last()
+            aggregatorOperation = operations.last(),
         )
     }
 
-    private fun createQueryWithoutAggregatorOperation(queryHead: QueryHead, operations: List<Operation>): Query {
+    private fun createQueryWithoutAggregatorOperation(
+        queryHead: QueryHead,
+        operations: List<Operation>,
+    ): Query {
         operations.forEach { if (!isStreamOperation(it)) error("${it.name} is not a known stream operation") }
         return Query(
             queryHead = queryHead,
             streamOperations = operations,
-            aggregatorOperation = null
+            aggregatorOperation = null,
         )
     }
 
@@ -99,9 +106,12 @@ class QueryParser {
 
         val METHODS = listOf("GET", "POST", "PUT", "HEAD", "DELETE", "PATCH", "OPTIONS", "CONNECT", "TRACE")
 
-        val STREAM_OPERATIONS = listOf(
-            "map", "flatMap", "filter"
-        )
+        val STREAM_OPERATIONS =
+            listOf(
+                "map",
+                "flatMap",
+                "filter",
+            )
 
         // In a future release, the following operations must be supported:
         // "count", "min", "max", "sum", "distinct",

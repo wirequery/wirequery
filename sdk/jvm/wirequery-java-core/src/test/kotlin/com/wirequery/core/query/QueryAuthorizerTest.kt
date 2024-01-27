@@ -19,9 +19,10 @@ import org.mockito.junit.jupiter.MockitoExtension
 class QueryAuthorizerTest {
     @Test
     fun `QueryAuthorizer cannot be constructed when both allowedResources and unallowedResources are set`() {
-        val exception = assertThrows<IllegalStateException> {
-            QueryAuthorizer(setOf(), setOf())
-        }
+        val exception =
+            assertThrows<IllegalStateException> {
+                QueryAuthorizer(setOf(), setOf())
+            }
         assertThat(exception.message).isEqualTo("Both allowedResources and unallowedResources are set")
     }
 
@@ -57,12 +58,13 @@ class QueryAuthorizerTest {
 
     @Test
     fun `isAuthorized matches on method, true case`() {
-        val allowedResources = setOf(
-            ResourceAuthorizationSetting(
-                path = "/abc",
-                methods = setOf("GET")
+        val allowedResources =
+            setOf(
+                ResourceAuthorizationSetting(
+                    path = "/abc",
+                    methods = setOf("GET"),
+                ),
             )
-        )
         val queryAuthorizer = QueryAuthorizer(allowedResources, null)
         assertThat(queryAuthorizer.isAuthorized("GET", "/abc"))
             .isEqualTo(true)
@@ -70,12 +72,13 @@ class QueryAuthorizerTest {
 
     @Test
     fun `isAuthorized matches on method, true case with lowercase method and padding`() {
-        val allowedResources = setOf(
-            ResourceAuthorizationSetting(
-                path = "/abc",
-                methods = setOf("GET")
+        val allowedResources =
+            setOf(
+                ResourceAuthorizationSetting(
+                    path = "/abc",
+                    methods = setOf("GET"),
+                ),
             )
-        )
         val queryAuthorizer = QueryAuthorizer(allowedResources, null)
         assertThat(queryAuthorizer.isAuthorized(" get ", "/abc"))
             .isEqualTo(true)
@@ -83,12 +86,13 @@ class QueryAuthorizerTest {
 
     @Test
     fun `isAuthorized matches on method, false case`() {
-        val allowedResources = setOf(
-            ResourceAuthorizationSetting(
-                path = "/abc",
-                methods = setOf("POST")
+        val allowedResources =
+            setOf(
+                ResourceAuthorizationSetting(
+                    path = "/abc",
+                    methods = setOf("POST"),
+                ),
             )
-        )
         val queryAuthorizer = QueryAuthorizer(allowedResources, null)
         assertThat(queryAuthorizer.isAuthorized("GET", "/abc"))
             .isEqualTo(false)
@@ -96,12 +100,13 @@ class QueryAuthorizerTest {
 
     @Test
     fun `isAuthorized allows wildcards, one asterisk`() {
-        val allowedResources = setOf(
-            ResourceAuthorizationSetting(
-                path = "/abc/{def}",
-                methods = null
+        val allowedResources =
+            setOf(
+                ResourceAuthorizationSetting(
+                    path = "/abc/{def}",
+                    methods = null,
+                ),
             )
-        )
         val queryAuthorizer = QueryAuthorizer(allowedResources, null)
         assertThat(queryAuthorizer.isAuthorized("GET", "/abc/def"))
             .isEqualTo(true)
@@ -111,12 +116,13 @@ class QueryAuthorizerTest {
 
     @Test
     fun `isAuthorized allows wildcards, two asterisks`() {
-        val allowedResources = setOf(
-            ResourceAuthorizationSetting(
-                path = "/abc/**",
-                methods = null
+        val allowedResources =
+            setOf(
+                ResourceAuthorizationSetting(
+                    path = "/abc/**",
+                    methods = null,
+                ),
             )
-        )
         val queryAuthorizer = QueryAuthorizer(allowedResources, null)
         assertThat(queryAuthorizer.isAuthorized("GET", "/abc/def"))
             .isEqualTo(true)
@@ -126,12 +132,13 @@ class QueryAuthorizerTest {
 
     @Test
     fun `isAuthorized ignores query params`() {
-        val allowedResources = setOf(
-            ResourceAuthorizationSetting(
-                path = "/abc",
-                methods = null
+        val allowedResources =
+            setOf(
+                ResourceAuthorizationSetting(
+                    path = "/abc",
+                    methods = null,
+                ),
             )
-        )
         val queryAuthorizer = QueryAuthorizer(allowedResources, null)
         assertThat(queryAuthorizer.isAuthorized("GET", "/abc?xyz"))
             .isEqualTo(true)
@@ -139,25 +146,29 @@ class QueryAuthorizerTest {
 
     @Test
     fun `isAuthorized throws Exception when method is empty and methods are set for matching allowedResources`() {
-        val queryAuthorizer = QueryAuthorizer(
-            allowedResources = setOf(ResourceAuthorizationSetting(path = "/abc", methods = setOf())),
-            unallowedResources = null
-        )
-        val exception = assertThrows<IllegalStateException> {
-            queryAuthorizer.isAuthorized("", "/abc")
-        }
+        val queryAuthorizer =
+            QueryAuthorizer(
+                allowedResources = setOf(ResourceAuthorizationSetting(path = "/abc", methods = setOf())),
+                unallowedResources = null,
+            )
+        val exception =
+            assertThrows<IllegalStateException> {
+                queryAuthorizer.isAuthorized("", "/abc")
+            }
         assertThat(exception.message).isEqualTo("Method must be set in the query because this resource is restricted")
     }
 
     @Test
     fun `isAuthorized throws Exception when method is empty and methods are set for matching unallowedResources`() {
-        val queryAuthorizer = QueryAuthorizer(
-            allowedResources = null,
-            unallowedResources = setOf(ResourceAuthorizationSetting(path = "/abc", methods = setOf())),
-        )
-        val exception = assertThrows<IllegalStateException> {
-            queryAuthorizer.isAuthorized("", "/abc")
-        }
+        val queryAuthorizer =
+            QueryAuthorizer(
+                allowedResources = null,
+                unallowedResources = setOf(ResourceAuthorizationSetting(path = "/abc", methods = setOf())),
+            )
+        val exception =
+            assertThrows<IllegalStateException> {
+                queryAuthorizer.isAuthorized("", "/abc")
+            }
         assertThat(exception.message).isEqualTo("Method must be set in the query because this resource is restricted")
     }
 }

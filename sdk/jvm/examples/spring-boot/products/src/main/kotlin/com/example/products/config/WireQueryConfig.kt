@@ -14,10 +14,9 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class WireQueryConfig {
-
     @Bean
-    fun traceProvider(tracer: Tracer) = TraceProvider {
-        tracer.currentSpan()?.context()?.traceId()
-    }
-
+    fun traceProvider(tracer: Tracer) =
+        TraceProvider {
+            tracer.currentSpan()?.context()?.traceId()
+        }
 }

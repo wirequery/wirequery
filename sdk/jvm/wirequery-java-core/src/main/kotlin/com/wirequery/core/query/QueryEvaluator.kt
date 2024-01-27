@@ -13,16 +13,19 @@ class QueryEvaluator(
     private val appHeadEvaluator: AppHeadEvaluator,
     private val streamOperationEvaluator: StreamOperationEvaluator,
     private val aggregatorOperationEvaluator: AggregatorOperationEvaluator,
-    private val contextMapCreator: ContextMapCreator
+    private val contextMapCreator: ContextMapCreator,
 ) {
-
-    fun evaluate(compiledQuery: CompiledQuery, intercepted: InterceptedRequestResponse): List<Any> {
-        val appHeadEvaluationResult = appHeadEvaluator.evaluate(
-            compiledQuery.queryHead,
-            intercepted.method,
-            intercepted.path,
-            intercepted.statusCode
-        )
+    fun evaluate(
+        compiledQuery: CompiledQuery,
+        intercepted: InterceptedRequestResponse,
+    ): List<Any> {
+        val appHeadEvaluationResult =
+            appHeadEvaluator.evaluate(
+                compiledQuery.queryHead,
+                intercepted.method,
+                intercepted.path,
+                intercepted.statusCode,
+            )
         if (!appHeadEvaluationResult.matches) {
             return emptyList()
         }
@@ -40,15 +43,19 @@ class QueryEvaluator(
     private fun evaluateStreamOperations(
         streamOperations: List<CompiledQuery.CompiledOperation>,
         previousIts: List<Any>,
-        context: Map<String, Any>
+        context: Map<String, Any>,
     ): List<Any> {
         var nextIts: MutableList<Any>
         var currentIts = previousIts
         streamOperations.forEach { operation ->
             nextIts = mutableListOf()
             currentIts.forEach {
-                nextIts.addAll(streamOperationEvaluator.evaluate(operation,
-                    mapOf("context" to context, "it" to it)))
+                nextIts.addAll(
+                    streamOperationEvaluator.evaluate(
+                        operation,
+                        mapOf("context" to context, "it" to it),
+                    ),
+                )
             }
             currentIts = nextIts
         }
@@ -58,15 +65,15 @@ class QueryEvaluator(
     private fun evaluateAggregationOperation(
         compiledQuery: CompiledQuery,
         its: List<Any>,
-        context: Map<String, Any>
+        context: Map<String, Any>,
     ): List<Any> {
         val nextIts = mutableListOf<Any>()
         its.forEach {
             nextIts.addAll(
                 aggregatorOperationEvaluator.evaluate(
                     compiledQuery,
-                    mapOf("context" to context, "it" to it)
-                )
+                    mapOf("context" to context, "it" to it),
+                ),
             )
         }
         return nextIts
@@ -86,5 +93,4 @@ class QueryEvaluator(
         val endTime: Long,
         val traceId: String?,
     )
-
 }

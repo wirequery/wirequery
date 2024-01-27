@@ -18,29 +18,29 @@ class InterceptedQueryTrafficProcessor(
     private val requestData: RequestData,
     private val asyncQueriesProcessor: AsyncQueriesProcessor,
     private val traceCache: TraceCache,
-    private val traceProvider: TraceProvider
+    private val traceProvider: TraceProvider,
 ) {
-
     internal var clock = Clock.systemDefaultZone()
 
     fun processInterceptedTraffic(
         request: ContentCachingRequestWrapper,
-        response: ContentCachingResponseWrapper
+        response: ContentCachingResponseWrapper,
     ) {
-        val intercepted = QueryEvaluator.InterceptedRequestResponse(
-            method = request.method,
-            statusCode = response.status,
-            path = request.requestURI,
-            queryParameters = request.parameterMap.map { it.key to it.value.toList() }.toMap(),
-            requestBody = requestData.requestBody,
-            requestHeaders = extractRequestHeaders(request),
-            responseBody = requestData.responseBody,
-            responseHeaders = extractResponseHeaders(response),
-            extensions = requestData.extensions,
-            startTime = requestData.startTime,
-            endTime = clock.millis(),
-            traceId = traceProvider.traceId()
-        )
+        val intercepted =
+            QueryEvaluator.InterceptedRequestResponse(
+                method = request.method,
+                statusCode = response.status,
+                path = request.requestURI,
+                queryParameters = request.parameterMap.map { it.key to it.value.toList() }.toMap(),
+                requestBody = requestData.requestBody,
+                requestHeaders = extractRequestHeaders(request),
+                responseBody = requestData.responseBody,
+                responseHeaders = extractResponseHeaders(response),
+                extensions = requestData.extensions,
+                startTime = requestData.startTime,
+                endTime = clock.millis(),
+                traceId = traceProvider.traceId(),
+            )
         traceCache.store(intercepted)
         asyncQueriesProcessor.execute(intercepted)
     }

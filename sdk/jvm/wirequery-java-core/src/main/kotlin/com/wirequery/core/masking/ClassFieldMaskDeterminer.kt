@@ -11,5 +11,8 @@ interface ClassFieldMaskDeterminer {
     /**
      * Determines whether the field on the provided value should be unmasked.
      */
-    fun shouldUnmask(value: Any, fieldName: String): Boolean
+    fun shouldUnmask(
+        value: Any,
+        fieldName: String,
+    ): Boolean
 }

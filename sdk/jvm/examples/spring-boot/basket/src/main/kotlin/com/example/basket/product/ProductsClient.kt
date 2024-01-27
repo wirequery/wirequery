@@ -19,9 +19,8 @@ import org.springframework.web.client.exchange
 @Service
 class ProductsClient(
     private val outboundTrafficExtender: OutboundTrafficExtender,
-    private val restTemplateBuilder: RestTemplateBuilder
+    private val restTemplateBuilder: RestTemplateBuilder,
 ) {
-
     fun getProducts(accountId: String): List<Product> {
         val client = restTemplateBuilder.build()
         val url = "http://localhost:9101/products"
@@ -36,6 +35,6 @@ class ProductsClient(
     data class Product(
         val id: String,
         val name: String,
-        val price: Int
+        val price: Int,
     )
 }

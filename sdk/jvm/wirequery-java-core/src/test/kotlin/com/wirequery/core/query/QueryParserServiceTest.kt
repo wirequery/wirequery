@@ -14,7 +14,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 
 class QueryParserServiceTest {
-
     private val queryParserService = QueryParser()
 
     @CsvSource(
@@ -44,7 +43,7 @@ class QueryParserServiceTest {
         function1: String?,
         expression1: String?,
         function2: String?,
-        expression2: String?
+        expression2: String?,
     ) {
         val result = queryParserService.parse(expression)
         assertThat(result.queryHead.method).isEqualTo(method ?: "")
@@ -72,13 +71,17 @@ class QueryParserServiceTest {
     @CsvSource(
         "GET POST,  'Method is already set'",
         "/abc /def, 'Path is already set'",
-        "2xx 3xx,   'Status code is already set'"
+        "2xx 3xx,   'Status code is already set'",
     )
     @ParameterizedTest
-    fun `an exception is thrown for duplicate app head attributes`(expression: String, expectedMessage: String) {
-        val exception = assertThrows<RuntimeException> {
-            queryParserService.parse(expression)
-        }
+    fun `an exception is thrown for duplicate app head attributes`(
+        expression: String,
+        expectedMessage: String,
+    ) {
+        val exception =
+            assertThrows<RuntimeException> {
+                queryParserService.parse(expression)
+            }
         assertThat(exception.message).isEqualTo(expectedMessage)
     }
 }

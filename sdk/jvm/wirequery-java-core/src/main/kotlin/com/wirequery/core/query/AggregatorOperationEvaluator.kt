@@ -10,8 +10,10 @@ package com.wirequery.core.query
 import com.wirequery.core.query.context.CompiledQuery
 
 class AggregatorOperationEvaluator {
-
-    fun evaluate(compiledQuery: CompiledQuery, context: Map<String, Any>): List<Any> {
+    fun evaluate(
+        compiledQuery: CompiledQuery,
+        context: Map<String, Any>,
+    ): List<Any> {
         if (compiledQuery.aggregatorOperation == null) {
             return context["it"]
                 ?.let(::listOf)
@@ -25,7 +27,10 @@ class AggregatorOperationEvaluator {
         }
     }
 
-    private fun handleDistinct(compiledQuery: CompiledQuery, previousResult: Any?): List<Any> {
+    private fun handleDistinct(
+        compiledQuery: CompiledQuery,
+        previousResult: Any?,
+    ): List<Any> {
         if (compiledQuery.aggregatorOperation?.celExpression != null) {
             error("Cel expression not allowed for 'distinct'")
         }
@@ -44,6 +49,6 @@ class AggregatorOperationEvaluator {
     }
 
     data class DistinctAggregatorMemory(
-        val previouslyOccurredHashCodes: MutableSet<Int> = mutableSetOf()
-    ): CompiledQuery.AggregatorMemory
+        val previouslyOccurredHashCodes: MutableSet<Int> = mutableSetOf(),
+    ) : CompiledQuery.AggregatorMemory
 }

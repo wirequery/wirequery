@@ -74,8 +74,9 @@ internal class WireQueryAdapterTest {
                     ListenForQueriesRequest.newBuilder()
                         .setAppName(connectionSettings.appName)
                         .setApiKey(connectionSettings.apiKey)
-                        .build()
-                ), any()
+                        .build(),
+                ),
+                any(),
             )
     }
 
@@ -136,10 +137,11 @@ internal class WireQueryAdapterTest {
                         QueryReport.newBuilder()
                             .setQueryId(SOME_PROTO_ADD_NEW_QUERY.addQuery.queryId)
                             .setMessage(SOME_ERROR)
-                            .build()
+                            .build(),
                     )
-                    .build()
-            ), any()
+                    .build(),
+            ),
+            any(),
         )
     }
 
@@ -217,7 +219,6 @@ internal class WireQueryAdapterTest {
             .isEqualTo(emptyList<TraceableQuery>())
     }
 
-
     @Test
     fun `results are not sent back by trace id if nothing by trace id is found`() {
         val captor = argumentCaptor<StreamObserver<QueryMutation>>()
@@ -275,19 +276,23 @@ internal class WireQueryAdapterTest {
 
         verify(wireQueryStub)
             .reportQueryResults(
-                eq(QueryReports.newBuilder()
-                    .setApiKey(SOME_API_KEY)
-                    .setAppName(SOME_APP_NAME)
-                    .addQueryReports(
-                        QueryReport.newBuilder()
-                            .setQueryId(SOME_QUERY_ID_1)
-                            .setStartTime(10)
-                            .setEndTime(20)
-                            .setTraceId(SOME_TRACE_ID)
-                            .setMessage(SOME_MESSAGE)
-                            .build())
-                    .build()),
-                any())
+                eq(
+                    QueryReports.newBuilder()
+                        .setApiKey(SOME_API_KEY)
+                        .setAppName(SOME_APP_NAME)
+                        .addQueryReports(
+                            QueryReport.newBuilder()
+                                .setQueryId(SOME_QUERY_ID_1)
+                                .setStartTime(10)
+                                .setEndTime(20)
+                                .setTraceId(SOME_TRACE_ID)
+                                .setMessage(SOME_MESSAGE)
+                                .build(),
+                        )
+                        .build(),
+                ),
+                any(),
+            )
     }
 
     @Test
@@ -373,15 +378,17 @@ internal class WireQueryAdapterTest {
 
         wireQueryAdapter.schedulePublishing()
 
-        val resultQueryReport = QueryReport.newBuilder()
-            .setQueryId(SOME_QUERY_ID_1)
-            .setMessage(SOME_MESSAGE)
-            .build()
+        val resultQueryReport =
+            QueryReport.newBuilder()
+                .setQueryId(SOME_QUERY_ID_1)
+                .setMessage(SOME_MESSAGE)
+                .build()
 
-        val errorQueryReport = QueryReport.newBuilder()
-            .setQueryId(SOME_QUERY_ID_2)
-            .setMessage(SOME_ERROR_MESSAGE)
-            .build()
+        val errorQueryReport =
+            QueryReport.newBuilder()
+                .setQueryId(SOME_QUERY_ID_2)
+                .setMessage(SOME_ERROR_MESSAGE)
+                .build()
 
         verify(wireQueryStub)
             .reportQueryResults(
@@ -391,9 +398,9 @@ internal class WireQueryAdapterTest {
                         .setAppName(SOME_APP_NAME)
                         .addQueryReports(resultQueryReport)
                         .addQueryReports(errorQueryReport)
-                        .build()
+                        .build(),
                 ),
-                any()
+                any(),
             )
     }
 
@@ -421,10 +428,11 @@ internal class WireQueryAdapterTest {
         wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null)
         wireQueryAdapter.schedulePublishing()
 
-        val resultQueryReport = QueryReport.newBuilder()
-            .setQueryId(SOME_QUERY_ID_1)
-            .setMessage(SOME_MESSAGE)
-            .build()
+        val resultQueryReport =
+            QueryReport.newBuilder()
+                .setQueryId(SOME_QUERY_ID_1)
+                .setMessage(SOME_MESSAGE)
+                .build()
 
         verify(wireQueryStub)
             .reportQueryResults(
@@ -433,12 +441,11 @@ internal class WireQueryAdapterTest {
                         .setApiKey(SOME_API_KEY)
                         .setAppName(SOME_APP_NAME)
                         .addQueryReports(resultQueryReport)
-                        .build()
+                        .build(),
                 ),
-                any()
+                any(),
             )
     }
-
 
     @Test
     fun `schedulePublishing will publish once when called four times`() {
@@ -460,10 +467,11 @@ internal class WireQueryAdapterTest {
         wireQueryAdapter.schedulePublishing()
         wireQueryAdapter.schedulePublishing()
 
-        val queryReport = QueryReport.newBuilder()
-            .setQueryId(SOME_QUERY_ID_1)
-            .setMessage(SOME_MESSAGE)
-            .build()
+        val queryReport =
+            QueryReport.newBuilder()
+                .setQueryId(SOME_QUERY_ID_1)
+                .setMessage(SOME_MESSAGE)
+                .build()
 
         verify(wireQueryStub, times(1))
             .reportQueryResults(
@@ -472,9 +480,9 @@ internal class WireQueryAdapterTest {
                         .setApiKey(SOME_API_KEY)
                         .setAppName(SOME_APP_NAME)
                         .addQueryReports(queryReport)
-                        .build()
+                        .build(),
                 ),
-                any()
+                any(),
             )
     }
 
@@ -499,10 +507,11 @@ internal class WireQueryAdapterTest {
         wireQueryAdapter.schedulePublishing()
         wireQueryAdapter.schedulePublishing()
 
-        val queryReport = QueryReport.newBuilder()
-            .setQueryId(SOME_QUERY_ID_1)
-            .setMessage(SOME_MESSAGE)
-            .build()
+        val queryReport =
+            QueryReport.newBuilder()
+                .setQueryId(SOME_QUERY_ID_1)
+                .setMessage(SOME_MESSAGE)
+                .build()
 
         verify(wireQueryStub, times(2))
             .reportQueryResults(
@@ -511,9 +520,9 @@ internal class WireQueryAdapterTest {
                         .setApiKey(SOME_API_KEY)
                         .setAppName(SOME_APP_NAME)
                         .addQueryReports(queryReport)
-                        .build()
+                        .build(),
                 ),
-                any()
+                any(),
             )
     }
 
@@ -535,118 +544,127 @@ internal class WireQueryAdapterTest {
         const val SOME_MESSAGE = "some-message"
         const val SOME_ERROR_MESSAGE = "some-error-message"
 
-        val SOME_QUERY = Query(
-            QueryHead(
-                method = SOME_METHOD,
-                path = SOME_PATH,
-                statusCode = SOME_STATUS_CODE
-            ),
-            streamOperations = listOf(Operation(name = SOME_NAME_1, celExpression = SOME_CEL_EXPRESSION_1)),
-            aggregatorOperation = Operation(name = SOME_NAME_2, celExpression = SOME_CEL_EXPRESSION_2)
-        )
-
-        val SOME_QUERY_WITH_BLANK_CEL_EXPRESSIONS = Query(
-            QueryHead(
-                method = SOME_METHOD,
-                path = SOME_PATH,
-                statusCode = SOME_STATUS_CODE
-            ),
-            streamOperations = listOf(Operation(name = SOME_NAME_1, celExpression = null)),
-            aggregatorOperation = Operation(name = SOME_NAME_2, celExpression = null)
-        )
-
-        val SOME_QUERY_WITH_BLANK_AGGREGATOR = Query(
-            QueryHead(
-                method = SOME_METHOD,
-                path = SOME_PATH,
-                statusCode = SOME_STATUS_CODE
-            ),
-            streamOperations = listOf(),
-            aggregatorOperation = null
-        )
-
-        val SOME_PROTO_ADD_NEW_QUERY: QueryMutation = QueryMutation.newBuilder()
-            .setAddQuery(
-                Wirequery.Query.newBuilder()
-                    .setQueryId(SOME_QUERY_ID_1)
-                    .setQueryHead(
-                        Wirequery.QueryHead.newBuilder()
-                            .setAppName(SOME_APP_NAME)
-                            .setMethod(SOME_METHOD)
-                            .setPath(SOME_PATH)
-                            .setStatusCode(SOME_STATUS_CODE)
-                            .build()
-                    )
-                    .addStreamOperations(
-                        Wirequery.Operation.newBuilder()
-                            .setName(SOME_NAME_1)
-                            .setCelExpression(SOME_CEL_EXPRESSION_1)
-                            .build()
-                    )
-                    .setAggregatorOperation(
-                        Wirequery.Operation.newBuilder()
-                            .setName(SOME_NAME_2)
-                            .setCelExpression(SOME_CEL_EXPRESSION_2)
-                            .build()
-                    )
-                    .build()
+        val SOME_QUERY =
+            Query(
+                QueryHead(
+                    method = SOME_METHOD,
+                    path = SOME_PATH,
+                    statusCode = SOME_STATUS_CODE,
+                ),
+                streamOperations = listOf(Operation(name = SOME_NAME_1, celExpression = SOME_CEL_EXPRESSION_1)),
+                aggregatorOperation = Operation(name = SOME_NAME_2, celExpression = SOME_CEL_EXPRESSION_2),
             )
-            .build()
 
-        val SOME_PROTO_ADD_NEW_QUERY_EMPTY_CEL_EXPRESSIONS: QueryMutation = QueryMutation.newBuilder()
-            .setAddQuery(
-                Wirequery.Query.newBuilder()
-                    .setQueryId(SOME_QUERY_ID_1)
-                    .setQueryHead(
-                        Wirequery.QueryHead.newBuilder()
-                            .setAppName(SOME_APP_NAME)
-                            .setMethod(SOME_METHOD)
-                            .setPath(SOME_PATH)
-                            .setStatusCode(SOME_STATUS_CODE)
-                            .build()
-                    )
-                    .addStreamOperations(
-                        Wirequery.Operation.newBuilder()
-                            .setName(SOME_NAME_1)
-                            .setCelExpression(" ")
-                            .build()
-                    )
-                    .setAggregatorOperation(
-                        Wirequery.Operation.newBuilder()
-                            .setName(SOME_NAME_2)
-                            .setCelExpression(" ")
-                            .build()
-                    )
-                    .build()
+        val SOME_QUERY_WITH_BLANK_CEL_EXPRESSIONS =
+            Query(
+                QueryHead(
+                    method = SOME_METHOD,
+                    path = SOME_PATH,
+                    statusCode = SOME_STATUS_CODE,
+                ),
+                streamOperations = listOf(Operation(name = SOME_NAME_1, celExpression = null)),
+                aggregatorOperation = Operation(name = SOME_NAME_2, celExpression = null),
             )
-            .build()
 
-        val SOME_PROTO_ADD_NEW_QUERY_BLANK_AGGREGATOR: QueryMutation = QueryMutation.newBuilder()
-            .setAddQuery(
-                Wirequery.Query.newBuilder()
-                    .setQueryId(SOME_QUERY_ID_1)
-                    .setQueryHead(
-                        Wirequery.QueryHead.newBuilder()
-                            .setAppName(SOME_APP_NAME)
-                            .setMethod(SOME_METHOD)
-                            .setPath(SOME_PATH)
-                            .setStatusCode(SOME_STATUS_CODE)
-                            .build()
-                    )
-                    .build()
+        val SOME_QUERY_WITH_BLANK_AGGREGATOR =
+            Query(
+                QueryHead(
+                    method = SOME_METHOD,
+                    path = SOME_PATH,
+                    statusCode = SOME_STATUS_CODE,
+                ),
+                streamOperations = listOf(),
+                aggregatorOperation = null,
             )
-            .build()
 
-        val SOME_PROTO_REMOVE_QUERY_BY_ID: QueryMutation = QueryMutation.newBuilder()
-            .setRemoveQueryById(SOME_QUERY_ID_1)
-            .build()
+        val SOME_PROTO_ADD_NEW_QUERY: QueryMutation =
+            QueryMutation.newBuilder()
+                .setAddQuery(
+                    Wirequery.Query.newBuilder()
+                        .setQueryId(SOME_QUERY_ID_1)
+                        .setQueryHead(
+                            Wirequery.QueryHead.newBuilder()
+                                .setAppName(SOME_APP_NAME)
+                                .setMethod(SOME_METHOD)
+                                .setPath(SOME_PATH)
+                                .setStatusCode(SOME_STATUS_CODE)
+                                .build(),
+                        )
+                        .addStreamOperations(
+                            Wirequery.Operation.newBuilder()
+                                .setName(SOME_NAME_1)
+                                .setCelExpression(SOME_CEL_EXPRESSION_1)
+                                .build(),
+                        )
+                        .setAggregatorOperation(
+                            Wirequery.Operation.newBuilder()
+                                .setName(SOME_NAME_2)
+                                .setCelExpression(SOME_CEL_EXPRESSION_2)
+                                .build(),
+                        )
+                        .build(),
+                )
+                .build()
 
-        val SOME_PROTO_QUERY_ONE_TRACE: QueryMutation = QueryMutation.newBuilder()
-            .setQueryOneTrace(QueryOneTrace.newBuilder()
-                .setQueryId(SOME_QUERY_ID_1)
-                .setTraceId(SOME_TRACE_ID)
-                .build())
-            .build()
+        val SOME_PROTO_ADD_NEW_QUERY_EMPTY_CEL_EXPRESSIONS: QueryMutation =
+            QueryMutation.newBuilder()
+                .setAddQuery(
+                    Wirequery.Query.newBuilder()
+                        .setQueryId(SOME_QUERY_ID_1)
+                        .setQueryHead(
+                            Wirequery.QueryHead.newBuilder()
+                                .setAppName(SOME_APP_NAME)
+                                .setMethod(SOME_METHOD)
+                                .setPath(SOME_PATH)
+                                .setStatusCode(SOME_STATUS_CODE)
+                                .build(),
+                        )
+                        .addStreamOperations(
+                            Wirequery.Operation.newBuilder()
+                                .setName(SOME_NAME_1)
+                                .setCelExpression(" ")
+                                .build(),
+                        )
+                        .setAggregatorOperation(
+                            Wirequery.Operation.newBuilder()
+                                .setName(SOME_NAME_2)
+                                .setCelExpression(" ")
+                                .build(),
+                        )
+                        .build(),
+                )
+                .build()
+
+        val SOME_PROTO_ADD_NEW_QUERY_BLANK_AGGREGATOR: QueryMutation =
+            QueryMutation.newBuilder()
+                .setAddQuery(
+                    Wirequery.Query.newBuilder()
+                        .setQueryId(SOME_QUERY_ID_1)
+                        .setQueryHead(
+                            Wirequery.QueryHead.newBuilder()
+                                .setAppName(SOME_APP_NAME)
+                                .setMethod(SOME_METHOD)
+                                .setPath(SOME_PATH)
+                                .setStatusCode(SOME_STATUS_CODE)
+                                .build(),
+                        )
+                        .build(),
+                )
+                .build()
+
+        val SOME_PROTO_REMOVE_QUERY_BY_ID: QueryMutation =
+            QueryMutation.newBuilder()
+                .setRemoveQueryById(SOME_QUERY_ID_1)
+                .build()
+
+        val SOME_PROTO_QUERY_ONE_TRACE: QueryMutation =
+            QueryMutation.newBuilder()
+                .setQueryOneTrace(
+                    QueryOneTrace.newBuilder()
+                        .setQueryId(SOME_QUERY_ID_1)
+                        .setTraceId(SOME_TRACE_ID)
+                        .build(),
+                )
+                .build()
     }
-
 }

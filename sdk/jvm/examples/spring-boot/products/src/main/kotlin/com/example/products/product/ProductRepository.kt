@@ -11,25 +11,23 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class ProductRepository {
-
     fun findAll(): List<Product> {
         return listOf(
             Product(
                 id = "1",
                 name = "Keyboard",
-                price = 3000
+                price = 3000,
             ),
             Product(
                 id = "2",
                 name = "4K Display",
-                price = 30000
+                price = 30000,
             ),
             Product(
                 id = "3",
                 name = "Mouse",
-                price = 2000
+                price = 2000,
             ),
         )
     }
-
 }

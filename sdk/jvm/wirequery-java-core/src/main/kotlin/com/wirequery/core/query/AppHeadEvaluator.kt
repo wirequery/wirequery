@@ -10,8 +10,12 @@ package com.wirequery.core.query
 import com.wirequery.core.query.context.QueryHead
 
 class AppHeadEvaluator {
-
-    fun evaluate(queryHead: QueryHead, method: String, path: String, statusCode: Int): AppHeadEvaluationResult {
+    fun evaluate(
+        queryHead: QueryHead,
+        method: String,
+        path: String,
+        statusCode: Int,
+    ): AppHeadEvaluationResult {
         if (queryHead.method.isNotEmpty() && queryHead.method.lowercase() != method.lowercase()) {
             return AppHeadEvaluationResult(false, mapOf())
         }
@@ -25,7 +29,10 @@ class AppHeadEvaluator {
         return AppHeadEvaluationResult(true, pathMatchResult ?: mapOf())
     }
 
-    private fun matchPaths(matcher: String, actual: String): Map<String, String>? {
+    private fun matchPaths(
+        matcher: String,
+        actual: String,
+    ): Map<String, String>? {
         if (matcher.isEmpty()) {
             return mapOf()
         }
@@ -45,7 +52,10 @@ class AppHeadEvaluator {
         return result
     }
 
-    private fun statusCodeMatches(matcher: String, actual: Int): Boolean {
+    private fun statusCodeMatches(
+        matcher: String,
+        actual: Int,
+    ): Boolean {
         val actualStringCharArray = actual.toString().toCharArray()
 
         check(matcher.matches("[0-9x]{3}".toRegex()))

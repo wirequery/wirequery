@@ -14,9 +14,14 @@ import org.springframework.stereotype.Service
 @Service
 class OutboundTrafficExtender(
     private val requestData: RequestData,
-    private val objectMasker: ObjectMasker
+    private val objectMasker: ObjectMasker,
 ) {
-    fun addOutboundRequest(name: String, url: String, requestBody: Any?, responseBody: Any?) {
+    fun addOutboundRequest(
+        name: String,
+        url: String,
+        requestBody: Any?,
+        responseBody: Any?,
+    ) {
         var outbound = requestData.extensions["outbound"] as MutableMap<String, MutableList<Any>>?
         if (outbound == null) {
             outbound = mutableMapOf()
@@ -28,14 +33,14 @@ class OutboundTrafficExtender(
                 RequestResponse(
                     url = url,
                     requestBody = requestBody?.let(objectMasker::mask),
-                    responseBody = responseBody?.let(objectMasker::mask)
-                )
+                    responseBody = responseBody?.let(objectMasker::mask),
+                ),
             )
     }
 
     data class RequestResponse(
         val url: String,
         val requestBody: Any?,
-        val responseBody: Any?
+        val responseBody: Any?,
     )
 }

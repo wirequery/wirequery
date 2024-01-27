@@ -34,7 +34,7 @@ class RecordingController(
                 PublicRecordingSummary(
                     id = it.id,
                     secret = it.secret,
-                )
+                ),
             )
         }
     }

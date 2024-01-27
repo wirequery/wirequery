@@ -160,7 +160,11 @@ export function TemplateDetails(props: TemplateDetailsProps) {
                 <td>
                   <b>User initiation api key</b>
                 </td>
-                <td>{data?.template?.allowUserInitiation ? data.template.apiKey: 'No'}</td>
+                <td>
+                  {data?.template?.allowUserInitiation
+                    ? data.template.apiKey
+                    : 'No'}
+                </td>
               </tr>
             </tbody>
           </DetailsTable>
