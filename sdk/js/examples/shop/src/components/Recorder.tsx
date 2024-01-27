@@ -13,10 +13,10 @@ const events: any = [];
 const wireQueryBackendPath = 'https://demo.wirequery.io';
 
 export const Recorder = () => {
-  const [recording, setRecording] = useState<any | undefined>(undefined);
+  const [recording, setRecording] = useState<any | undefined>(undefined)
 
   const start = () => {
-    const destructor = startRecording();
+    const destructor = startRecording()
     return () => destructor?.();
   };
 
@@ -28,6 +28,7 @@ export const Recorder = () => {
       },
       body: JSON.stringify({
         templateId: 3, // Debug Session by Account Id
+        apiKey: '',
         args: {
           accountId: "123",
         },

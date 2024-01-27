@@ -112,7 +112,7 @@ class DatasourceConfig {
                     }
                 logger.info("Row security is active.")
             } catch (e: Exception) {
-                logger.warn("Unable to determine whether the database user has row security.")
+                logger.warn("Unable to determine whether the database user has row security.", e)
             }
         }
 

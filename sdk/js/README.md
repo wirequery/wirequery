@@ -1,7 +1,8 @@
 # JavaScript (Browser)
 
 Whenever you want to start a Session from the frontend, you need to have a Template with
-"Allow User Initiation" checked. Read more in the [Templates](https://wirequery.io/docs/features/templates) Feature Chapter.
+"Allow User Initiation" checked. Read more in the [Templates](https://wirequery.io/docs/features/templates) Feature
+Chapter.
 
 When you want the user to be able to record a session, you basically want to call WireQuery twice:
 
@@ -16,6 +17,7 @@ with WireQuery using a few simple `fetch` commands and using `rrweb`.
 ## Start Recording
 
 A recording can be started by calling the `recordings` endpoint from WireQuery.
+
 ```
 const res = await fetch("<WireQuery Host>/api/v1/recordings", {
   method: "POST",
@@ -24,6 +26,7 @@ const res = await fetch("<WireQuery Host>/api/v1/recordings", {
   },
   body: JSON.stringify({
     templateId: <templateId>,
+    apiKey: <apiKey>,
     args: {
       <template args>
     },
@@ -33,8 +36,10 @@ const res = await fetch("<WireQuery Host>/api/v1/recordings", {
 const recording = await res.json()
 
 ```
-Here, the `<templateId>` has to be set to the Template id mentioned earlier. The args need to container
-the parameters of that template, such as the `accountId`. For example:
+
+Here, the `<templateId>` has to be set to the Template id mentioned earlier. The api key needs to be set
+to the api key of the template, which can be found by clicking on Details when on a Template page.
+The args need to contain the parameters of that template, such as the `accountId`. For example:
 
 ```
 const res = fetch("https://demo.wirequery.io/api/v1/recordings", {
@@ -44,6 +49,7 @@ const res = fetch("https://demo.wirequery.io/api/v1/recordings", {
   },
   body: JSON.stringify({
     templateId: 1,
+    apiKey: 'api-key',
     args: {
       accountId
     },
@@ -61,9 +67,11 @@ in the [Shop](https://github.com/wirequery/wirequery/tree/main/sdk/js/examples/s
 
 ## Finish Recording
 
-Similarly, when a recording is finished, a call to WireQuery needs to be made as well to send and finalize the recording.
+Similarly, when a recording is finished, a call to WireQuery needs to be made as well to send and finalize the
+recording.
 
 When the recording is finished, the following call needs to be made:
+
 ```
 fetch(`<WireQuery Host>/api/v1/recordings/${recording.id}/finish`, {
   method: "POST",
@@ -77,9 +85,12 @@ fetch(`<WireQuery Host>/api/v1/recordings/${recording.id}/finish`, {
   }),
 });
 ```
-Where `events` represent `rrweb` events and `<WireQuery Host>` is the host of WireQuery, such as `https://demo.wirequery.io`.
 
-An example of how `rrweb` can be used, can be found in the `sdk/js/examples/shop` in the [WireQuery](https://github.com/wirequery/wirequery) repository.
+Where `events` represent `rrweb` events and `<WireQuery Host>` is the host of WireQuery, such
+as `https://demo.wirequery.io`.
+
+An example of how `rrweb` can be used, can be found in the `sdk/js/examples/shop` in
+the [WireQuery](https://github.com/wirequery/wirequery) repository.
 
 ## Examples
 

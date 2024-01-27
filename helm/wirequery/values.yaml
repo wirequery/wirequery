@@ -29,12 +29,12 @@ wirequery-backend:
     dbPassword: wirequery-multitenant
     dbUrl: "jdbc:postgresql://wirequery-postgresql:5432/wirequery"
     adminEnabled: "true"
-    tenantId: ""
+    tenantId: "0"
 
   replicaCount: 1
   image:
     repository: ghcr.io
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     tag: wirequery/wirequery-backend:latest
 
   imagePullSecrets: []
@@ -82,7 +82,7 @@ wirequery-frontend:
   replicaCount: 1
   image:
     repository: ghcr.io
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     tag: wirequery/wirequery-frontend:latest
 
   imagePullSecrets: []
