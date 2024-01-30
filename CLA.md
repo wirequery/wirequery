@@ -2,8 +2,6 @@
 
 Thank you for your interest in contributing to software projects managed by the original author of WireQuery, Wouter Nederhof, born October 28th 1989 in Amsterdam, The Netherlands ("I" or "Me").
 
-Thank you for your interest in contributing to WireQuery ("I" or "Me").
-
 This contributor agreement ("Agreement") documents the rights granted by contributors to Me. To make this document effective, please sign it and send it to Me by mail, email, fax, or electronic submission, following the instructions at the [contributing](contributing.md) page. This is a legally binding document, so please read it carefully before agreeing to it. The Agreement may cover more than one software project managed by Me.
 
 ## 1. Definitions
