@@ -2,7 +2,7 @@
 
 Thank you for your interest in contributing to software projects managed by the original author of WireQuery, Wouter Nederhof, born October 28th 1989 in Amsterdam, The Netherlands ("I" or "Me").
 
-This contributor agreement ("Agreement") documents the rights granted by contributors to Me. To make this document effective, please sign it and send it to Me by mail, email, fax, or electronic submission, following the instructions at the [contributing](contributing.md) page. This is a legally binding document, so please read it carefully before agreeing to it. The Agreement may cover more than one software project managed by Me.
+This contributor agreement ("Agreement") documents the rights granted by contributors to Me. To make this document effective, please sign it and send it to Me by mail, email, fax, or electronic submission, following the instructions at the [contributing](CONTRIBUTING.md) page. This is a legally binding document, so please read it carefully before agreeing to it. The Agreement may cover more than one software project managed by Me.
 
 ## 1. Definitions
 
@@ -38,11 +38,11 @@ For patent claims including, without limitation, method, process, and apparatus 
 
 Based on the grant of rights in Sections 2.1 and 2.2, if I include Your Contribution in a Material, I may license the Contribution under any license, including copyleft, permissive, commercial, or proprietary licenses. As a condition on the exercise of this right, I agree to also license the Contribution under the terms of the license or licenses which I are using for the Material on the Submission Date.
 
-### 2.4 Moral Rights. If moral rights apply to the Contribution, to the maximum extent permitted by law, You waive and agree not to assert such moral rights against Me or our successors in interest, or any of our licensees, either direct or indirect.
+2.4 Moral Rights. If moral rights apply to the Contribution, to the maximum extent permitted by law, You waive and agree not to assert such moral rights against Me or our successors in interest, or any of our licensees, either direct or indirect.
 
-### 2.5 Our Rights. You acknowledge that I are not obligated to use Your Contribution as part of the Material and may decide to include any Contribution I consider appropriate.
+2.5 Our Rights. You acknowledge that I are not obligated to use Your Contribution as part of the Material and may decide to include any Contribution I consider appropriate.
 
-### 2.6 Reservation of Rights. Any rights not expressly licensed under this section are expressly reserved by You.
+2.6 Reservation of Rights. Any rights not expressly licensed under this section are expressly reserved by You.
 
 ## 3. Agreement
 
