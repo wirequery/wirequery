@@ -91,7 +91,7 @@ jobs:
         with:
           context: wirequery/manager-server
           push: true
-          tags: ghcr.io/${{ github.repository }}-backend:latest , ghcr.io/${{ github.repository }}-backend:${{ DOCKER_IMAGE_VERSION }}
+          tags: ghcr.io/${{ github.repository }}-backend:latest , ghcr.io/${{ github.repository }}-backend:${{ env.DOCKER_IMAGE_VERSION }}
           labels: ${{ steps.meta_be.outputs.labels }}
           visibility: public
       - name: Build and push FE Docker image
@@ -99,6 +99,6 @@ jobs:
         with:
           context: wirequery/manager-web
           push: true
-          tags: ghcr.io/${{ github.repository }}-backend:latest , ghcr.io/${{ github.repository }}-frontend:${{ DOCKER_IMAGE_VERSION }}
+          tags: ghcr.io/${{ github.repository }}-backend:latest , ghcr.io/${{ github.repository }}-frontend:${{ env.DOCKER_IMAGE_VERSION }}
           labels: ${{ steps.meta_fe.outputs.labels }}
           visibility: public
