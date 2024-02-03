@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
+import java.net.URI
 
 tasks.getByName<BootJar>("bootJar") {
     enabled = false
@@ -20,15 +21,6 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 java {
     withJavadocJar()
     withSourcesJar()
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            artifactId = "wirequery-spring-boot-3-starter"
-            from(components["java"])
-        }
-    }
 }
 
 repositories {
@@ -54,4 +46,23 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            artifactId = "wirequery-spring-boot-3-starter"
+            from(components["java"])
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = URI("https://maven.pkg.github.com/wirequery/wirequery")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }

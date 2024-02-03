@@ -1,5 +1,6 @@
 import com.google.protobuf.gradle.id
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.net.URI
 
 val protobufVersion by extra("3.22.3")
 val protobufPluginVersion by extra("0.9.2")
@@ -20,15 +21,6 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 java {
     withJavadocJar()
     withSourcesJar()
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            artifactId = "wirequery-spring-6"
-            from(components["java"])
-        }
-    }
 }
 
 repositories {
@@ -108,6 +100,25 @@ protobuf {
             it.plugins {
                 id("grpc")
                 id("grpckt")
+            }
+        }
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            artifactId = "wirequery-spring-6"
+            from(components["java"])
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = URI("https://maven.pkg.github.com/wirequery/wirequery")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
