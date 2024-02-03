@@ -31,7 +31,7 @@ jobs:
       - name: Setting GitVersion versions
         run: |
           echo "version=${{ steps.gitversion.outputs.fullSemVer }}" > gradle.properties
-          echo "DOCKER_IMAGE_VERSION=$(${{ steps.gitversion.outputs.fullSemVer }} | sed -E \"s/\+/_/g\")" >> $GITHUB_ENV
+          echo "DOCKER_IMAGE_VERSION=$(echo ${{ steps.gitversion.outputs.fullSemVer }} | sed -E "s/\+/_/g")" >> $GITHUB_ENV
       - name: Showing Docker Image Version
         run: echo $DOCKER_IMAGE_VERSION
       - name: Run Gradle test on WireQuery Java Core SDK
