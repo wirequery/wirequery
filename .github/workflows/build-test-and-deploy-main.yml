@@ -28,9 +28,12 @@ jobs:
       - name: Determine Version
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0
-      - name: Display GitVersion outputs (step output)
+      - name: Setting GitVersion versions
         run: |
           echo "version=${{ steps.gitversion.outputs.fullSemVer }}" > gradle.properties
+          echo "DOCKER_IMAGE_VERSION=$(${{ steps.gitversion.outputs.fullSemVer }} | sed -E \"s/\+/_/g\")" >> $GITHUB_ENV
+      - name: Showing Docker Image Version
+        run: echo $DOCKER_IMAGE_VERSION
       - name: Run Gradle test on WireQuery Java Core SDK
         working-directory: ./sdk/jvm/wirequery-java-core
         run: ./gradlew test && ./gradlew publishToMavenLocal --no-daemon
@@ -88,12 +91,14 @@ jobs:
         with:
           context: wirequery/manager-server
           push: true
-          tags: ghcr.io/${{ github.repository }}-backend:latest , ghcr.io/${{ github.repository }}-backend:${{ steps.gitversion.outputs.fullSemVer }}
+          tags: ghcr.io/${{ github.repository }}-backend:latest , ghcr.io/${{ github.repository }}-backend:${{ DOCKER_IMAGE_VERSION }}
           labels: ${{ steps.meta_be.outputs.labels }}
+          visibility: public
       - name: Build and push FE Docker image
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: wirequery/manager-web
           push: true
-          tags: ghcr.io/${{ github.repository }}-backend:latest , ghcr.io/${{ github.repository }}-frontend:${{ steps.gitversion.outputs.fullSemVer }}
+          tags: ghcr.io/${{ github.repository }}-backend:latest , ghcr.io/${{ github.repository }}-frontend:${{ DOCKER_IMAGE_VERSION }}
           labels: ${{ steps.meta_fe.outputs.labels }}
+          visibility: public
