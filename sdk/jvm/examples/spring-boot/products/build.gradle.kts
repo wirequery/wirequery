@@ -8,7 +8,6 @@ plugins {
 }
 
 group = "com.wirequery"
-version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -17,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.wirequery:wirequery-spring-boot-3-starter:0.0.1-SNAPSHOT")
+    implementation("com.wirequery:wirequery-spring-boot-3-starter:${project.version}")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")

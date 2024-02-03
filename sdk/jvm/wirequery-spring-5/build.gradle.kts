@@ -15,7 +15,6 @@ plugins {
 }
 
 group = "com.wirequery"
-version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 java {
@@ -38,7 +37,7 @@ repositories {
 }
 
 dependencies {
-    api("com.wirequery:wirequery-java-core:0.0.1-SNAPSHOT")
+    api("com.wirequery:wirequery-java-core:${project.version}")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.13.5")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.5")

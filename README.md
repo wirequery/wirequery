@@ -50,12 +50,7 @@ More SDKs will be added over time.
 
 ## Contributing
 
-The best way to improve the product is by providing us with feedback. Please feel free to provide feedback (i.e. ideas
-for improvement, bugs, etc.) by opening an issue. Also, if you found a bug, you can create a PR to have it merged into
-the code. Before it can be merged, however, you need to sign a Contributors License Agreement, to make sure that we can
-serve our users with your code going forward.
-
-Also, please feel free to discuss ideas and feedback on our [Discord Channel](https://discord.gg/BfaMCtkZe2).
+See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License
 
