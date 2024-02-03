@@ -36,28 +36,28 @@ jobs:
         run: echo $DOCKER_IMAGE_VERSION
       - name: Run Gradle test on WireQuery Java Core SDK
         working-directory: ./sdk/jvm/wirequery-java-core
-        run: ./gradlew test && ./gradlew publishToMavenLocal --no-daemon
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
       - name: Run Gradle test on WireQuery Spring 5 SDK
         working-directory: ./sdk/jvm/wirequery-spring-5
-        run: ./gradlew test && ./gradlew publishToMavenLocal --no-daemon
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
       - name: Run Gradle test on WireQuery Spring 6 SDK
         working-directory: ./sdk/jvm/wirequery-spring-6
-        run: ./gradlew test && ./gradlew publishToMavenLocal --no-daemon
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
       - name: Run Gradle test on WireQuery Spring 2 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-2-starter
-        run: ./gradlew test && ./gradlew publishToMavenLocal --no-daemon
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
       - name: Run Gradle test on WireQuery Spring 3 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-3-starter
-        run: ./gradlew test && ./gradlew publishToMavenLocal --no-daemon
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
       - name: Run Gradle test on the Products Example
         working-directory: ./sdk/jvm/examples/spring-boot/products
-        run: ./gradlew build
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" build
       - name: Run Gradle build on the Basket Example
         working-directory: ./sdk/jvm/examples/spring-boot/basket
-        run: ./gradlew build
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" build
       - name: Run Gradle build on Wirequery's manager-server
         working-directory: ./wirequery/manager-server
-        run: ./gradlew build
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" build
       - name: Use Node.js 18.x
         uses: actions/setup-node@v3
         with:
@@ -107,28 +107,28 @@ jobs:
         if: github.repository == 'wirequery/wirequery'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew publish
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 5 SDK
         working-directory: ./sdk/jvm/wirequery-spring-5
         if: github.repository == 'wirequery/wirequery'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew publish
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 6 SDK
         working-directory: ./sdk/jvm/wirequery-spring-6
         if: github.repository == 'wirequery/wirequery'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew publish
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 2 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-2-starter
         if: github.repository == 'wirequery/wirequery'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew publish
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 3 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-3-starter
         if: github.repository == 'wirequery/wirequery'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew publish
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish

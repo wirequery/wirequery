@@ -1,4 +1,5 @@
 FROM amazoncorretto:17-alpine-jdk
-COPY build/libs/manager-server.jar app.jar
+ARG version
+COPY build/libs/manager-server-${version}.jar .
 ENTRYPOINT ["java","-jar","/app.jar"]
 
