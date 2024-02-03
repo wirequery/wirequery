@@ -108,29 +108,29 @@ jobs:
         working-directory: ./sdk/jvm/wirequery-java-core
         if: github.repository == 'wirequery/wirequery'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_PUSH_IMAGES }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 5 SDK
         working-directory: ./sdk/jvm/wirequery-spring-5
         if: github.repository == 'wirequery/wirequery'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_PUSH_IMAGES }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 6 SDK
         working-directory: ./sdk/jvm/wirequery-spring-6
         if: github.repository == 'wirequery/wirequery'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_PUSH_IMAGES }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 2 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-2-starter
         if: github.repository == 'wirequery/wirequery'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_PUSH_IMAGES }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 3 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-3-starter
         if: github.repository == 'wirequery/wirequery'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_PUSH_IMAGES }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
