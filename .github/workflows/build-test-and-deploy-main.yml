@@ -30,9 +30,7 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0
       - name: Display GitVersion outputs (step output)
         run: |
-          echo "Major: ${{ steps.gitversion.outputs.major }}"
-          echo "Minor: ${{ steps.gitversion.outputs.minor }}"
-          echo "Patch: ${{ steps.gitversion.outputs.patch }}"
+          echo "version=${{ steps.gitversion.outputs.fullSemVer }}" > gradle.properties
       - name: Run Gradle test on WireQuery Java Core SDK
         working-directory: ./sdk/jvm/wirequery-java-core
         run: ./gradlew test && ./gradlew publishToMavenLocal --no-daemon
@@ -90,12 +88,12 @@ jobs:
         with:
           context: wirequery/manager-server
           push: true
-          tags: ghcr.io/${{ github.repository }}-backend:latest
+          tags: ghcr.io/${{ github.repository }}-backend:latest , ghcr.io/${{ github.repository }}-backend:${{ steps.gitversion.outputs.fullSemVer }}
           labels: ${{ steps.meta_be.outputs.labels }}
       - name: Build and push FE Docker image
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: wirequery/manager-web
           push: true
-          tags: ghcr.io/${{ github.repository }}-frontend:latest
+          tags: ghcr.io/${{ github.repository }}-backend:latest , ghcr.io/${{ github.repository }}-frontend:${{ steps.gitversion.outputs.fullSemVer }}
           labels: ${{ steps.meta_fe.outputs.labels }}
