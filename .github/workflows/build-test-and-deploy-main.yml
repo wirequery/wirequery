@@ -94,6 +94,8 @@ jobs:
           tags: ghcr.io/${{ github.repository }}-backend:latest , ghcr.io/${{ github.repository }}-backend:${{ env.DOCKER_IMAGE_VERSION }}
           labels: ${{ steps.meta_be.outputs.labels }}
           visibility: public
+          build-args: |
+            "VERSION=${{ steps.gitversion.outputs.fullSemVer }}"
       - name: Build and push FE Docker image
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
