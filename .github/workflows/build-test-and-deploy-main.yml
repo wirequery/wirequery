@@ -19,6 +19,18 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: 'gradle'
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0
+        with:
+          versionSpec: '5.x'
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0
+      - name: Display GitVersion outputs (step output)
+        run: |
+          echo "Major: ${{ steps.gitversion.outputs.major }}"
+          echo "Minor: ${{ steps.gitversion.outputs.minor }}"
+          echo "Patch: ${{ steps.gitversion.outputs.patch }}"
       - name: Run Gradle test on WireQuery Java Core SDK
         working-directory: ./sdk/jvm/wirequery-java-core
         run: ./gradlew test && ./gradlew publishToMavenLocal --no-daemon
