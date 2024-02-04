@@ -241,10 +241,12 @@ class StoredQueryResolverTests : ResolverTestContext() {
     @Test
     fun `storedQuerys_application fetches application if user has VIEW_STORED_QUERIES and VIEW_APPLICATIONS authorisation`() {
         whenever(authenticationMock.authorities)
-            .thenReturn(listOf(
-                GrantedAuthority { AuthorisationEnum.VIEW_STORED_QUERIES.name },
-                GrantedAuthority { AuthorisationEnum.VIEW_APPLICATIONS.name }
-            ))
+            .thenReturn(
+                listOf(
+                    GrantedAuthority { AuthorisationEnum.VIEW_STORED_QUERIES.name },
+                    GrantedAuthority { AuthorisationEnum.VIEW_APPLICATIONS.name },
+                ),
+            )
 
         whenever(storedQueryService.findAll())
             .thenReturn(listOf(STORED_QUERY_FIXTURE_WITH_ID_1))
@@ -310,10 +312,12 @@ class StoredQueryResolverTests : ResolverTestContext() {
     @Test
     fun `applications_storedQuerys fetches stored queries if user has VIEW_APPLICATIONS and VIEW_STORED_QUERIES authorisations`() {
         whenever(authenticationMock.authorities)
-            .thenReturn(listOf(
-                GrantedAuthority { AuthorisationEnum.VIEW_APPLICATIONS.name },
-                GrantedAuthority { AuthorisationEnum.VIEW_STORED_QUERIES.name }
-            ))
+            .thenReturn(
+                listOf(
+                    GrantedAuthority { AuthorisationEnum.VIEW_APPLICATIONS.name },
+                    GrantedAuthority { AuthorisationEnum.VIEW_STORED_QUERIES.name },
+                ),
+            )
 
         whenever(applicationService.findAll())
             .thenReturn(listOf(APPLICATION_FIXTURE_WITH_ID_1.copy(id = STORED_QUERY_FIXTURE_WITH_ID_1.applicationId)))
@@ -378,14 +382,15 @@ class StoredQueryResolverTests : ResolverTestContext() {
             .findByApplicationIds(setOf(STORED_QUERY_FIXTURE_WITH_ID_1.applicationId))
     }
 
-
     @Test
     fun `sessions_storedQuerys fetches stored queries if user has VIEW_SESSIONS and QUERY authorisation`() {
         whenever(authenticationMock.authorities)
-            .thenReturn(listOf(
-                GrantedAuthority { AuthorisationEnum.VIEW_SESSIONS.name },
-                GrantedAuthority { AuthorisationEnum.VIEW_STORED_QUERIES.name }
-            ))
+            .thenReturn(
+                listOf(
+                    GrantedAuthority { AuthorisationEnum.VIEW_SESSIONS.name },
+                    GrantedAuthority { AuthorisationEnum.VIEW_STORED_QUERIES.name },
+                ),
+            )
 
         whenever(sessionService.findAll())
             .thenReturn(listOf(SESSION_FIXTURE_WITH_ID_1.copy(id = STORED_QUERY_FIXTURE_WITH_ID_AND_SESSION_ID_1.sessionId!!)))

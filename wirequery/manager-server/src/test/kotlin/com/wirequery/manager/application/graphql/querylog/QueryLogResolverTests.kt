@@ -19,7 +19,6 @@ import com.wirequery.manager.application.graphql.storedquery.StoredQuerysByAppli
 import com.wirequery.manager.application.graphql.storedquery.StoredQuerysBySessionIdDataLoader
 import com.wirequery.manager.domain.access.AccessService
 import com.wirequery.manager.domain.authorisation.AuthorisationEnum
-import com.wirequery.manager.domain.authorisation.AuthorisationEnum.QUERY
 import com.wirequery.manager.domain.authorisation.AuthorisationEnum.VIEW_QUERY_LOGS
 import com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum
 import com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum.VIEW_STORED_QUERY
@@ -161,8 +160,9 @@ class QueryLogResolverTests : ResolverTestContext() {
     @Test
     fun `queryLogs_storedQuery fetches when user has VIEW_STORED_QUERY and VIEW_QUERY_LOGS group authorisation`() {
         whenever(
-            accessService.isAuthorisedByStoredQueryId(QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId,
-                GroupAuthorisationEnum.VIEW_QUERY_LOGS
+            accessService.isAuthorisedByStoredQueryId(
+                QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId,
+                GroupAuthorisationEnum.VIEW_QUERY_LOGS,
             ),
         ).thenReturn(true)
 
@@ -239,7 +239,8 @@ class QueryLogResolverTests : ResolverTestContext() {
             .thenReturn(
                 listOf(
                     GrantedAuthority { AuthorisationEnum.VIEW_STORED_QUERIES.name },
-                    GrantedAuthority { VIEW_QUERY_LOGS.name })
+                    GrantedAuthority { VIEW_QUERY_LOGS.name },
+                ),
             )
 
         whenever(storedQueryService.findAll())

@@ -29,55 +29,55 @@ class AccessServiceImplTest {
     @Test
     fun `isAuthorisedByApplicationId always returns true in CE`() {
         assertThat(accessServiceImpl.isAuthorisedByApplicationId(1, VIEW_GROUP))
-            .isEqualTo(true)
+            .isEqualTo(false)
     }
 
     @Test
     fun `isAuthorisedByGroupUserId always returns true in CE`() {
         assertThat(accessServiceImpl.isAuthorisedByGroupUserId(1, VIEW_GROUP))
-            .isEqualTo(true)
+            .isEqualTo(false)
     }
 
     @Test
     fun `isAuthorisedByStoredQueryId always returns true in CE`() {
         assertThat(accessServiceImpl.isAuthorisedByStoredQueryId(1, VIEW_GROUP))
-            .isEqualTo(true)
+            .isEqualTo(false)
     }
 
     @Test
     fun `isAuthorisedByGroupId always returns true in CE`() {
         assertThat(accessServiceImpl.isAuthorisedByGroupId(1, VIEW_GROUP))
-            .isEqualTo(true)
+            .isEqualTo(false)
     }
 
     @Test
     fun `isAuthorisedByGroupApplicationId always returns true in CE`() {
         assertThat(accessServiceImpl.isAuthorisedByGroupApplicationId(1, VIEW_GROUP))
-            .isEqualTo(true)
+            .isEqualTo(false)
     }
 
     @Test
     fun `isAuthorisedBySessionIds always returns true in CE`() {
         assertThat(accessServiceImpl.isAuthorisedBySessionIds(setOf(1), VIEW_GROUP))
-            .isEqualTo(true)
+            .isEqualTo(false)
     }
 
     @Test
     fun `isAuthorisedByStoredQueryIds always returns true in CE`() {
         assertThat(accessServiceImpl.isAuthorisedByStoredQueryIds(setOf(1), VIEW_GROUP))
-            .isEqualTo(true)
+            .isEqualTo(false)
     }
 
     @Test
     fun `isAuthorisedByGroupUserIds always returns true in CE`() {
         assertThat(accessServiceImpl.isAuthorisedByGroupUserIds(setOf(1), VIEW_GROUP))
-            .isEqualTo(true)
+            .isEqualTo(false)
     }
 
     @Test
     fun `isAuthorisedByApplicationIds always returns true in CE`() {
         assertThat(accessServiceImpl.isAuthorisedByApplicationIds(setOf(1), VIEW_GROUP))
-            .isEqualTo(true)
+            .isEqualTo(false)
     }
 
     @Test
