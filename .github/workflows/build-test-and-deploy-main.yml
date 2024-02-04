@@ -101,7 +101,7 @@ jobs:
         with:
           context: wirequery/manager-web
           push: true
-          tags: ghcr.io/${{ github.repository }}-backend:latest , ghcr.io/${{ github.repository }}-frontend:${{ env.DOCKER_IMAGE_VERSION }}
+          tags: ghcr.io/${{ github.repository }}-frontend:latest , ghcr.io/${{ github.repository }}-frontend:${{ env.DOCKER_IMAGE_VERSION }}
           labels: ${{ steps.meta_fe.outputs.labels }}
           visibility: public
       - name: Publish WireQuery Core
