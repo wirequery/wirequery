@@ -22,7 +22,8 @@ class StoredQuerysByApplicationIdDataLoader(
     private val executor: Executor,
 ) : MappedBatchLoader<Int, List<StoredQuery>> {
     @PreAuthorize(
-        "@accessService.isAuthorisedByApplicationIds(#applicationIds, T(com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum).VIEW_STORED_QUERY)",
+        """hasAuthority(T(com.wirequery.manager.domain.authorisation.AuthorisationEnum).VIEW_STORED_QUERIES)
+               || @accessService.isAuthorisedByApplicationIds(#applicationIds, T(com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum).VIEW_STORED_QUERY)""",
     )
     override fun load(applicationIds: MutableSet<Int>): CompletionStage<Map<Int, List<StoredQuery>>> =
         supplyAsync({

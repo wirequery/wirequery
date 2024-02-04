@@ -113,6 +113,24 @@ class ApplicationResolverTests : ResolverTestContext() {
     }
 
     @Test
+    fun `revealApiKey can be fetched if user has VIEW_STORED_QUERY_API_KEYS authorisation`() {
+        whenever(authenticationMock.authorities)
+            .thenReturn(listOf(GrantedAuthority { AuthorisationEnum.VIEW_APPLICATION_API_KEY.name }))
+
+        whenever(applicationService.findApiKeyById(APPLICATION_FIXTURE_WITH_ID_1.id))
+            .thenReturn(APPLICATION_FIXTURE_WITH_ID_1.apiKey)
+
+        val apiKey =
+            dgsQueryExecutor.executeAndExtractJsonPath<String>(
+                "mutation revealApiKey(\$id: ID!) { revealApiKey(id: \$id) }",
+                "data.revealApiKey",
+                mapOf("id" to "" + APPLICATION_FIXTURE_WITH_ID_1.id),
+            )
+
+        assertThat(apiKey).isEqualTo(APPLICATION_FIXTURE_WITH_ID_1.apiKey)
+    }
+
+    @Test
     fun `revealApiKey can be fetched if user has VIEW_API_KEY group authorisation`() {
         whenever(
             accessService.isAuthorisedByApplicationId(
@@ -183,6 +201,31 @@ class ApplicationResolverTests : ResolverTestContext() {
             .isEqualTo("PERMISSION_DENIED")
 
         verify(applicationService, times(0)).findAll()
+    }
+
+    @Test
+    fun `updateApplication calls update if user has UPDATE_APPLICATION authorisation`() {
+        whenever(authenticationMock.authorities)
+            .thenReturn(listOf(GrantedAuthority { AuthorisationEnum.UPDATE_APPLICATION.name }))
+
+        whenever(applicationService.update(anyInt(), any()))
+            .thenReturn(APPLICATION_FIXTURE_WITH_ID_1)
+
+        val updateApplicationInput =
+            mapOf(
+                "description" to "Some description",
+            )
+
+        val result =
+            dgsQueryExecutor.executeAndExtractJsonPath<String>(
+                "mutation updateApplication(\$id: ID!, \$input: UpdateApplicationInput!) { updateApplication(id: \$id, input: \$input) { id } }",
+                "data.updateApplication.id",
+                mapOf("id" to APPLICATION_FIXTURE_WITH_ID_1.id, "input" to updateApplicationInput),
+            )
+
+        assertThat(result).isEqualTo(APPLICATION_FIXTURE_WITH_ID_1.id.toString())
+
+        verify(applicationService).update(APPLICATION_FIXTURE_WITH_ID_1.id, UPDATE_APPLICATION_FIXTURE_1)
     }
 
     @Test

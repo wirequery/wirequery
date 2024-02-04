@@ -25,6 +25,8 @@ enum class GroupAuthorisationEnum(val label: String, val description: String) {
     VIEW_STORED_QUERY("View Stored Query", "Allow viewing all related stored queries"),
     DELETE_STORED_QUERY("Delete Stored Query", "Allow deleting all related stored queries"),
 
+    VIEW_QUERY_LOGS("View Query Logs", "Allow viewing query logs"),
+
     ADD_TO_EXISTING_GROUP(
         "Add To Existing Group",
         "Allow adding existing applications to the group (required on both sides)",

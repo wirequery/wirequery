@@ -15,12 +15,16 @@ import com.wirequery.manager.application.ResolverTestContext
 import com.wirequery.manager.application.graphql.GraphQLExceptionHandler
 import com.wirequery.manager.application.graphql.application.ApplicationByIdDataLoader
 import com.wirequery.manager.application.graphql.application.ApplicationResolver
+import com.wirequery.manager.application.graphql.session.SessionResolver
 import com.wirequery.manager.domain.access.AccessService
 import com.wirequery.manager.domain.application.ApplicationFixtures.APPLICATION_FIXTURE_WITH_ID_1
 import com.wirequery.manager.domain.application.ApplicationService
 import com.wirequery.manager.domain.authorisation.AuthorisationEnum
 import com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum
+import com.wirequery.manager.domain.session.SessionFixtures.SESSION_FIXTURE_WITH_ID_1
+import com.wirequery.manager.domain.session.SessionService
 import com.wirequery.manager.domain.storedquery.StoredQueryFixtures.STORED_QUERY_FIXTURE_WITH_ID_1
+import com.wirequery.manager.domain.storedquery.StoredQueryFixtures.STORED_QUERY_FIXTURE_WITH_ID_AND_SESSION_ID_1
 import com.wirequery.manager.domain.storedquery.StoredQueryService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -45,6 +49,7 @@ import org.springframework.security.core.GrantedAuthority
         StoredQueryByIdDataLoader::class,
         StoredQuerysByApplicationIdDataLoader::class,
         StoredQuerysBySessionIdDataLoader::class,
+        SessionResolver::class,
         GraphQLExceptionHandler::class,
         AccessService::class,
         GraphQLExceptionHandler::class,
@@ -56,6 +61,9 @@ class StoredQueryResolverTests : ResolverTestContext() {
 
     @MockBean
     private lateinit var accessService: AccessService
+
+    @MockBean
+    private lateinit var sessionService: SessionService
 
     @MockBean
     private lateinit var applicationService: ApplicationService
@@ -231,6 +239,29 @@ class StoredQueryResolverTests : ResolverTestContext() {
     }
 
     @Test
+    fun `storedQuerys_application fetches application if user has VIEW_STORED_QUERIES and VIEW_APPLICATIONS authorisation`() {
+        whenever(authenticationMock.authorities)
+            .thenReturn(listOf(
+                GrantedAuthority { AuthorisationEnum.VIEW_STORED_QUERIES.name },
+                GrantedAuthority { AuthorisationEnum.VIEW_APPLICATIONS.name }
+            ))
+
+        whenever(storedQueryService.findAll())
+            .thenReturn(listOf(STORED_QUERY_FIXTURE_WITH_ID_1))
+
+        whenever(applicationService.findByIds(setOf(STORED_QUERY_FIXTURE_WITH_ID_1.applicationId)))
+            .thenReturn(listOf(APPLICATION_FIXTURE_WITH_ID_1.copy(id = STORED_QUERY_FIXTURE_WITH_ID_1.applicationId)))
+
+        val ids =
+            dgsQueryExecutor.executeAndExtractJsonPath<List<String>>(
+                "{ storedQuerys { application { id } } }",
+                "data.storedQuerys[*].application.id",
+            )
+
+        assertThat(ids).contains(STORED_QUERY_FIXTURE_WITH_ID_1.applicationId.toString())
+    }
+
+    @Test
     fun `storedQuerys_application fetches application if user has VIEW_STORED_QUERIES authorisation and VIEW_APPLICATION group authorisation`() {
         whenever(authenticationMock.authorities)
             .thenReturn(listOf(GrantedAuthority { AuthorisationEnum.VIEW_STORED_QUERIES.name }))
@@ -277,7 +308,30 @@ class StoredQueryResolverTests : ResolverTestContext() {
     }
 
     @Test
-    fun `applications_storedQuerys fetches stored queries if user has VIEW_APPLICATIONS authorisation`() {
+    fun `applications_storedQuerys fetches stored queries if user has VIEW_APPLICATIONS and VIEW_STORED_QUERIES authorisations`() {
+        whenever(authenticationMock.authorities)
+            .thenReturn(listOf(
+                GrantedAuthority { AuthorisationEnum.VIEW_APPLICATIONS.name },
+                GrantedAuthority { AuthorisationEnum.VIEW_STORED_QUERIES.name }
+            ))
+
+        whenever(applicationService.findAll())
+            .thenReturn(listOf(APPLICATION_FIXTURE_WITH_ID_1.copy(id = STORED_QUERY_FIXTURE_WITH_ID_1.applicationId)))
+
+        whenever(storedQueryService.findByApplicationIds(setOf(STORED_QUERY_FIXTURE_WITH_ID_1.applicationId)))
+            .thenReturn(listOf(STORED_QUERY_FIXTURE_WITH_ID_1))
+
+        val ids =
+            dgsQueryExecutor.executeAndExtractJsonPath<List<String>>(
+                "{ applications { storedQuerys { id } } }",
+                "data.applications[*].storedQuerys[*].id",
+            )
+
+        assertThat(ids).contains(STORED_QUERY_FIXTURE_WITH_ID_1.id.toString())
+    }
+
+    @Test
+    fun `applications_storedQuerys fetches stored queries if user has VIEW_APPLICATIONS authorisation and VIEW_STORED_QUERY group authorisation`() {
         whenever(authenticationMock.authorities)
             .thenReturn(listOf(GrantedAuthority { AuthorisationEnum.VIEW_APPLICATIONS.name }))
 
@@ -322,5 +376,77 @@ class StoredQueryResolverTests : ResolverTestContext() {
 
         verify(storedQueryService, times(0))
             .findByApplicationIds(setOf(STORED_QUERY_FIXTURE_WITH_ID_1.applicationId))
+    }
+
+
+    @Test
+    fun `sessions_storedQuerys fetches stored queries if user has VIEW_SESSIONS and QUERY authorisation`() {
+        whenever(authenticationMock.authorities)
+            .thenReturn(listOf(
+                GrantedAuthority { AuthorisationEnum.VIEW_SESSIONS.name },
+                GrantedAuthority { AuthorisationEnum.VIEW_STORED_QUERIES.name }
+            ))
+
+        whenever(sessionService.findAll())
+            .thenReturn(listOf(SESSION_FIXTURE_WITH_ID_1.copy(id = STORED_QUERY_FIXTURE_WITH_ID_AND_SESSION_ID_1.sessionId!!)))
+
+        whenever(storedQueryService.findBySessionIds(setOf(STORED_QUERY_FIXTURE_WITH_ID_AND_SESSION_ID_1.sessionId!!)))
+            .thenReturn(listOf(STORED_QUERY_FIXTURE_WITH_ID_AND_SESSION_ID_1))
+
+        val ids =
+            dgsQueryExecutor.executeAndExtractJsonPath<List<String>>(
+                "{ sessions { storedQuerys { id } } }",
+                "data.sessions[*].storedQuerys[*].id",
+            )
+
+        assertThat(ids).contains(STORED_QUERY_FIXTURE_WITH_ID_AND_SESSION_ID_1.id.toString())
+    }
+
+    @Test
+    fun `sessions_storedQuerys fetches stored queries if user has VIEW_SESSIONS authorisation and VIEW_STORED_QUERY group authorisation`() {
+        whenever(authenticationMock.authorities)
+            .thenReturn(listOf(GrantedAuthority { AuthorisationEnum.VIEW_SESSIONS.name }))
+
+        whenever(
+            accessService.isAuthorisedBySessionIds(
+                setOf(STORED_QUERY_FIXTURE_WITH_ID_AND_SESSION_ID_1.sessionId!!),
+                GroupAuthorisationEnum.VIEW_STORED_QUERY,
+            ),
+        )
+            .thenReturn(true)
+
+        whenever(sessionService.findAll())
+            .thenReturn(listOf(SESSION_FIXTURE_WITH_ID_1.copy(id = STORED_QUERY_FIXTURE_WITH_ID_AND_SESSION_ID_1.sessionId!!)))
+
+        whenever(storedQueryService.findBySessionIds(setOf(STORED_QUERY_FIXTURE_WITH_ID_AND_SESSION_ID_1.sessionId)))
+            .thenReturn(listOf(STORED_QUERY_FIXTURE_WITH_ID_AND_SESSION_ID_1))
+
+        val ids =
+            dgsQueryExecutor.executeAndExtractJsonPath<List<String>>(
+                "{ sessions { storedQuerys { id } } }",
+                "data.sessions[*].storedQuerys[*].id",
+            )
+
+        assertThat(ids).contains(STORED_QUERY_FIXTURE_WITH_ID_AND_SESSION_ID_1.id.toString())
+    }
+
+    @Test
+    fun `sessions_storedQuerys does not fetch stored queries if user does not have VIEW_SESSIONS authorisation`() {
+        val queryException =
+            assertThrows<QueryException> {
+                dgsQueryExecutor.executeAndExtractJsonPath<List<String>>(
+                    "{ sessions { storedQuerys { id } } }",
+                    "data.sessions[*].storedQuerys[*].id",
+                )
+            }
+
+        assertThat(queryException.errors[0].extensions["errorType"])
+            .isEqualTo("PERMISSION_DENIED")
+
+        verify(sessionService, times(0))
+            .findAll()
+
+        verify(storedQueryService, times(0))
+            .findBySessionIds(setOf(STORED_QUERY_FIXTURE_WITH_ID_1.sessionId))
     }
 }

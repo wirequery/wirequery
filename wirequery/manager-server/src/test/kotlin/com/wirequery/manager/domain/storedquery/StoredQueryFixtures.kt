@@ -33,6 +33,10 @@ object StoredQueryFixtures {
             createdAt = OFFSET_DATE_TIME_FIXTURE,
         )
 
+    val STORED_QUERY_FIXTURE_WITH_ID_AND_SESSION_ID_1 = STORED_QUERY_FIXTURE_WITH_ID_1.copy(
+        sessionId = 3
+    )
+
     val STORED_QUERY_ENTITY_FIXTURE_1 =
         StoredQueryEntity(
             id = null,

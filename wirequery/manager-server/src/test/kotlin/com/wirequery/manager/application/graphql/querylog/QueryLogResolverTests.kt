@@ -19,6 +19,9 @@ import com.wirequery.manager.application.graphql.storedquery.StoredQuerysByAppli
 import com.wirequery.manager.application.graphql.storedquery.StoredQuerysBySessionIdDataLoader
 import com.wirequery.manager.domain.access.AccessService
 import com.wirequery.manager.domain.authorisation.AuthorisationEnum
+import com.wirequery.manager.domain.authorisation.AuthorisationEnum.QUERY
+import com.wirequery.manager.domain.authorisation.AuthorisationEnum.VIEW_QUERY_LOGS
+import com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum
 import com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum.VIEW_STORED_QUERY
 import com.wirequery.manager.domain.querylog.QueryLogFixtures.QUERY_LOG_FIXTURE_WITH_ID_1
 import com.wirequery.manager.domain.querylog.QueryLogService
@@ -65,11 +68,28 @@ class QueryLogResolverTests : ResolverTestContext() {
     private lateinit var queryLogService: QueryLogService
 
     @Test
-    fun `queryLogs are fetched when user has VIEW_STORED_QUERY group authorisation`() {
+    fun `queryLogs are fetched when user has VIEW_QUERY_LOGS authorisation`() {
+        whenever(authenticationMock.authorities)
+            .thenReturn(listOf(GrantedAuthority { VIEW_QUERY_LOGS.name }))
+
+        whenever(queryLogService.findMainLogs(QueryLogFilterInput(storedQueryId = QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId)))
+            .thenReturn(listOf(QUERY_LOG_FIXTURE_WITH_ID_1))
+
+        val messages =
+            dgsQueryExecutor.executeAndExtractJsonPath<List<String>>(
+                "{ queryLogs(filter: { storedQueryId: ${QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId} }) { message } }",
+                "data.queryLogs[*].message",
+            )
+
+        assertThat(messages).hasSize(1)
+    }
+
+    @Test
+    fun `queryLogs are fetched when user has VIEW_QUERY_LOGS group authorisation`() {
         whenever(
             accessService.isAuthorisedByStoredQueryId(
                 QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId,
-                VIEW_STORED_QUERY,
+                GroupAuthorisationEnum.VIEW_QUERY_LOGS,
             ),
         ).thenReturn(true)
 
@@ -86,7 +106,7 @@ class QueryLogResolverTests : ResolverTestContext() {
     }
 
     @Test
-    fun `queryLogs are not fetched when user does not have VIEW_STORED_QUERY group authorisation`() {
+    fun `queryLogs are not fetched when user does not have VIEW_QUERY_LOGS group authorisation`() {
         val queryException =
             assertThrows<QueryException> {
                 dgsQueryExecutor.executeAndExtractJsonPath<List<String>>(
@@ -102,11 +122,11 @@ class QueryLogResolverTests : ResolverTestContext() {
     }
 
     @Test
-    fun `queryLogByTrace are fetched when user has VIEW_STORED_QUERY group authorisation`() {
+    fun `queryLogByTrace are fetched when user has VIEW_QUERY_LOGS group authorisation`() {
         whenever(
             accessService.isAuthorisedByStoredQueryId(
                 QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId,
-                VIEW_STORED_QUERY,
+                GroupAuthorisationEnum.VIEW_QUERY_LOGS,
             ),
         ).thenReturn(true)
 
@@ -123,7 +143,7 @@ class QueryLogResolverTests : ResolverTestContext() {
     }
 
     @Test
-    fun `queryLogByTrace are not fetched when user does not have VIEW_STORED_QUERY group authorisation`() {
+    fun `queryLogByTrace are not fetched when user does not have VIEW_QUERY_LOGS group authorisation`() {
         val queryException =
             assertThrows<QueryException> {
                 dgsQueryExecutor.executeAndExtractJsonPath<List<String>>(
@@ -139,9 +159,11 @@ class QueryLogResolverTests : ResolverTestContext() {
     }
 
     @Test
-    fun `queryLogs_storedQuery fetches when user has VIEW_STORED_QUERY group authorisation`() {
+    fun `queryLogs_storedQuery fetches when user has VIEW_STORED_QUERY and VIEW_QUERY_LOGS group authorisation`() {
         whenever(
-            accessService.isAuthorisedByStoredQueryId(QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId, VIEW_STORED_QUERY),
+            accessService.isAuthorisedByStoredQueryId(QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId,
+                GroupAuthorisationEnum.VIEW_QUERY_LOGS
+            ),
         ).thenReturn(true)
 
         whenever(
@@ -167,7 +189,7 @@ class QueryLogResolverTests : ResolverTestContext() {
     }
 
     @Test
-    fun `queryLogs_storedQuery are not fetched when user does not have VIEW_STORED_QUERY group authorisation`() {
+    fun `queryLogs_storedQuery are not fetched when user does not have VIEW_QUERY_LOGS group authorisation`() {
         val queryException =
             assertThrows<QueryException> {
                 dgsQueryExecutor.executeAndExtractJsonPath<List<String>>(
@@ -185,16 +207,16 @@ class QueryLogResolverTests : ResolverTestContext() {
     }
 
     @Test
-    fun `storedQuerys_queryLogs are fetched when user has VIEW_STORED_QUERIES group authorisation`() {
-        whenever(authenticationMock.authorities)
-            .thenReturn(listOf(GrantedAuthority { AuthorisationEnum.VIEW_STORED_QUERIES.name }))
-
+    fun `storedQuerys_queryLogs are fetched when user has VIEW_QUERY_LOGS group authorisation and VIEW_STORED_QUERIES authorisation`() {
         whenever(
             accessService.isAuthorisedByStoredQueryIds(
                 setOf(QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId),
-                VIEW_STORED_QUERY,
+                GroupAuthorisationEnum.VIEW_QUERY_LOGS,
             ),
         ).thenReturn(true)
+
+        whenever(authenticationMock.authorities)
+            .thenReturn(listOf(GrantedAuthority { AuthorisationEnum.VIEW_STORED_QUERIES.name }))
 
         whenever(storedQueryService.findAll())
             .thenReturn(listOf(STORED_QUERY_FIXTURE_WITH_ID_1.copy(id = QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId)))
@@ -212,7 +234,31 @@ class QueryLogResolverTests : ResolverTestContext() {
     }
 
     @Test
-    fun `storedQuerys_queryLogs are not fetched when user does not have VIEW_STORED_QUERIES group authorisation`() {
+    fun `storedQuerys_queryLogs are fetched when user has VIEW_STORED_QUERIES and VIEW_STORED_QUERY authorisation`() {
+        whenever(authenticationMock.authorities)
+            .thenReturn(
+                listOf(
+                    GrantedAuthority { AuthorisationEnum.VIEW_STORED_QUERIES.name },
+                    GrantedAuthority { VIEW_QUERY_LOGS.name })
+            )
+
+        whenever(storedQueryService.findAll())
+            .thenReturn(listOf(STORED_QUERY_FIXTURE_WITH_ID_1.copy(id = QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId)))
+
+        whenever(queryLogService.findMainLogsByStoredQueryIds(setOf(QUERY_LOG_FIXTURE_WITH_ID_1.storedQueryId)))
+            .thenReturn(listOf(QUERY_LOG_FIXTURE_WITH_ID_1))
+
+        val ids =
+            dgsQueryExecutor.executeAndExtractJsonPath<List<String>>(
+                "{ storedQuerys { queryLogs { message } } }",
+                "data.storedQuerys[*].queryLogs[*].message",
+            )
+
+        assertThat(ids).hasSize(1)
+    }
+
+    @Test
+    fun `storedQuerys_queryLogs are not fetched when user does not have the correct authorisations`() {
         val queryException =
             assertThrows<QueryException> {
                 dgsQueryExecutor.executeAndExtractJsonPath<List<String>>(

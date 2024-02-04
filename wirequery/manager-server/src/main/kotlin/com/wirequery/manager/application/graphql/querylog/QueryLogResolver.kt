@@ -23,7 +23,8 @@ class QueryLogResolver(
 ) {
     @DgsQuery
     @PreAuthorize(
-        "@accessService.isAuthorisedByStoredQueryId(#filter.storedQueryId, T(com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum).VIEW_STORED_QUERY)",
+        """hasAuthority(T(com.wirequery.manager.domain.authorisation.AuthorisationEnum).VIEW_QUERY_LOGS)
+               || @accessService.isAuthorisedByStoredQueryId(#filter.storedQueryId, T(com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum).VIEW_QUERY_LOGS)""",
     )
     fun queryLogs(filter: QueryLogFilterInput): Iterable<QueryLog> {
         return queryLogService.findMainLogs(filter)
@@ -31,7 +32,8 @@ class QueryLogResolver(
 
     @DgsQuery
     @PreAuthorize(
-        "@accessService.isAuthorisedByStoredQueryId(#filter.storedQueryId, T(com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum).VIEW_STORED_QUERY)",
+        """hasAuthority(T(com.wirequery.manager.domain.authorisation.AuthorisationEnum).VIEW_QUERY_LOGS)
+               || @accessService.isAuthorisedByStoredQueryId(#filter.storedQueryId, T(com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum).VIEW_QUERY_LOGS)""",
     )
     fun queryLogByTrace(filter: TraceFilterInput): Iterable<QueryLog> {
         return queryLogService.findByTraceId(filter.storedQueryId, filter.traceId)

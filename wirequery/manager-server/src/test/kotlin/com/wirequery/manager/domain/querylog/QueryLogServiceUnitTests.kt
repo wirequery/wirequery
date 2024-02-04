@@ -97,7 +97,7 @@ internal class QueryLogServiceUnitTests {
         whenever(storedQueryService.findByIds(listOf(storedQueryId)))
             .thenReturn(listOf(STORED_QUERY_FIXTURE_WITH_ID_1.copy(id = storedQueryId, applicationId = applicationId)))
 
-        whenever(accessService.whichAuthorisedByApplicationId(setOf(applicationId), GroupAuthorisationEnum.VIEW_STORED_QUERY))
+        whenever(accessService.whichAuthorisedByApplicationId(setOf(applicationId), GroupAuthorisationEnum.VIEW_QUERY_LOGS))
             .thenReturn(setOf(applicationId))
 
         val actual = queryLogService.findByTraceId(1, "trace-id")

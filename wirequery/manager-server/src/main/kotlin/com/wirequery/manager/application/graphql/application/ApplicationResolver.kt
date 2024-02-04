@@ -30,7 +30,8 @@ class ApplicationResolver(
 
     @DgsMutation
     @PreAuthorize(
-        "@accessService.isAuthorisedByApplicationId(#id, T(com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum).VIEW_API_KEY)",
+        """hasAuthority(T(com.wirequery.manager.domain.authorisation.AuthorisationEnum).VIEW_APPLICATION_API_KEY)
+               || @accessService.isAuthorisedByApplicationId(#id, T(com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum).VIEW_API_KEY)""",
     )
     fun revealApiKey(id: Int): String? {
         return applicationService.findApiKeyById(id)
@@ -52,7 +53,8 @@ class ApplicationResolver(
 
     @DgsMutation
     @PreAuthorize(
-        "@accessService.isAuthorisedByApplicationId(#id, T(com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum).UPDATE_APPLICATION)",
+        """hasAuthority(T(com.wirequery.manager.domain.authorisation.AuthorisationEnum).UPDATE_APPLICATION)
+               || @accessService.isAuthorisedByApplicationId(#id, T(com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum).UPDATE_APPLICATION)""",
     )
     fun updateApplication(
         id: Int,

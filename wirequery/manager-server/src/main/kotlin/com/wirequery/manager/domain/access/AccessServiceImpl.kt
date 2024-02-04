@@ -30,63 +30,63 @@ class AccessServiceImpl : AccessService {
         applicationId: Int,
         groupAuthorisation: GroupAuthorisationEnum,
     ): Boolean {
-        return true
+        return false
     }
 
     override fun isAuthorisedByGroupUserId(
         groupUserId: Int,
         groupAuthorisation: GroupAuthorisationEnum,
     ): Boolean {
-        return true
+        return false
     }
 
     override fun isAuthorisedByStoredQueryId(
         id: Int,
         groupAuthorisation: GroupAuthorisationEnum,
     ): Boolean {
-        return true
+        return false
     }
 
     override fun isAuthorisedByGroupId(
         groupId: Int,
         groupAuthorisation: GroupAuthorisationEnum,
     ): Boolean {
-        return true
+        return false
     }
 
     override fun isAuthorisedByGroupApplicationId(
         groupApplicationId: Int,
         groupAuthorisation: GroupAuthorisationEnum,
     ): Boolean {
-        return true
+        return false
     }
 
     override fun isAuthorisedBySessionIds(
         sessionIds: Set<Int>,
         groupAuthorisation: GroupAuthorisationEnum,
     ): Boolean {
-        return true
+        return false
     }
 
     override fun isAuthorisedByStoredQueryIds(
         storedQueryIds: Set<Int>,
         groupAuthorisation: GroupAuthorisationEnum,
     ): Boolean {
-        return true
+        return false
     }
 
     override fun isAuthorisedByGroupUserIds(
         groupUserIds: Set<Int>,
         groupAuthorisation: GroupAuthorisationEnum,
     ): Boolean {
-        return true
+        return false
     }
 
     override fun isAuthorisedByApplicationIds(
         applicationIds: Set<Int>,
         groupAuthorisation: GroupAuthorisationEnum,
     ): Boolean {
-        return true
+        return false
     }
 
     override fun whichAuthorisedByApplicationId(

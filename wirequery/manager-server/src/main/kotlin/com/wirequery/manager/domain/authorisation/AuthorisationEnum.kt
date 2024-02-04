@@ -8,11 +8,14 @@
 package com.wirequery.manager.domain.authorisation
 
 enum class AuthorisationEnum(val label: String, val description: String) {
-    QUERY("Query", "Allow querying."),
+    QUERY("Query", "Allow querying and show Queries tab."),
 
     VIEW_STORED_QUERIES("View Stored Queries", "Allow viewing all stored queries."),
+    VIEW_APPLICATION_API_KEY("View all API Keys", "Allow viewing all API keys."),
     CREATE_STORED_QUERY("Create Stored Query", "Allow query storing."),
     DELETE_STORED_QUERY("Delete Stored Queries", "Delete any stored query."),
+
+    VIEW_QUERY_LOGS("View Query Logs", "Allow viewing query logs."),
 
     VIEW_SESSIONS("View Sessions", "Allow viewing all sessions."),
     CREATE_SESSION("Create Session", "Allow session creation."),
@@ -21,11 +24,11 @@ enum class AuthorisationEnum(val label: String, val description: String) {
     VIEW_TEMPLATES("View Templates", "Allow viewing all templates."),
     CREATE_TEMPLATE("Create Template", "Allow template creation."),
     USER_AUTH_TEMPLATE("Set User Init on Template", "Allow template creation / update with end-user initiation and recording."),
-
     UPDATE_TEMPLATE("Update Template", "Allow template update."),
     DELETE_TEMPLATE("Delete Template", "Allow any template deletion."),
 
     VIEW_APPLICATIONS("View Applications", "Allow listing applications."),
+    UPDATE_APPLICATION("Update all applications", "Allow updating all applications"),
     DELETE_APPLICATION("Delete Application", "Delete any application."),
 
     VIEW_GROUPS("View Groups", "Allow user to view groups."),

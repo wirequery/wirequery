@@ -8,7 +8,7 @@
 package com.wirequery.manager.domain.querylog
 
 import com.wirequery.manager.domain.access.AccessService
-import com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum.VIEW_STORED_QUERY
+import com.wirequery.manager.domain.groupauthorisation.GroupAuthorisationEnum.VIEW_QUERY_LOGS
 import com.wirequery.manager.domain.query.QueryReport
 import com.wirequery.manager.domain.querylog.QueryLogEvent.QueryLogsCreatedEvent
 import com.wirequery.manager.domain.querylog.QueryLogEvent.QueryLogsFetchedEvent
@@ -65,7 +65,7 @@ class QueryLogService(
         val storedQuerys = storedQueryService.findByIds(storedQueryIds)
 
         val allowedApplicationIds =
-            accessService.whichAuthorisedByApplicationId(storedQuerys.map { it.applicationId }.toSet(), VIEW_STORED_QUERY)
+            accessService.whichAuthorisedByApplicationId(storedQuerys.map { it.applicationId }.toSet(), VIEW_QUERY_LOGS)
 
         val storedQueryIdIdToApplicationId = storedQuerys.associateBy({ it.id }) { it.applicationId }
 
