@@ -185,6 +185,7 @@ export function NavbarSimpleColored({
       label: 'QUERYING',
       visible:
         authorisations['QUERY'] ||
+        authorisations['VIEW_STORED_QUERIES'] ||
         authorisations['VIEW_SESSIONS'] ||
         authorisations['VIEW_TEMPLATES'],
     },
@@ -198,7 +199,7 @@ export function NavbarSimpleColored({
       link: '/stored-querys',
       label: 'Queries',
       icon: IconListSearch,
-      visible: authorisations['QUERY'],
+      visible: authorisations['VIEW_STORED_QUERIES'],
     },
     {
       link: '/sessions',

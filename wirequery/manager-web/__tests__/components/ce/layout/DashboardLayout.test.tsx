@@ -70,10 +70,15 @@ describe('DashboardLayout', () => {
       expect(screen.queryByText('Templates')).toBeNull()
     })
 
-    it('renders QUERYING, Queries and Explore if QUERY authorisation is present', () => {
+    it('renders QUERYING and Explore if QUERY authorisation is present', () => {
       renderDashboardLayout({ QUERY: true })
       expect(screen.queryByText('QUERYING')).not.toBeNull()
       expect(screen.queryByText('Explore')).not.toBeNull()
+    })
+
+    it('renders QUERYING and Queries if QUERY authorisation is present', () => {
+      renderDashboardLayout({ VIEW_STORED_QUERIES: true })
+      expect(screen.queryByText('QUERYING')).not.toBeNull()
       expect(screen.queryByText('Queries')).not.toBeNull()
     })
 
