@@ -1,0 +1,38 @@
+# Use this Docker Compose file to spin up WireQuery on your local machine.
+version: '3'
+
+services:
+  reverseproxy:
+    image: nginx
+    ports:
+      - "8090:8090"
+      - "9090:9090"
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+  wirequery-db:
+    image: timescale/timescaledb-ha:pg14-latest
+    ports:
+      - '15432:5432'
+    environment:
+      POSTGRES_PASSWORD: 'postgres'
+  wirequery-redis:
+    image: redis
+    ports:
+      - "16379:6379"
+  wirequery-backend:
+    image: ghcr.io/wirequery/wirequery-backend:0.1.0_195
+    environment:
+      SPRING_FLYWAY_USER: postgres
+      SPRING_FLYWAY_PASSWORD: postgres
+      SPRING_FLYWAY_URL: jdbc:postgresql://wirequery-db:15432/wirequery
+      WIREQUERY_REDIS_HOSTNAME: wirequery-redis
+      WIREQUERY_REDIS_PORT: 16379
+      WIREQUERY_DB_USER: postgres
+      WIREQUERY_DB_PASSWORD: postgres
+      WIREQUERY_DB_URL: jdbc:postgresql://wirequery-db:15432/wirequery
+      WIREQUERY_ADMIN_DISABLE: "false"
+      WIREQUERY_TENANT_ID: "0"
+      WIREQUERY_MULTITENANT_DISABLE: "true"
+  wirequery-frontend:
+    image: ghcr.io/wirequery/wirequery-frontend:0.1.0_195

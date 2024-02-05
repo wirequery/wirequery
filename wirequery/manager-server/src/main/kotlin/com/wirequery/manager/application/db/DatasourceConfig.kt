@@ -50,14 +50,13 @@ class DatasourceConfig {
     fun rlsCallback(
         dataSource: DataSource,
         ctx: ApplicationContext,
+        @Value("\${wirequery.multitenant.disable") multitenantDisabled: Boolean?,
     ): FlywayConfigurationCustomizer {
+        if (multitenantDisabled == true) {
+            return FlywayConfigurationCustomizer { }
+        }
         return FlywayConfigurationCustomizer { config ->
-            config.callbacks(
-                RowSecurityCallback(
-                    dataSource,
-                    ctx,
-                ),
-            )
+            config.callbacks(RowSecurityCallback(dataSource, ctx))
         }
     }
 
