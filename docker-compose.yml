@@ -21,7 +21,7 @@ services:
     ports:
       - "16379:6379"
   wirequery-backend:
-    image: ghcr.io/wirequery/wirequery-backend:0.1.0_195
+    image: ghcr.io/wirequery/wirequery-backend:0.1.0_196
     environment:
       SPRING_FLYWAY_USER: postgres
       SPRING_FLYWAY_PASSWORD: postgres
@@ -32,7 +32,10 @@ services:
       WIREQUERY_DB_PASSWORD: postgres
       WIREQUERY_DB_URL: jdbc:postgresql://wirequery-db:15432/wirequery
       WIREQUERY_ADMIN_DISABLE: "false"
-      WIREQUERY_TENANT_ID: "0"
-      WIREQUERY_MULTITENANT_DISABLE: "true"
+      WIREQUERY_TENANT_ID: "1"
+      WIREQUERY_MULTITENANT_DISABLE: true
+    depends_on:
+      - wirequery-redis
+      - wirequery-db
   wirequery-frontend:
-    image: ghcr.io/wirequery/wirequery-frontend:0.1.0_195
+    image: ghcr.io/wirequery/wirequery-frontend:0.1.0_196
