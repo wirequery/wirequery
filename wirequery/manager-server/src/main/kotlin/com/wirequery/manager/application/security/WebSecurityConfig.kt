@@ -37,12 +37,13 @@ class WebSecurityConfig(
             .cors { it.disable() }
             .csrf { it.disable() }
             .authorizeHttpRequests {
-                it.requestMatchers("/graphql").permitAll()
-                it.requestMatchers("/actuator/health").permitAll()
-                it.requestMatchers("/subscriptions").permitAll()
-                it.requestMatchers("/graphiql/**").permitAll()
-                it.requestMatchers("/api/v1/**").permitAll()
-                it.requestMatchers("/api/internal/**").permitAll()
+                it
+                    .requestMatchers("/graphql").permitAll()
+                    .requestMatchers("/actuator/health").permitAll()
+                    .requestMatchers("/subscriptions").permitAll()
+                    .requestMatchers("/graphiql/**").permitAll()
+                    .requestMatchers("/api/v1/**").permitAll()
+                    .requestMatchers("/api/internal/**").permitAll()
             }
             .sessionManagement { it.sessionCreationPolicy(IF_REQUIRED) }
             .securityContext { it.requireExplicitSave(false) }
