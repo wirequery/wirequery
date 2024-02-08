@@ -108,34 +108,34 @@ jobs:
         working-directory: ./sdk/jvm/wirequery-java-core
         if: github.repository == 'wirequery/wirequery'
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 5 SDK
         working-directory: ./sdk/jvm/wirequery-spring-5
         if: github.repository == 'wirequery/wirequery'
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 6 SDK
         working-directory: ./sdk/jvm/wirequery-spring-6
         if: github.repository == 'wirequery/wirequery'
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 2 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-2-starter
         if: github.repository == 'wirequery/wirequery'
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 3 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-3-starter
         if: github.repository == 'wirequery/wirequery'
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
