@@ -57,11 +57,11 @@ publishing {
     }
     repositories {
         maven {
-            name = "GitHubPackages"
-            url = URI("https://maven.pkg.github.com/wirequery/wirequery")
+            name = "OSSRH"
+            url = URI("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
             credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
             }
         }
     }
