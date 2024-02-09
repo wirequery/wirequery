@@ -41,13 +41,13 @@ jobs:
         run: echo $DOCKER_IMAGE_VERSION
       - name: Run Gradle test on WireQuery Java Core SDK
         working-directory: ./sdk/jvm/wirequery-java-core
-        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
+        run: ./gradlew --no-daemon -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
       - name: Run Gradle test on WireQuery Spring 5 SDK
         working-directory: ./sdk/jvm/wirequery-spring-5
-        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
+        run: ./gradlew --no-daemon -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
       - name: Run Gradle test on WireQuery Spring 6 SDK
         working-directory: ./sdk/jvm/wirequery-spring-6
-        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
+        run: ./gradlew --no-daemon -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
       - name: Run Gradle test on WireQuery Spring 2 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-2-starter
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
