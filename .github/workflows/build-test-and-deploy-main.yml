@@ -28,9 +28,14 @@ jobs:
       - name: Determine Version
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0
+      - name: Configure GPG Key
+        run: |
+          echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import
+        env:
+          GPG_SIGNING_KEY: ${{ secrets.MAVEN_GPG_SIGNING_KEY }}
       - name: Setting GitVersion versions
         run: |
-          echo "version=${{ steps.gitversion.outputs.fullSemVer }}" > gradle.properties
+          echo "version=${{ steps.gitversion.outputs.fullSemVer }}\nsigning.gnupg.executable=gpg\nsigning.gnupg.keyName=${{ secrets.MAVEN_GPG_KEY_NAME }}\nsigning.gnupg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }}\n" > gradle.properties
           echo "DOCKER_IMAGE_VERSION=$(echo ${{ steps.gitversion.outputs.fullSemVer }} | sed -E "s/\+/_/g")" >> $GITHUB_ENV
       - name: Showing Docker Image Version
         run: echo $DOCKER_IMAGE_VERSION
@@ -108,34 +113,34 @@ jobs:
         working-directory: ./sdk/jvm/wirequery-java-core
         if: github.repository == 'wirequery/wirequery'
         env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_TOKEN: ${{ secrets.CENTRAL_TOKEN }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 5 SDK
         working-directory: ./sdk/jvm/wirequery-spring-5
         if: github.repository == 'wirequery/wirequery'
         env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_TOKEN: ${{ secrets.CENTRAL_TOKEN }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 6 SDK
         working-directory: ./sdk/jvm/wirequery-spring-6
         if: github.repository == 'wirequery/wirequery'
         env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_TOKEN: ${{ secrets.CENTRAL_TOKEN }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 2 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-2-starter
         if: github.repository == 'wirequery/wirequery'
         env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_TOKEN: ${{ secrets.CENTRAL_TOKEN }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
       - name: Publish WireQuery Spring 3 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-3-starter
         if: github.repository == 'wirequery/wirequery'
         env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_TOKEN: ${{ secrets.CENTRAL_TOKEN }}
         run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish

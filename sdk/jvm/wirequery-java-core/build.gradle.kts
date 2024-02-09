@@ -5,6 +5,39 @@ plugins {
     kotlin("jvm") version "1.6.21"
     `maven-publish`
     `java-library`
+    id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.1.1"
+}
+
+signing {
+    useGpgCmd()
+}
+
+centralPortal {
+    username = System.getenv("CENTRAL_USERNAME")
+    password = System.getenv("CENTRAL_PASSWORD")
+    pom {
+        name = "WireQuery Java Core"
+        description = "WireQuery Java Core library"
+        url = "https://github.com/wirequery/wirequery"
+        licenses {
+            license {
+                name = "MIT License"
+                url = "https://github.com/wirequery/wirequery/blob/main/licenses/LICENSE-MIT.md"
+            }
+        }
+        developers {
+            developer {
+                name = "Wouter Nederhof"
+                email = "wouter@wirequery.io"
+                url = "https://github.com/wnederhof"
+            }
+        }
+        scm {
+            connection = "scm:git:git://github.com/wirequery/wirequery.git"
+            developerConnection = "scm:git:ssh://github.com:wirequery/wirequery.git"
+            url = "http://github.com/wirequery/wirequery/tree/master"
+        }
+    }
 }
 
 group = "com.wirequery"
@@ -50,16 +83,6 @@ publishing {
         create<MavenPublication>("mavenJava") {
             artifactId = "wirequery-java-core"
             from(components["java"])
-        }
-    }
-    repositories {
-        maven {
-            name = "OSSRH"
-            url = URI("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials {
-                username = System.getenv("OSSRH_USERNAME")
-                password = System.getenv("OSSRH_PASSWORD")
-            }
         }
     }
 }
