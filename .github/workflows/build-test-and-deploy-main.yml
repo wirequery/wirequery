@@ -37,7 +37,7 @@ jobs:
           GPG_SIGNING_KEY: ${{ secrets.MAVEN_GPG_SIGNING_KEY }}
       - name: Setting GitVersion versions
         run: |
-          echo "version=${{ steps.gitversion.outputs.fullSemVer }}\nsigning.gnupg.executable=gpg\nsigning.gnupg.keyName=${{ secrets.MAVEN_GPG_KEY_NAME }}\nsigning.gnupg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }}\n" > gradle.properties
+          echo "version=${{ steps.gitversion.outputs.fullSemVer }}\nsigning.gnupg.executable=gpg\nsigning.gnupg.keyName=${{ secrets.MAVEN_GPG_KEY_NAME }}\nsigning.gnupg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }}\n" > gradle.properties && cp gradle.properties sdk/jvm/wirequery-java-core
           echo "DOCKER_IMAGE_VERSION=$(echo ${{ steps.gitversion.outputs.fullSemVer }} | sed -E "s/\+/_/g")" >> $GITHUB_ENV
       - name: Showing Docker Image Version
         run: echo $DOCKER_IMAGE_VERSION
