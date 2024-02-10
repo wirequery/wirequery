@@ -123,7 +123,7 @@ jobs:
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_TOKEN: ${{ secrets.CENTRAL_TOKEN }}
-        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToCentralPortal
       - name: Publish WireQuery Spring 5 SDK
         working-directory: ./sdk/jvm/wirequery-spring-5
         if: github.repository == 'wirequery/wirequery'
