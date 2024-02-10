@@ -25,6 +25,8 @@ jobs:
         uses: gittools/actions/gitversion/setup@v0
         with:
           versionSpec: '5.x'
+      - name: Set GPG_TTY to make sure Gradle works properly with GPG
+        run: export GPG_TTY=$(tty)
       - name: Determine Version
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0
