@@ -15,7 +15,7 @@ signing {
 
 centralPortal {
     username = System.getenv("CENTRAL_USERNAME")
-    password = System.getenv("CENTRAL_PASSWORD")
+    password = System.getenv("CENTRAL_TOKEN")
     pom {
         name = "WireQuery Java Core"
         description = "WireQuery Java Core library"
