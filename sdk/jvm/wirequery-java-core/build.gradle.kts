@@ -10,6 +10,7 @@ plugins {
 
 signing {
     useGpgCmd()
+    sign(configurations.runtimeElements.get())
 }
 
 centralPortal {
