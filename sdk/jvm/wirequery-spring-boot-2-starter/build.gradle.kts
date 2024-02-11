@@ -5,6 +5,10 @@ tasks.getByName<BootJar>("bootJar") {
     enabled = false
 }
 
+tasks.getByName<Jar>("jar") {
+    enabled = true
+}
+
 plugins {
     id("org.springframework.boot") version "2.7.11"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
