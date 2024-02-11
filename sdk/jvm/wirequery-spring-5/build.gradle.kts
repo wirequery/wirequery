@@ -1,6 +1,5 @@
 import com.google.protobuf.gradle.id
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.net.URI
 
 val protobufVersion by extra("3.22.3")
 val protobufPluginVersion by extra("0.9.2")
@@ -13,6 +12,40 @@ plugins {
     `maven-publish`
     `java-library`
     id("com.google.protobuf") version "0.9.2"
+    id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.1.1"
+}
+
+signing {
+    useGpgCmd()
+    sign(configurations.runtimeElements.get())
+}
+
+centralPortal {
+    username = System.getenv("CENTRAL_USERNAME")
+    password = System.getenv("CENTRAL_TOKEN")
+    pom {
+        name = "WireQuery Spring 5"
+        description = "WireQuery Spring 5 library"
+        url = "https://github.com/wirequery/wirequery"
+        licenses {
+            license {
+                name = "MIT License"
+                url = "https://github.com/wirequery/wirequery/blob/main/licenses/LICENSE-MIT.md"
+            }
+        }
+        developers {
+            developer {
+                name = "Wouter Nederhof"
+                email = "wouter@wirequery.io"
+                url = "https://github.com/wnederhof"
+            }
+        }
+        scm {
+            connection = "scm:git:git://github.com/wirequery/wirequery.git"
+            developerConnection = "scm:git:ssh://github.com:wirequery/wirequery.git"
+            url = "http://github.com/wirequery/wirequery/tree/master"
+        }
+    }
 }
 
 group = "com.wirequery"
@@ -110,16 +143,6 @@ publishing {
         create<MavenPublication>("mavenJava") {
             artifactId = "wirequery-spring-5"
             from(components["java"])
-        }
-    }
-    repositories {
-        maven {
-            name = "CENTRAL"
-            url = URI("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials {
-                username = System.getenv("CENTRAL_USERNAME")
-                password = System.getenv("CENTRAL_TOKEN")
-            }
         }
     }
 }

@@ -35,42 +35,46 @@ jobs:
           echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --batch --import
         env:
           GPG_SIGNING_KEY: ${{ secrets.MAVEN_GPG_SIGNING_KEY }}
-      - name: Setting Gradle environment
+      - name: Setting Up Gradle environment
         run: |
-          echo 'version=${{ steps.gitversion.outputs.fullSemVer }}' > gradle.properties
+          echo 'version=${{ steps.gitversion.outputs.semVer }}' > gradle.properties
           echo 'signing.gnupg.executable=gpg' >> gradle.properties
           echo 'signing.gnupg.keyName=${{ secrets.MAVEN_GPG_KEY_NAME }}' >> gradle.properties
           echo 'signing.gnupg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }}' >> gradle.properties
           cp gradle.properties ./sdk/jvm/wirequery-java-core
+          cp gradle.properties ./sdk/jvm/wirequery-spring-5
+          cp gradle.properties ./sdk/jvm/wirequery-spring-6
+          cp gradle.properties ./sdk/jvm/wirequery-spring-boot-2-starter
+          cp gradle.properties ./sdk/jvm/wirequery-spring-boot-3-starter
       - name: Setting GitVersion versions
         run: |
-          echo "DOCKER_IMAGE_VERSION=$(echo ${{ steps.gitversion.outputs.fullSemVer }} | sed -E "s/\+/_/g")" >> $GITHUB_ENV
+          echo "DOCKER_IMAGE_VERSION=$(echo ${{ steps.gitversion.outputs.semVer }} | sed -E "s/\+/_/g")" >> $GITHUB_ENV
       - name: Showing Docker Image Version
         run: echo $DOCKER_IMAGE_VERSION
       - name: Run Gradle test on WireQuery Java Core SDK
         working-directory: ./sdk/jvm/wirequery-java-core
-        run: ./gradlew --no-daemon -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
+        run: ./gradlew --no-daemon -Pversion="${{  steps.gitversion.outputs.semVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.semVer }}" publishToMavenLocal --no-daemon
       - name: Run Gradle test on WireQuery Spring 5 SDK
         working-directory: ./sdk/jvm/wirequery-spring-5
-        run: ./gradlew --no-daemon -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
+        run: ./gradlew --no-daemon -Pversion="${{  steps.gitversion.outputs.semVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.semVer }}" publishToMavenLocal --no-daemon
       - name: Run Gradle test on WireQuery Spring 6 SDK
         working-directory: ./sdk/jvm/wirequery-spring-6
-        run: ./gradlew --no-daemon -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
+        run: ./gradlew --no-daemon -Pversion="${{  steps.gitversion.outputs.semVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.semVer }}" publishToMavenLocal --no-daemon
       - name: Run Gradle test on WireQuery Spring 2 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-2-starter
-        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
+        run: ./gradlew --no-daemon -Pversion="${{  steps.gitversion.outputs.semVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.semVer }}" publishToMavenLocal --no-daemon
       - name: Run Gradle test on WireQuery Spring 3 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-3-starter
-        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToMavenLocal --no-daemon
+        run: ./gradlew --no-daemon -Pversion="${{  steps.gitversion.outputs.semVer }}" test && ./gradlew -Pversion="${{  steps.gitversion.outputs.semVer }}" publishToMavenLocal --no-daemon
       - name: Run Gradle test on the Products Example
         working-directory: ./sdk/jvm/examples/spring-boot/products
-        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" build
+        run: ./gradlew --no-daemon -Pversion="${{  steps.gitversion.outputs.semVer }}" build
       - name: Run Gradle build on the Basket Example
         working-directory: ./sdk/jvm/examples/spring-boot/basket
-        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" build
+        run: ./gradlew --no-daemon -Pversion="${{  steps.gitversion.outputs.semVer }}" build
       - name: Run Gradle build on Wirequery's manager-server
         working-directory: ./wirequery/manager-server
-        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" build
+        run: ./gradlew --no-daemon -Pversion="${{  steps.gitversion.outputs.semVer }}" build
       - name: Use Node.js 18.x
         uses: actions/setup-node@v3
         with:
@@ -108,7 +112,7 @@ jobs:
           labels: ${{ steps.meta_be.outputs.labels }}
           visibility: public
           build-args: |
-            "VERSION=${{ steps.gitversion.outputs.fullSemVer }}"
+            "VERSION=${{ steps.gitversion.outputs.semVer }}"
       - name: Build and push FE Docker image
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
@@ -123,32 +127,32 @@ jobs:
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_TOKEN: ${{ secrets.CENTRAL_TOKEN }}
-        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publishToCentralPortal
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.semVer }}" publishToCentralPortal
       - name: Publish WireQuery Spring 5 SDK
         working-directory: ./sdk/jvm/wirequery-spring-5
         if: github.repository == 'wirequery/wirequery'
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_TOKEN: ${{ secrets.CENTRAL_TOKEN }}
-        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.semVer }}" publishToCentralPortal
       - name: Publish WireQuery Spring 6 SDK
         working-directory: ./sdk/jvm/wirequery-spring-6
         if: github.repository == 'wirequery/wirequery'
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_TOKEN: ${{ secrets.CENTRAL_TOKEN }}
-        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.semVer }}" publishToCentralPortal
       - name: Publish WireQuery Spring 2 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-2-starter
         if: github.repository == 'wirequery/wirequery'
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_TOKEN: ${{ secrets.CENTRAL_TOKEN }}
-        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.semVer }}" publishToCentralPortal
       - name: Publish WireQuery Spring 3 Starter SDK
         working-directory: ./sdk/jvm/wirequery-spring-boot-3-starter
         if: github.repository == 'wirequery/wirequery'
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_TOKEN: ${{ secrets.CENTRAL_TOKEN }}
-        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.fullSemVer }}" publish
+        run: ./gradlew -Pversion="${{  steps.gitversion.outputs.semVer }}" publishToCentralPortal
