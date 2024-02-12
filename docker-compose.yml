@@ -6,7 +6,6 @@ services:
     image: nginx
     ports:
       - "8090:8090"
-      - "9090:9090"
     restart: always
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
@@ -33,26 +32,26 @@ services:
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
   wirequery-backend:
-    image: ghcr.io/wirequery/wirequery-backend:0.1.0_197
+    image: ghcr.io/wirequery/wirequery-backend:latest
     ports:
       - "8080:8080"
+      - "9090:9090"
     environment:
       SPRING_FLYWAY_USER: postgres
       SPRING_FLYWAY_PASSWORD: postgres
       SPRING_FLYWAY_URL: jdbc:postgresql://wirequery-db:5432/postgres
       WIREQUERY_REDIS_HOSTNAME: wirequery-redis
-      WIREQUERY_REDIS_PORT: 16379
+      WIREQUERY_REDIS_PORT: 6379
       WIREQUERY_DB_USER: postgres
       WIREQUERY_DB_PASSWORD: postgres
       WIREQUERY_DB_URL: jdbc:postgresql://wirequery-db:5432/postgres
       WIREQUERY_ADMIN_ENABLED: "true"
       WIREQUERY_TENANT_ID: "1"
       WIREQUERY_MULTITENANT_DISABLE: true
-      _JAVA_OPTIONS: -Dlogging.level.org.springframework=DEBUG
     depends_on:
       wirequery-redis:
         condition: service_healthy
       wirequery-db:
         condition: service_healthy
   wirequery-frontend:
-    image: ghcr.io/wirequery/wirequery-frontend:0.1.0_197
+    image: ghcr.io/wirequery/wirequery-frontend:latest
