@@ -34,7 +34,6 @@ services:
   wirequery-backend:
     image: ghcr.io/wirequery/wirequery-backend:latest
     ports:
-      - "8080:8080"
       - "9090:9090"
     environment:
       SPRING_FLYWAY_USER: postgres
