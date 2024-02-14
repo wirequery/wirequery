@@ -3,7 +3,7 @@
 
 # WireQuery
 
-**[** Click here for a Quick Start Guide of WireQuery and Spring Boot **](https://dev.to/wnederhof/how-to-fix-bugs-faster-with-wirequery-34hd)**
+[Click here for a Quick Start Guide of WireQuery and Spring Boot](https://dev.to/wnederhof/how-to-fix-bugs-faster-with-wirequery-34hd)
 
 Capture, explore, and analyze data flowing in and out of your applications - without compromising privacy.
 
@@ -28,14 +28,11 @@ application itself, so that sensitive data is stripped before ever reaching the 
   requests.
 - **Masking**: Easily mask confidential information, so you can query with peace of mind.
 
-## Getting Started (Local Setup)
+## Getting Started
 
-You can follow Quick Start Guide of WireQuery with Spring Boot [here](https://dev.to/wnederhof/how-to-fix-bugs-faster-with-wirequery-34hd).
+For a comprehensive tutorial, you can follow Quick Start Guide of WireQuery with Spring Boot [here](https://dev.to/wnederhof/how-to-fix-bugs-faster-with-wirequery-34hd). In a nutshell, to get started with WireQuery:
 
-**TL;DR:**
-
-1. Make sure Docker is installed.
-2. Install and run WireQuery locally using Docker Compose:
+1. Make sure Docker is installed and run the following commands in your terminal:
     ```
     mkdir wirequery-demo && cd wirequery-demo
     curl -O https://raw.githubusercontent.com/wirequery/wirequery/main/docker-compose.yml
@@ -51,8 +48,8 @@ You can follow Quick Start Guide of WireQuery with Spring Boot [here](https://de
          --verbose
     ```
 
-4. Navigate to `localhost:8090` and log in with `admin` / `Administrator`. You should now be able to enter WireQuery.
-5. Create an application and connect with WireQuery using one of the following SDKs.
+3. Navigate to `localhost:8090` and log in with `admin` / `Administrator`. Start using WireQuery by creating an application
+   and connecting with WireQuery using one of the SDKs.
 
 ## SDKs
 
@@ -62,10 +59,8 @@ WireQuery's SDKs are offered in the following variants:
 |-----------------------------|-------------------------------------------------------------------|--------------------------------------------------------------|------------------------------------------------------|
 | [JVM](/sdk/jvm)             | Library for vanilla Java, Spring Boot 2 and 3                     |                                                              | [Docs](https://www.wirequery.io/docs/sdks/jvm)       |
 | [JS (Browser)](/sdk/js)     | Integration with Javascript in the Browser for frontend recording | Not a library, but integration guide and examples            | [Docs](https://www.wirequery.io/docs/sdks/js)        |
-
-[//]: # (| [Go]&#40;/sdk/go&#41;               | Library for Go.                                                   | Highly experimental and masking not built-in yet             | [Docs]&#40;https://www.wirequery.io/docsdks/js&#41;          |)
-
-[//]: # (| [Universal]&#40;/sdk/universal&#41; | Universal SDK for every other programming language.               | Highly experimental and masking should be done by the client | [Docs]&#40;https://www.wirequery.io/docs/sdks/universal&#41; |)
+| [Go](/sdk/go)               | Library for Go.                                                   | Highly experimental and masking not built-in yet             | [Docs](https://www.wirequery.io/docsdks/js)          |
+| [Universal](/sdk/universal) | Universal SDK for every other programming language.               | Highly experimental and masking should be done by the client | [Docs](https://www.wirequery.io/docs/sdks/universal) |
 
 More SDKs will be added over time.
 

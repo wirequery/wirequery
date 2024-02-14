@@ -9,7 +9,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 1. Fork the project
 2. Create a Pull Request
-3. Make sure you have signed the [Contributor License Agreement](/cla.md)
+3. Make sure you have signed the [Contributor License Agreement](/CLA.md)
 4. Wait for your code to be reviewed
 5. If all is OK, your code will be merged into main
 
