@@ -1,4 +1,9 @@
+[![Docker Images](https://img.shields.io/badge/docker-latest-blue)](https://github.com/orgs/wirequery/packages?repo_name=wirequery&ecosystem=container)
+[![Maven Central](https://img.shields.io/maven-central/v/com.wirequery/wirequery-spring-boot-3-starter)](https://central.sonatype.com/search?q=com.wirequery)
+
 # WireQuery
+
+**[** Click here for a Quick Start Guide of WireQuery and Spring Boot **](https://dev.to/wnederhof/how-to-fix-bugs-faster-with-wirequery-34hd)**
 
 Capture, explore, and analyze data flowing in and out of your applications - without compromising privacy.
 
@@ -23,10 +28,31 @@ application itself, so that sensitive data is stripped before ever reaching the 
   requests.
 - **Masking**: Easily mask confidential information, so you can query with peace of mind.
 
-## Get Started
+## Getting Started (Local Setup)
 
-- You can follow the Installation Guide [here](docs/installation.md).
-- You can follow the Getting Started Guide [here](docs/getting-started.md).
+You can follow Quick Start Guide of WireQuery with Spring Boot [here](https://dev.to/wnederhof/how-to-fix-bugs-faster-with-wirequery-34hd).
+
+**TL;DR:**
+
+1. Make sure Docker is installed.
+2. Install and run WireQuery locally using Docker Compose:
+    ```
+    mkdir wirequery-demo && cd wirequery-demo
+    curl -O https://raw.githubusercontent.com/wirequery/wirequery/main/docker-compose.yml
+    curl -O https://raw.githubusercontent.com/wirequery/wirequery/main/nginx.conf
+    docker-compose up
+    ```
+3. Wait until WireQuery is fully loaded (approx. 3 minutes). Then, create an environment and admin user using:
+    ```
+    curl -X POST localhost:8090/api/internal/admin/new-env/default \
+         -H 'Content-Type: application/json' \
+         -H 'Accept: application/json' \
+         --data "{\"adminPassword\": \"Administrator\"}" \
+         --verbose
+    ```
+
+4. Navigate to `localhost:8090` and log in with `admin` / `Administrator`. You should now be able to enter WireQuery.
+5. Create an application and connect with WireQuery using one of the following SDKs.
 
 ## SDKs
 
@@ -36,13 +62,16 @@ WireQuery's SDKs are offered in the following variants:
 |-----------------------------|-------------------------------------------------------------------|--------------------------------------------------------------|------------------------------------------------------|
 | [JVM](/sdk/jvm)             | Library for vanilla Java, Spring Boot 2 and 3                     |                                                              | [Docs](https://www.wirequery.io/docs/sdks/jvm)       |
 | [JS (Browser)](/sdk/js)     | Integration with Javascript in the Browser for frontend recording | Not a library, but integration guide and examples            | [Docs](https://www.wirequery.io/docs/sdks/js)        |
-| [Go](/sdk/go)               | Library for Go.                                                   | Highly experimental and masking not built-in yet             | [Docs](https://www.wirequery.io/docsdks/js)          |
-| [Universal](/sdk/universal) | Universal SDK for every other programming language.               | Highly experimental and masking should be done by the client | [Docs](https://www.wirequery.io/docs/sdks/universal) |
+
+[//]: # (| [Go]&#40;/sdk/go&#41;               | Library for Go.                                                   | Highly experimental and masking not built-in yet             | [Docs]&#40;https://www.wirequery.io/docsdks/js&#41;          |)
+
+[//]: # (| [Universal]&#40;/sdk/universal&#41; | Universal SDK for every other programming language.               | Highly experimental and masking should be done by the client | [Docs]&#40;https://www.wirequery.io/docs/sdks/universal&#41; |)
 
 More SDKs will be added over time.
 
 ## Links
 
+- [Quick Start Guide of WireQuery with Spring Boot](https://dev.to/wnederhof/how-to-fix-bugs-faster-with-wirequery-34hd)
 - [Official Website](https://www.wirequery.io)
 - [Documentation](https://www.wirequery.io/docs)
 - [Writing Queries](/docs/writing-queries.md)
