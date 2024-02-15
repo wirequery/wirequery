@@ -59,7 +59,7 @@ WireQuery's SDKs are offered in the following variants:
 |-----------------------------|-------------------------------------------------------------------|--------------------------------------------------------------|------------------------------------------------------|
 | [JVM](/sdk/jvm)             | Library for vanilla Java, Spring Boot 2 and 3                     |                                                              | [Docs](https://www.wirequery.io/docs/sdks/jvm)       |
 | [JS (Browser)](/sdk/js)     | Integration with Javascript in the Browser for frontend recording | Not a library, but integration guide and examples            | [Docs](https://www.wirequery.io/docs/sdks/js)        |
-| [Go](/sdk/go)               | Library for Go.                                                   | Highly experimental and masking not built-in yet             | [Docs](https://www.wirequery.io/docsdks/js)          |
+| [Go](/sdk/go)               | Library for Go.                                                   | Highly experimental and masking not built-in yet             | [Docs](https://www.wirequery.io/docs/sdks/go)        |
 | [Universal](/sdk/universal) | Universal SDK for every other programming language.               | Highly experimental and masking should be done by the client | [Docs](https://www.wirequery.io/docs/sdks/universal) |
 
 More SDKs will be added over time.
@@ -69,7 +69,7 @@ More SDKs will be added over time.
 - [Quick Start Guide of WireQuery with Spring Boot](https://dev.to/wnederhof/how-to-fix-bugs-faster-with-wirequery-34hd)
 - [Official Website](https://www.wirequery.io)
 - [Documentation](https://www.wirequery.io/docs)
-- [Writing Queries](/docs/writing-queries.md)
+- [Writing Queries](https://www.wirequery.io/docs/guides/writing-queries)
 - [Join our Discord Channel](https://discord.gg/BfaMCtkZe2) for questions and support.
 
 ## Contributing
