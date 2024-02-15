@@ -1,8 +1,5 @@
 [![Docker Images](https://img.shields.io/badge/docker-latest-blue)](https://github.com/orgs/wirequery/packages?repo_name=wirequery&ecosystem=container)
 [![Maven Central](https://img.shields.io/maven-central/v/com.wirequery/wirequery-spring-boot-3-starter)](https://central.sonatype.com/search?q=com.wirequery)
-<p align="center">
-<a href="https://youtu.be/lt-9KZOFffA?si=BiVf9Onhmeg_Za1w"><img width="500" src="wq_thumb.png"></a>
-</p>
 
 # WireQuery
 
@@ -18,7 +15,7 @@ Capture, explore, and analyze data flowing in and out of your applications - wit
 WireQuery SDKs capture HTTP requests and responses based on the provided query in WireQuery. Masking is done in the
 application itself, so that sensitive data is stripped before ever reaching the WireQuery server.
 
-![Screenshot](screenshot_1.png)
+<a href="https://youtu.be/lt-9KZOFffA?si=BiVf9Onhmeg_Za1w"><img width="500" src="screenshot_1_with_play_btn.png"></a>
 
 ## Feature Highlights
 
