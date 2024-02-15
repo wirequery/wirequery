@@ -1,5 +1,8 @@
 [![Docker Images](https://img.shields.io/badge/docker-latest-blue)](https://github.com/orgs/wirequery/packages?repo_name=wirequery&ecosystem=container)
 [![Maven Central](https://img.shields.io/maven-central/v/com.wirequery/wirequery-spring-boot-3-starter)](https://central.sonatype.com/search?q=com.wirequery)
+<p align="center">
+<a href="https://youtu.be/lt-9KZOFffA?si=BiVf9Onhmeg_Za1w"><img width="500" src="wq_thumb.png"></a>
+</p>
 
 # WireQuery
 
