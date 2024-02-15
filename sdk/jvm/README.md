@@ -10,10 +10,7 @@ Boot Starter to your project. Depending on your version of Spring Boot, you can 
 | Spring Boot 2 | com.wirequery | wirequery-spring-boot-2-starter |
 | Spring Boot 3 | com.wirequery | wirequery-spring-boot-3-starter |
 
-The (latest) version(s) can be found in the Packages on the project's GitHub page.
-
-Before adding the dependencies above, make sure you add the WireQuery repository to your repository declarations:
-https://maven.pkg.github.com/wirequery/wirequery
+The packages are hosted on Maven Central. The latest versions can be found on the top of the home page of this GitHub repository.
 
 (**Note:** If you're not using Spring Boot, you can depend on either the Spring 5 or Spring 6 dependencies, or the Java
 Core dependency if you are not using Spring at all (`com.wirequery:wirequery-java-core`). Setting up WireQuery will take
