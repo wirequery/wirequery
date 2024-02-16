@@ -30,6 +30,7 @@ wirequery-backend:
     dbUrl: "jdbc:postgresql://wirequery-postgresql:5432/wirequery"
     adminEnabled: "true"
     tenantId: "0"
+    disableMultitenancy: true
 
   replicaCount: 1
   image:

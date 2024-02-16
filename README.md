@@ -15,6 +15,9 @@ Capture, explore, and analyze data flowing in and out of your applications - wit
 WireQuery SDKs capture HTTP requests and responses based on the provided query in WireQuery. Masking is done in the
 application itself, so that sensitive data is stripped before ever reaching the WireQuery server.
 
+⭐ If you like WireQuery, please consider giving it a star. Your support can help the project grow
+and deliver exciting features.
+
 <a href="https://youtu.be/lt-9KZOFffA?si=BiVf9Onhmeg_Za1w"><img src="screenshot_1_with_play_btn.png"></a>
 
 ## Feature Highlights
