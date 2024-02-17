@@ -3,7 +3,7 @@
 
 # WireQuery
 
-[Click here for a Quick Start Guide of WireQuery and Spring Boot](https://dev.to/wnederhof/how-to-fix-bugs-faster-with-wirequery-34hd)
+[Click here for a Quick Start Guide of WireQuery and Spring Boot](https://www.wirequery.io/blog/wirequery-spring-boot)
 
 Capture, explore, and analyze data flowing in and out of your applications - without compromising privacy.
 
@@ -33,7 +33,7 @@ and deliver exciting features.
 
 ## Getting Started
 
-For a comprehensive tutorial, you can follow Quick Start Guide of WireQuery with Spring Boot [here](https://dev.to/wnederhof/how-to-fix-bugs-faster-with-wirequery-34hd). In a nutshell, to get started with WireQuery:
+For a comprehensive tutorial, you can follow Quick Start Guide of WireQuery with Spring Boot [here](https://www.wirequery.io/blog/wirequery-spring-boot). In a nutshell, to get started with WireQuery:
 
 1. Make sure Docker is installed and run the following commands in your terminal:
     ```
@@ -69,11 +69,12 @@ More SDKs will be added over time.
 
 ## Links
 
-- [Quick Start Guide of WireQuery with Spring Boot](https://dev.to/wnederhof/how-to-fix-bugs-faster-with-wirequery-34hd)
 - [Official Website](https://www.wirequery.io)
 - [Documentation](https://www.wirequery.io/docs)
 - [Writing Queries](https://www.wirequery.io/docs/guides/writing-queries)
 - [Join our Discord Channel](https://discord.gg/BfaMCtkZe2) for questions and support.
+- [Quick Start Guide with Spring Boot](https://www.wirequery.io/blog/wirequery-spring-boot)
+- [WireQuery Introduction Blog Post](https://www.wirequery.io/blog/unveiling-wirequery)
 
 ## Contributing
 
