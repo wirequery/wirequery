@@ -6,7 +6,14 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { Query } from '@generated/graphql'
-import { Badge, Card, Code, Divider, Flex, Grid, ScrollArea, Tabs } from '@mantine/core'
+import {
+  Card,
+  Divider,
+  Flex,
+  Grid,
+  ScrollArea,
+  Tabs,
+} from '@mantine/core'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { LogData } from 'rrweb'
 import rrwebPlayer from 'rrweb-player'
@@ -125,68 +132,123 @@ export function RecordingPlayer(props: RecordingPlayerProps) {
         >
           <Tabs defaultValue="console">
             <Tabs.List>
-              <Tabs.Tab value="console">
-                Console
-              </Tabs.Tab>
-              <Tabs.Tab value="errors">
-                Errors
-              </Tabs.Tab>
+              <Tabs.Tab value="console">Console</Tabs.Tab>
+              <Tabs.Tab value="errors">Errors</Tabs.Tab>
             </Tabs.List>
             <Tabs.Panel value="console">
               <ScrollArea h={256 + 80 - 2 * 10 - 17}>
                 {logs
                   .filter((l) => l.time <= time)
-                  .map((log) => <div>
-                    {log.value.level === 'error' ? (
-                      <>
-                        <div style={{ float: 'right', fontFamily: 'Monaco', paddingLeft: '20px', fontSize: 14, color: 'white' }}>
-                          {new Date(log.time).toLocaleTimeString()}
-                        </div>
-                        <div style={{ color: 'white', fontFamily: 'Monaco', background: '#A66', fontSize: 14 }}>
-                          {log.value.payload}
-                        </div>
-                      </>
-                    ) : (
-                      log.value.level === 'warn' ? (
+                  .map((log) => (
+                    <div>
+                      {log.value.level === 'error' ? (
                         <>
-                          <div style={{ float: 'right', fontFamily: 'Monaco', paddingLeft: '20px', fontSize: 14, color: 'white' }}>
+                          <div
+                            style={{
+                              float: 'right',
+                              fontFamily: 'Monaco',
+                              paddingLeft: '20px',
+                              fontSize: 14,
+                              color: 'white',
+                            }}
+                          >
                             {new Date(log.time).toLocaleTimeString()}
                           </div>
-                          <div style={{ color: 'white', fontFamily: 'Monaco', background: '#CA6', fontSize: 14 }}>
+                          <div
+                            style={{
+                              color: 'white',
+                              fontFamily: 'Monaco',
+                              background: '#A66',
+                              fontSize: 14,
+                            }}
+                          >
+                            {log.value.payload}
+                          </div>
+                        </>
+                      ) : log.value.level === 'warn' ? (
+                        <>
+                          <div
+                            style={{
+                              float: 'right',
+                              fontFamily: 'Monaco',
+                              paddingLeft: '20px',
+                              fontSize: 14,
+                              color: 'white',
+                            }}
+                          >
+                            {new Date(log.time).toLocaleTimeString()}
+                          </div>
+                          <div
+                            style={{
+                              color: 'white',
+                              fontFamily: 'Monaco',
+                              background: '#CA6',
+                              fontSize: 14,
+                            }}
+                          >
                             {log.value.payload}
                           </div>
                         </>
                       ) : (
                         <>
-                          <div style={{ float: 'right', fontFamily: 'Monaco', paddingLeft: '20px', fontSize: 14 }}>
+                          <div
+                            style={{
+                              float: 'right',
+                              fontFamily: 'Monaco',
+                              paddingLeft: '20px',
+                              fontSize: 14,
+                            }}
+                          >
                             {new Date(log.time).toLocaleTimeString()}
                           </div>
-                          <div style={{ color: 'black', fontSize: 14, fontFamily: 'Monaco', background: '#FFF' }}>
+                          <div
+                            style={{
+                              color: 'black',
+                              fontSize: 14,
+                              fontFamily: 'Monaco',
+                              background: '#FFF',
+                            }}
+                          >
                             {log.value.payload}
                           </div>
                         </>
-                      ))
-                    }
-                    <Divider />
-                  </div>
-                  )}
+                      )}
+                      <Divider />
+                    </div>
+                  ))}
               </ScrollArea>
             </Tabs.Panel>
             <Tabs.Panel value="errors">
               <ScrollArea h={256 + 80 - 2 * 10 - 17}>
                 {logs
                   .filter((l) => l.time <= time)
-                  .filter(log => log.value.level === 'error')
-                  .map((log) => <div>
-                    <div style={{ float: 'right', fontFamily: 'Monaco', paddingLeft: '20px', fontSize: 14, color: 'white' }}>
-                      {new Date(log.time).toLocaleTimeString()}
+                  .filter((log) => log.value.level === 'error')
+                  .map((log) => (
+                    <div>
+                      <div
+                        style={{
+                          float: 'right',
+                          fontFamily: 'Monaco',
+                          paddingLeft: '20px',
+                          fontSize: 14,
+                          color: 'white',
+                        }}
+                      >
+                        {new Date(log.time).toLocaleTimeString()}
+                      </div>
+                      <div
+                        style={{
+                          color: 'white',
+                          fontFamily: 'Monaco',
+                          background: '#A66',
+                          fontSize: 14,
+                        }}
+                      >
+                        {log.value.payload}
+                      </div>
+                      <Divider />
                     </div>
-                    <div style={{ color: 'white', fontFamily: 'Monaco', background: '#A66', fontSize: 14 }}>
-                      {log.value.payload}
-                    </div>
-                    <Divider />
-                  </div>
-                  )}
+                  ))}
               </ScrollArea>
             </Tabs.Panel>
           </Tabs>
