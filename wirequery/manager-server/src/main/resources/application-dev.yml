@@ -3,3 +3,5 @@ wirequery:
   admin:
     enabled: true
   tenant-id: 1
+  multitenant:
+    disable: true

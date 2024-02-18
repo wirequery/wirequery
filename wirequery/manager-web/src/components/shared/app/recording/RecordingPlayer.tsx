@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { Query } from '@generated/graphql'
-import { Badge, Card, Code, Flex, Grid, ScrollArea } from '@mantine/core'
+import { Badge, Card, Code, Divider, Flex, Grid, ScrollArea, Tabs } from '@mantine/core'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { LogData } from 'rrweb'
 import rrwebPlayer from 'rrweb-player'
@@ -72,8 +72,8 @@ export function RecordingPlayer(props: RecordingPlayerProps) {
           target: wrapperEl.current as any,
           props: {
             autoPlay: false,
-            width: 512,
-            height: 256,
+            width: 800,
+            height: 300,
             events: videoEvents.map((event: any) => ({
               ...event,
               data: event.data,
@@ -110,40 +110,86 @@ export function RecordingPlayer(props: RecordingPlayerProps) {
 
   return (
     <Grid className="rr-player-wq">
-      <Grid.Col span={12} lg={6}>
+      <Grid.Col span={12} lg={7}>
         <Card withBorder style={{ height: '100%' }}>
           <Flex justify="center">
             <div ref={wrapperEl}></div>
           </Flex>
         </Card>
       </Grid.Col>
-      <Grid.Col span={12} lg={6}>
+      <Grid.Col span={12} lg={5}>
         <Card
           padding="lg"
           withBorder
           style={{ height: '100%', fontFamily: 'Courier New' }}
         >
-          <ScrollArea h={256 + 80 - 2 * 10}>
-            {logs
-              .filter((l) => l.time <= time)
-              .map((log, index) =>
-                log.value.level === 'error' ? (
-                  <Code color="red" block key={index}>
-                    <Badge mr={'xs'}>
+          <Tabs defaultValue="console">
+            <Tabs.List>
+              <Tabs.Tab value="console">
+                Console
+              </Tabs.Tab>
+              <Tabs.Tab value="errors">
+                Errors
+              </Tabs.Tab>
+            </Tabs.List>
+            <Tabs.Panel value="console">
+              <ScrollArea h={256 + 80 - 2 * 10 - 17}>
+                {logs
+                  .filter((l) => l.time <= time)
+                  .map((log) => <div>
+                    {log.value.level === 'error' ? (
+                      <>
+                        <div style={{ float: 'right', fontFamily: 'Monaco', paddingLeft: '20px', fontSize: 14, color: 'white' }}>
+                          {new Date(log.time).toLocaleTimeString()}
+                        </div>
+                        <div style={{ color: 'white', fontFamily: 'Monaco', background: '#A66', fontSize: 14 }}>
+                          {log.value.payload}
+                        </div>
+                      </>
+                    ) : (
+                      log.value.level === 'warn' ? (
+                        <>
+                          <div style={{ float: 'right', fontFamily: 'Monaco', paddingLeft: '20px', fontSize: 14, color: 'white' }}>
+                            {new Date(log.time).toLocaleTimeString()}
+                          </div>
+                          <div style={{ color: 'white', fontFamily: 'Monaco', background: '#CA6', fontSize: 14 }}>
+                            {log.value.payload}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div style={{ float: 'right', fontFamily: 'Monaco', paddingLeft: '20px', fontSize: 14 }}>
+                            {new Date(log.time).toLocaleTimeString()}
+                          </div>
+                          <div style={{ color: 'black', fontSize: 14, fontFamily: 'Monaco', background: '#FFF' }}>
+                            {log.value.payload}
+                          </div>
+                        </>
+                      ))
+                    }
+                    <Divider />
+                  </div>
+                  )}
+              </ScrollArea>
+            </Tabs.Panel>
+            <Tabs.Panel value="errors">
+              <ScrollArea h={256 + 80 - 2 * 10 - 17}>
+                {logs
+                  .filter((l) => l.time <= time)
+                  .filter(log => log.value.level === 'error')
+                  .map((log) => <div>
+                    <div style={{ float: 'right', fontFamily: 'Monaco', paddingLeft: '20px', fontSize: 14, color: 'white' }}>
                       {new Date(log.time).toLocaleTimeString()}
-                    </Badge>
-                    {log.value.payload}
-                  </Code>
-                ) : (
-                  <Code block key={index}>
-                    <Badge mr={'xs'}>
-                      {new Date(log.time).toLocaleTimeString()}
-                    </Badge>
-                    {log.value.payload}
-                  </Code>
-                )
-              )}
-          </ScrollArea>
+                    </div>
+                    <div style={{ color: 'white', fontFamily: 'Monaco', background: '#A66', fontSize: 14 }}>
+                      {log.value.payload}
+                    </div>
+                    <Divider />
+                  </div>
+                  )}
+              </ScrollArea>
+            </Tabs.Panel>
+          </Tabs>
         </Card>
       </Grid.Col>
     </Grid>

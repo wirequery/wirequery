@@ -32,7 +32,7 @@ export const SessionTimeline: React.FC<TimelineProps> = ({
   useEffect(() => {
     const parentDiv = parentRef.current
 
-    const margin = { top: 20, right: 0, bottom: 30, left: 220 }
+    const margin = { top: 0, right: 0, bottom: 30, left: 220 }
     const width = (parentDiv?.clientWidth ?? 0) - margin.left - margin.right
     const height = data.length * 50
 
@@ -188,6 +188,7 @@ export const SessionTimeline: React.FC<TimelineProps> = ({
 
   return (
     <div ref={parentRef}>
+      <h2>Queries Timeline</h2>
       <svg ref={svgRef}></svg>
     </div>
   )
