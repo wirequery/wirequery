@@ -186,11 +186,16 @@ export function NavbarSimpleColored({
       visible:
         authorisations['QUERY'] ||
         authorisations['VIEW_STORED_QUERIES'] ||
-        authorisations['VIEW_SESSIONS'] ||
-        authorisations['VIEW_TEMPLATES'],
+        authorisations['VIEW_SESSIONS'],
     },
     {
       link: '/',
+      label: 'Sessions',
+      icon: IconReportSearch,
+      visible: authorisations['VIEW_SESSIONS'],
+    },
+    {
+      link: '/explore',
       label: 'Explore',
       icon: IconSearch,
       visible: authorisations['QUERY'],
@@ -202,23 +207,12 @@ export function NavbarSimpleColored({
       visible: authorisations['VIEW_STORED_QUERIES'],
     },
     {
-      link: '/sessions',
-      label: 'Sessions',
-      icon: IconReportSearch,
-      visible: authorisations['VIEW_SESSIONS'],
-    },
-    {
-      link: '/templates',
-      label: 'Templates',
-      icon: IconTemplate,
-      visible: authorisations['VIEW_TEMPLATES'],
-    },
-    {
       label: 'ADMINISTRATION',
       visible:
         authorisations['VIEW_APPLICATIONS'] ||
         authorisations['MANAGE_USERS'] ||
-        authorisations['MANAGE_ROLES'],
+        authorisations['MANAGE_ROLES'] ||
+        authorisations['VIEW_TEMPLATES'],
     },
     {
       link: '/applications',
@@ -231,6 +225,12 @@ export function NavbarSimpleColored({
       label: 'Management',
       icon: IconUsers,
       visible: authorisations['MANAGE_USERS'] || authorisations['MANAGE_ROLES'],
+    },
+    {
+      link: '/templates',
+      label: 'Templates',
+      icon: IconTemplate,
+      visible: authorisations['VIEW_TEMPLATES'],
     },
     { label: 'ACCOUNT', visible: true },
     { link: '/settings', label: 'Settings', icon: IconSettings, visible: true },

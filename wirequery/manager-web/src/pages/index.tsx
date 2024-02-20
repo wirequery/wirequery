@@ -5,39 +5,38 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { QueryForm } from '@components/shared/app/query/QueryForm'
-import { StoredQueryForm } from '@components/shared/app/stored-query/StoredQueryForm'
+import { SessionForm } from '@components/shared/app/session/SessionForm'
+import { SessionList } from '@components/shared/app/session/SessionList'
 import DashboardLayout from '@components/ce/layout/DashboardLayout'
-import { Modal } from '@mantine/core'
-import { useRouter } from 'next/router'
+import { Button, Grid, Modal, Title } from '@mantine/core'
 import { useState } from 'react'
 
-export default function Home() {
-  const [modalActive, setModalActive] = useState<boolean>(false)
-  const [query, setQuery] = useState<string | undefined>(undefined)
-  const router = useRouter()
+export default function Sessions() {
+  const [modalActive, setModalActive] = useState(false)
   return (
-    <DashboardLayout active="Explore">
-      <QueryForm
-        onSaveClick={(query) => {
-          setModalActive(true)
-          setQuery(query)
-        }}
-      />
+    <>
+      <DashboardLayout active="Sessions">
+        <Grid>
+          <Grid.Col span="auto">
+            <Title order={2}>Sessions</Title>
+          </Grid.Col>
+          <Grid.Col span="content">
+            <Button onClick={() => setModalActive(true)}>New</Button>
+          </Grid.Col>
+        </Grid>
+        <SessionList onCreateSession={() => setModalActive(true)} />
+      </DashboardLayout>
       <Modal
-        opened={!!modalActive}
-        title="Save query"
+        size="lg"
+        opened={modalActive}
+        title="New Session"
         onClose={() => setModalActive(false)}
       >
-        <StoredQueryForm
-          query={query}
-          onSave={(id) => {
-            setModalActive(false)
-            router.push(`/stored-querys/${id}`)
-          }}
+        <SessionForm
+          onSave={() => setModalActive(false)}
           onCancel={() => setModalActive(false)}
         />
       </Modal>
-    </DashboardLayout>
+    </>
   )
 }

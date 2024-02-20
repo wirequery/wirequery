@@ -6,14 +6,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { Query } from '@generated/graphql'
-import {
-  Card,
-  Divider,
-  Flex,
-  Grid,
-  ScrollArea,
-  Tabs,
-} from '@mantine/core'
+import { Card, Divider, Flex, Grid, ScrollArea, Tabs } from '@mantine/core'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { LogData } from 'rrweb'
 import rrwebPlayer from 'rrweb-player'
@@ -79,7 +72,7 @@ export function RecordingPlayer(props: RecordingPlayerProps) {
           target: wrapperEl.current as any,
           props: {
             autoPlay: false,
-            width: 800,
+            width: 500,
             height: 300,
             events: videoEvents.map((event: any) => ({
               ...event,
@@ -117,14 +110,14 @@ export function RecordingPlayer(props: RecordingPlayerProps) {
 
   return (
     <Grid className="rr-player-wq">
-      <Grid.Col span={12} lg={7}>
+      <Grid.Col span={12} lg={6}>
         <Card withBorder style={{ height: '100%' }}>
           <Flex justify="center">
             <div ref={wrapperEl}></div>
           </Flex>
         </Card>
       </Grid.Col>
-      <Grid.Col span={12} lg={5}>
+      <Grid.Col span={12} lg={6}>
         <Card
           padding="lg"
           withBorder

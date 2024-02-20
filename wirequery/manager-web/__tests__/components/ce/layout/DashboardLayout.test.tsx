@@ -87,12 +87,6 @@ describe('DashboardLayout', () => {
       expect(screen.queryByText('QUERYING')).not.toBeNull()
       expect(screen.queryByText('Sessions')).not.toBeNull()
     })
-
-    it('renders QUERYING and Templates if VIEW_TEMPLATES authorisation is present', () => {
-      renderDashboardLayout({ VIEW_TEMPLATES: true })
-      expect(screen.queryByText('QUERYING')).not.toBeNull()
-      expect(screen.queryByText('Templates')).not.toBeNull()
-    })
   })
 
   describe('administration', () => {
@@ -101,6 +95,12 @@ describe('DashboardLayout', () => {
       expect(screen.queryByText('ADMINISTRATION')).toBeNull()
       expect(screen.queryByText('Applications')).toBeNull()
       expect(screen.queryByText('Management')).toBeNull()
+    })
+
+    it('renders ADMINISTRATION and Templates if VIEW_TEMPLATES authorisation is present', () => {
+      renderDashboardLayout({ VIEW_TEMPLATES: true })
+      expect(screen.queryByText('ADMINISTRATION')).not.toBeNull()
+      expect(screen.queryByText('Templates')).not.toBeNull()
     })
 
     it('renders ADMINISTRATION and Explore if VIEW_APPLICATIONS authorisation is present', () => {
