@@ -3,46 +3,35 @@
 
 # WireQuery
 
-[Click here for a Quick Start Guide of WireQuery and Spring Boot](https://www.wirequery.io/blog/wirequery-spring-boot)
+WireQuery is a full-stack session replay tool. Using WireQuery, you can see how a user experiences an issue through a
+video-like frontend recording. Combined with an overview of the network calls to the backend (including network calls
+further upstream and their actual payload), you get a holistic overview of how an issue came into existence.
 
-Capture, explore, and analyze data flowing in and out of your applications - without compromising privacy.
+Sometimes, however, issues can only be found on the backend, before users have reported them with a video-like
+recording. Through a specialized “network query language” called WQL, you can easily start your investigation from the
+backend as well. Like before, this includes all the network calls up- and downstream of your query result.
 
-- **Fix production incidents** an order of magnitude faster by querying the exact state
-  in which it occurs.
-- **Speed up development** and gain technical/business insights by exploring production data.
-- **Free and Open Source**, so that you can use WireQuery to your heart's content.
-
-WireQuery SDKs capture HTTP requests and responses based on the provided query in WireQuery. Masking is done in the
-application itself, so that sensitive data is stripped before ever reaching the WireQuery server.
+Since the video-like recordings and network calls may contain sensitive information, WireQuery’s SDKs are designed with
+privacy in mind. In most cases, minimum effort is required to strip all sensitive data from your frontend and backend
+systems.
 
 ⭐ If you like WireQuery, please consider giving it a star. Your support can help the project grow
 and deliver exciting features.
 
 <a href="https://youtu.be/lt-9KZOFffA?si=BiVf9Onhmeg_Za1w"><img src="screenshot_1_with_play_btn.png"></a>
 
-## Feature Highlights
-
-- **Explore**: Enter a query to let the targeted (production) system start capturing HTTP requests immediately.
-- **(Stored) Queries**: Store queries so that you can run them in the background.
-- **Extended Tracing**: Trace the results with their bodies, so you can see what happens in
-  your [entire stack](screenshot_2.png).
-- **Sessions**: Allow non-technical users to start multiple queries at the same time.
-- **Full-Stack Recording**: Record the frontend [like a video](screenshot_3.png) while capturing the related backend
-  requests.
-- **Masking**: Easily mask confidential information, so you can query with peace of mind.
-
 ## Getting Started
 
-For a comprehensive tutorial, you can follow Quick Start Guide of WireQuery with Spring Boot [here](https://www.wirequery.io/blog/wirequery-spring-boot). In a nutshell, to get started with WireQuery:
+If you want to try out WireQuery on your local machine:
 
 1. Make sure Docker is installed and run the following commands in your terminal:
     ```
-    mkdir wirequery-demo && cd wirequery-demo
+    mkdir wirequery && cd wirequery
     curl -O https://raw.githubusercontent.com/wirequery/wirequery/main/docker-compose.yml
     curl -O https://raw.githubusercontent.com/wirequery/wirequery/main/nginx.conf
     docker-compose up
     ```
-3. Wait until WireQuery is fully loaded (approx. 3 minutes). Then, create an environment and admin user using:
+2. Wait until WireQuery is fully loaded (approx. 3 minutes). Then, create an environment and admin user using:
     ```
     curl -X POST localhost:8090/api/internal/admin/new-env/default \
          -H 'Content-Type: application/json' \
@@ -51,8 +40,12 @@ For a comprehensive tutorial, you can follow Quick Start Guide of WireQuery with
          --verbose
     ```
 
-3. Navigate to `localhost:8090` and log in with `admin` / `Administrator`. Start using WireQuery by creating an application
-   and connecting with WireQuery using one of the SDKs.
+3. Navigate to `localhost:8090` and log in with `admin` / `Administrator`. Start using WireQuery by creating an
+   application
+   and connecting to WireQuery using one of the SDKs below.
+
+If you wish to install WireQuery on a server, please follow the [Server Installation] instructions(
+wirequery.io/docs/introduction/server-installation).
 
 ## SDKs
 
