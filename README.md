@@ -18,7 +18,7 @@ systems.
 ⭐ If you like WireQuery, please consider giving it a star. Your support can help the project grow
 and deliver exciting features.
 
-<img src="screenshot_3.png">
+<a href="https://youtu.be/lt-9KZOFffA?si=BiVf9Onhmeg_Za1w"><img src="screenshot_3_with_play_btn.png"></a>
 
 ## Getting Started
 
