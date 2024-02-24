@@ -26,6 +26,8 @@ class UserIntegrationTests : IntegrationTestContext() {
 
     @Test
     fun `Users can be registered, updated, fetched and deleted without errors`() {
+        val originalCount = userService.findAll().count()
+
         whenever(currentUserService.findCurrentUsername())
             .thenReturn(REGISTER_USER_FIXTURE_1.username)
 
@@ -40,6 +42,6 @@ class UserIntegrationTests : IntegrationTestContext() {
 
         userService.deleteById(user.id)
 
-        assertThat(userService.findAll()).isEmpty()
+        assertThat(userService.findAll()).hasSize(originalCount)
     }
 }
