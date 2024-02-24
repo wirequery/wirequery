@@ -75,6 +75,8 @@ spec:
               value: {{ .Values.settings.tenantId | quote }}
             - name: WIREQUERY_MULTITENANT_DISABLE
               value: {{ .Values.settings.disableMultitenancy | quote }}
+            - name: WIREQUERY_ADMIN_PASSWORD
+              value: {{ .Values.settings.adminPassword }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

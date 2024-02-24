@@ -31,6 +31,7 @@ wirequery-backend:
     adminEnabled: "true"
     tenantId: "0"
     disableMultitenancy: true
+    adminPassword: admin
 
   replicaCount: 1
   image:
