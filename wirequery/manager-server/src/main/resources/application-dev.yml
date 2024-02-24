@@ -5,3 +5,7 @@ wirequery:
   tenant-id: 1
   multitenant:
     disable: true
+  db:
+    user: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:15432/postgres

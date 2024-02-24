@@ -18,6 +18,10 @@ import com.wirequery.manager.domain.user.UserFixtures.USER_ENTITY_FIXTURE_1
 import com.wirequery.manager.domain.user.UserFixtures.USER_ENTITY_FIXTURE_WITH_ID_1
 import com.wirequery.manager.domain.user.UserFixtures.USER_FIXTURE_WITH_ID_1
 import com.wirequery.manager.domain.user.UserFixtures.USER_ROLE_ENTITY_1
+import com.wirequery.manager.domain.user.UserService.Companion.ADMIN_USERNAME
+import com.wirequery.manager.domain.user.UserService.Companion.DEFAULT_ADMIN_PASSWORD
+import com.wirequery.manager.domain.user.UserService.Companion.NOT_INITIALIZED_PASSWORD
+import org.apache.catalina.User
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.extension.ExtendWith
@@ -26,6 +30,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.lenient
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.*
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.data.relational.core.conversion.DbActionExecutionException
@@ -52,11 +57,20 @@ internal class UserServiceUnitTests {
     @Mock
     private lateinit var tenantService: TenantService
 
-    @InjectMocks
     private lateinit var userService: UserService
 
     @BeforeEach
     fun init() {
+        userService = UserService(
+            userRepository,
+            roleService,
+            passwordEncoder,
+            publisher,
+            currentUserService,
+            tenantService,
+            DEFAULT_ADMIN_PASSWORD
+        )
+
         lenient().`when`(tenantService.tenantId).thenReturn(0)
 
         lenient().`when`(roleService.findByIds(listOf(USER_ENTITY_FIXTURE_WITH_ID_1.userRoles.single().roleId)))
@@ -348,6 +362,45 @@ internal class UserServiceUnitTests {
 
         verify(userRepository, times(0)).deleteById(1)
         verify(publisher, times(0)).publishEvent(any())
+    }
+
+    @Test
+    fun `findAuthorisationNames finds authorisation name`() {
+        whenever(roleService.findAll())
+            .thenReturn(listOf(ROLE_FIXTURE_WITH_ID_1))
+        val actual = userService.findAuthorisationNames(USER_FIXTURE_WITH_ID_1.copy(roles = ROLE_FIXTURE_WITH_ID_1.name))
+        assertThat(actual).isEqualTo(ROLE_FIXTURE_WITH_ID_1.authorisationNames)
+    }
+
+
+    @Test
+    fun `initializeEnvironmentDefaultsOnFirstLoad initializes environment defaults on first load`() {
+        whenever(userRepository.findByUsername(ADMIN_USERNAME))
+            .thenReturn(USER_ENTITY_FIXTURE_WITH_ID_1.copy(password = NOT_INITIALIZED_PASSWORD))
+
+        whenever(roleService.createDefaultRoles())
+            .thenReturn(listOf(ROLE_FIXTURE_WITH_ID_1.copy(name = RoleService.ROLE_ADMIN_NAME)))
+
+        whenever(passwordEncoder.encode(DEFAULT_ADMIN_PASSWORD))
+            .thenReturn("some-encoded-password")
+
+        userService.initializeEnvironmentDefaultsOnFirstLoad()
+
+        verify(userRepository)
+            .save(USER_ENTITY_FIXTURE_WITH_ID_1.copy(
+                password = "some-encoded-password",
+                userRoles = setOf(UserEntity.UserRoleEntity(roleId = ROLE_FIXTURE_WITH_ID_1.id))
+            ))
+    }
+
+    @Test
+    fun `initializeEnvironmentDefaultsOnFirstLoad does not initialize if admin does not have default password`() {
+        whenever(userRepository.findByUsername(ADMIN_USERNAME))
+            .thenReturn(USER_ENTITY_FIXTURE_WITH_ID_1.copy(password = "some-password"))
+
+        userService.initializeEnvironmentDefaultsOnFirstLoad()
+
+        verifyNoMoreInteractions(passwordEncoder, roleService, userRepository)
     }
 
     @Nested

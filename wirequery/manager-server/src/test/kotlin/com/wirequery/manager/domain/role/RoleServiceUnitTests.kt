@@ -13,6 +13,7 @@ import com.wirequery.manager.domain.role.RoleFixtures.ROLE_ENTITY_FIXTURE_1
 import com.wirequery.manager.domain.role.RoleFixtures.ROLE_ENTITY_FIXTURE_WITH_ID_1
 import com.wirequery.manager.domain.role.RoleFixtures.ROLE_FIXTURE_WITH_ID_1
 import com.wirequery.manager.domain.role.RoleFixtures.UPDATE_ROLE_FIXTURE_1
+import com.wirequery.manager.domain.role.RoleService.Companion.DEFAULT_ROLES
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -107,6 +108,20 @@ internal class RoleServiceUnitTests {
         val actual = roleService.findByNames(setOf("Some other role"))
 
         assertThat(actual).isEqualTo(setOf<Role>())
+    }
+
+    @Test
+    fun `createDefaultRoles creates roles based on DEFAULT_ROLES`() {
+        whenever(roleRepository.save(any<RoleEntity>()))
+            .thenReturn(ROLE_ENTITY_FIXTURE_WITH_ID_1)
+
+        roleService.createDefaultRoles()
+
+        verify(roleRepository, times(DEFAULT_ROLES.count()))
+            .save(any())
+
+        verify(publisher, times(DEFAULT_ROLES.count()))
+            .publishEvent(any())
     }
 
     @Test

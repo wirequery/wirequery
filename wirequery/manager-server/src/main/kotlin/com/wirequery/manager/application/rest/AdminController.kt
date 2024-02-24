@@ -14,6 +14,7 @@ import com.wirequery.manager.domain.role.RoleService.CreateRoleInput
 import com.wirequery.manager.domain.tenant.TenantRequestContext
 import com.wirequery.manager.domain.tenant.TenantService
 import com.wirequery.manager.domain.user.UserService
+import com.wirequery.manager.domain.user.UserService.Companion.ADMIN_USERNAME
 import com.wirequery.manager.domain.user.UserService.RegisterInput
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.web.bind.annotation.PathVariable
@@ -46,29 +47,8 @@ class AdminController(
                 ),
             ).id
 
-        roleService.create(CreateRoleInput("Administrator", AuthorisationEnum.entries.map { it.name }))
-
-        roleService.create(
-            CreateRoleInput(
-                "Developer",
-                AuthorisationEnum.entries
-                    .asSequence()
-                    .filter { it != DELETE_STORED_QUERY }
-                    .filter { it != DELETE_SESSION }
-                    .filter { it != DELETE_TEMPLATE }
-                    .filter { it != DELETE_APPLICATION }
-                    .filter { it != DELETE_GROUP }
-                    .filter { it != MANAGE_USERS }
-                    .filter { it != MANAGE_ROLES }
-                    .filter { it != VIEW_AUDIT_LOGS }
-                    .filter { it != UNQUARANTINE_APPLICATIONS }
-                    .filter { it != MANAGE_QUARANTINE_RULES }
-                    .map { it.name }
-                    .toList(),
-            ),
-        )
-
-        userService.register(RegisterInput("admin", params.adminPassword, true, "Administrator"))
+        roleService.createDefaultRoles()
+        userService.register(RegisterInput(ADMIN_USERNAME, params.adminPassword, true, "Administrator"))
     }
 
     data class NewEnvParamsRequest(

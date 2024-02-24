@@ -12,6 +12,7 @@ import com.wirequery.manager.domain.user.User
 import com.wirequery.manager.domain.user.UserEvent.UsersLoggedInEvent
 import com.wirequery.manager.domain.user.UserService
 import com.wirequery.manager.domain.user.UserService.*
+import com.wirequery.manager.domain.user.UserService.Companion.ADMIN_USERNAME
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.authentication.AuthenticationProvider
@@ -46,9 +47,10 @@ class UserResolver(
 
     @DgsMutation
     fun login(input: LoginInput): User? {
+        // TODO this should either move to service entirely, or at least the event publishing, as it breaks
+        //  abstraction currently.
         return try {
-            // TODO this should either move to service entirely, or at least the event publishing, as it breaks
-            //  abstraction currently.
+            userService.initializeEnvironmentDefaultsOnFirstLoad()
             val credentials = UsernamePasswordAuthenticationToken(input.username, input.password)
             SecurityContextHolder.getContext().authentication = authenticationProvider.authenticate(credentials)
             publisher.publishEvent(UsersLoggedInEvent(this, listOf(input.username)))

@@ -7,7 +7,7 @@ WireQuery is a full-stack session replay tool. Using WireQuery, you can see how 
 video-like frontend recording. Combined with an overview of the network calls to the backend (including network calls
 further upstream and their actual payload), you get a holistic overview of how an issue came into existence.
 
-Sometimes, however, issues can only be found on the backend, before users have reported them with a video-like
+Some issues, however, can only be found on the backend, before users have reported them with a video-like
 recording. Through a specialized “network query language” called WQL, you can easily start your investigation from the
 backend as well. Like before, this includes all the network calls up- and downstream of your query result.
 
@@ -15,10 +15,10 @@ Since the video-like recordings and network calls may contain sensitive informat
 privacy in mind. In most cases, minimum effort is required to strip all sensitive data from your frontend and backend
 systems.
 
+<a href="https://youtu.be/lt-9KZOFffA?si=BiVf9Onhmeg_Za1w"><img src="screenshot_3_with_play_btn.png"></a>
+
 ⭐ If you like WireQuery, please consider giving it a star. Your support can help the project grow
 and deliver exciting features.
-
-<a href="https://youtu.be/lt-9KZOFffA?si=BiVf9Onhmeg_Za1w"><img src="screenshot_3_with_play_btn.png"></a>
 
 ## Getting Started
 
@@ -26,26 +26,16 @@ If you want to try out WireQuery on your local machine:
 
 1. Make sure Docker is installed and run the following commands in your terminal:
     ```
-    mkdir wirequery && cd wirequery
+    mkdir wirequery
+    cd wirequery
     curl -O https://raw.githubusercontent.com/wirequery/wirequery/main/docker-compose.yml
     curl -O https://raw.githubusercontent.com/wirequery/wirequery/main/nginx.conf
     docker-compose up
     ```
-2. Wait until WireQuery is fully loaded (approx. 3 minutes). Then, create an environment and admin user using:
-    ```
-    curl -X POST localhost:8090/api/internal/admin/new-env/default \
-         -H 'Content-Type: application/json' \
-         -H 'Accept: application/json' \
-         --data "{\"adminPassword\": \"Administrator\"}" \
-         --verbose
-    ```
+2. Wait until both the backend and frontend are initialized and navigate to `localhost:8090`. Log in with `admin` / `admin` and update your password in the Settings.
+3. Start using WireQuery by creating an application and connecting to WireQuery using one of the SDKs below.
 
-3. Navigate to `localhost:8090` and log in with `admin` / `Administrator`. Start using WireQuery by creating an
-   application
-   and connecting to WireQuery using one of the SDKs below.
-
-If you wish to install WireQuery on a server, please follow the [Server Installation] instructions(
-wirequery.io/docs/introduction/server-installation).
+If you wish to install WireQuery on a server, please follow the [Server Installation](https://wirequery.io/docs/introduction/server-installation) instructions.
 
 ## SDKs
 

@@ -44,7 +44,7 @@ services:
       WIREQUERY_DB_USER: postgres
       WIREQUERY_DB_PASSWORD: postgres
       WIREQUERY_DB_URL: jdbc:postgresql://wirequery-db:5432/postgres
-      WIREQUERY_ADMIN_ENABLED: "true"
+      WIREQUERY_ADMIN_PASSWORD: "admin"
       WIREQUERY_TENANT_ID: "1"
       WIREQUERY_MULTITENANT_DISABLE: true
     depends_on:

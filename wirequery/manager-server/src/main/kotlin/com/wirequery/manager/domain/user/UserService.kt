@@ -12,8 +12,10 @@ import com.wirequery.manager.domain.FunctionalException
 import com.wirequery.manager.domain.FunctionalException.Companion.checkFunctional
 import com.wirequery.manager.domain.FunctionalException.Companion.functionalError
 import com.wirequery.manager.domain.role.RoleService
+import com.wirequery.manager.domain.role.RoleService.Companion.ROLE_ADMIN_NAME
 import com.wirequery.manager.domain.tenant.TenantService
 import com.wirequery.manager.domain.user.UserEvent.*
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.data.relational.core.conversion.DbActionExecutionException
@@ -34,6 +36,9 @@ class UserService(
     private val publisher: ApplicationEventPublisher,
     private val currentUserService: CurrentUserService,
     private val tenantService: TenantService,
+
+    @Value("\${wirequery.admin.password:$DEFAULT_ADMIN_PASSWORD}")
+    private val defaultAdminPassword: String
 ) {
     fun findById(id: Int): User? {
         return userRepository.findByIdOrNull(id)
@@ -202,6 +207,18 @@ class UserService(
             .distinct()
     }
 
+    fun initializeEnvironmentDefaultsOnFirstLoad() {
+        val user = userRepository.findByUsername(ADMIN_USERNAME)
+        if (user?.password == NOT_INITIALIZED_PASSWORD) {
+            val roles = roleService.createDefaultRoles()
+            val adminRoleId = roles.single { it.name == ROLE_ADMIN_NAME }.id
+            userRepository.save(user.copy(
+                password = passwordEncoder.encode(defaultAdminPassword),
+                userRoles = setOf(UserEntity.UserRoleEntity(roleId = adminRoleId)))
+            )
+        }
+    }
+
     data class LoginInput(
         val username: String,
         val password: String,
@@ -249,5 +266,11 @@ class UserService(
             checkFunctional(password.uppercase() != password) { "Password must contain both upper and lower case characters" }
             checkFunctional(password.lowercase() != password) { "Password must contain both upper and lower case characters" }
         }
+    }
+
+    companion object {
+        const val ADMIN_USERNAME = "admin"
+        const val NOT_INITIALIZED_PASSWORD = "UNSET"
+        const val DEFAULT_ADMIN_PASSWORD = "admin"
     }
 }

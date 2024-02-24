@@ -174,6 +174,8 @@ class UserResolverTests : ResolverTestContext() {
                     ),
                 )
 
+            verify(userService).initializeEnvironmentDefaultsOnFirstLoad()
+
             verifyNoMoreInteractions(userService, SecurityContextHolder.getContext())
         } finally {
             SecurityContextHolder.setContext(oldContext)
@@ -220,6 +222,8 @@ class UserResolverTests : ResolverTestContext() {
 
             verify(SecurityContextHolder.getContext())
                 .authentication = authenticationMock
+
+            verify(userService).initializeEnvironmentDefaultsOnFirstLoad()
         } finally {
             SecurityContextHolder.setContext(oldContext)
         }
