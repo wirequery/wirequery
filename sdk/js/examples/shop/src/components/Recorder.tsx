@@ -5,12 +5,13 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { getRecordNetworkPlugin } from "@/replay/rrwebRecord";
 import { Affix, rem } from "@mantine/core";
 import { useState } from "react";
 import { getRecordConsolePlugin, record } from "rrweb";
 
 const events: any = [];
-const wireQueryBackendPath = 'https://demo.wirequery.io';
+const wireQueryBackendPath = 'http://localhost:8080';
 
 export const Recorder = () => {
   const [recording, setRecording] = useState<any | undefined>(undefined)
@@ -27,8 +28,8 @@ export const Recorder = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        templateId: 3, // Debug Session by Account Id
-        apiKey: '',
+        templateId: 1, // Debug Session by Account Id
+        apiKey: '1/f2e74d68-f70e-48bd-94dc-ce889f612d73',
         args: {
           accountId: "123",
         },
@@ -40,7 +41,7 @@ export const Recorder = () => {
       emit: (event) => {
         events.push(event);
       },
-      plugins: [getRecordConsolePlugin()],
+      plugins: [getRecordConsolePlugin(), getRecordNetworkPlugin({ recordHeaders: true })],
     });
   };
 

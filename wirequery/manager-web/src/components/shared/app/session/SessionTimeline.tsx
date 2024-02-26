@@ -186,10 +186,12 @@ export const SessionTimeline: React.FC<TimelineProps> = ({
       .style('stroke-dasharray', '5,5')
   }, [data, currentTime])
 
-  return (
+  return data?.length ?? 0 > 0 ? (
     <div ref={parentRef}>
       <h2>Queries Timeline</h2>
       <svg ref={svgRef}></svg>
     </div>
+  ) : (
+    <></>
   )
 }

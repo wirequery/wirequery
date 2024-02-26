@@ -17,7 +17,7 @@ export default function ShowSession() {
   return (
     <DashboardLayout active="Sessions">
       <Breadcrumbs style={{ paddingBottom: 20 }}>
-        <Anchor href={'/sessions'} component={Link}>
+        <Anchor href={'/'} component={Link}>
           Sessions
         </Anchor>
         <Anchor href={`/sessions/${sessionId}`} component={Link}>

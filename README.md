@@ -15,10 +15,10 @@ Since the video-like recordings and network calls may contain sensitive informat
 privacy in mind. In most cases, minimum effort is required to strip all sensitive data from your frontend and backend
 systems.
 
-<a href="https://youtu.be/lt-9KZOFffA?si=BiVf9Onhmeg_Za1w"><img src="screenshot_3_with_play_btn.png"></a>
+⭐ If you like WireQuery, please consider giving it a star. Your support can help the project grow and deliver exciting
+features.
 
-⭐ If you like WireQuery, please consider giving it a star. Your support can help the project grow
-and deliver exciting features.
+<a href="https://youtu.be/lt-9KZOFffA?si=BiVf9Onhmeg_Za1w"><img src="screenshot_3_with_play_btn.png"></a>
 
 ## Getting Started
 
@@ -35,7 +35,7 @@ If you want to try out WireQuery on your local machine:
 2. Wait until both the backend and frontend are initialized and navigate to `localhost:8090`. Log in with `admin` / `admin` and update your password in the Settings.
 3. Start using WireQuery by creating an application and connecting to WireQuery using one of the SDKs below.
 
-If you wish to install WireQuery on a server, please follow the [Server Installation](https://wirequery.io/docs/introduction/server-installation) instructions.
+If you wish to install WireQuery on a server, please follow the [Server Installation](https://www.wirequery.io/docs/introduction/server-installation) instructions.
 
 ## SDKs
 

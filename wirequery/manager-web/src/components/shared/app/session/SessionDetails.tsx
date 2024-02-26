@@ -46,6 +46,7 @@ export function SessionDetails(props: SessionDetailsProps) {
               startTime
               endTime
               traceId
+              message
             }
           }
         }
@@ -59,6 +60,25 @@ export function SessionDetails(props: SessionDetailsProps) {
       []
     ),
   })
+
+  const correlationMap = useMemo(() => {
+    const result: any = {}
+    data?.session?.storedQuerys?.forEach((storedQuery) =>
+      storedQuery.queryLogs.forEach((queryLog) => {
+        if (queryLog.message) {
+          const correlationId = JSON.parse(queryLog.message)?.result
+            ?.requestHeaders?.['wirequery-correlation-id']?.[0]
+          if (correlationId) {
+            result[correlationId] = {
+              storedQueryId: storedQuery.id,
+              traceId: queryLog.traceId,
+            }
+          }
+        }
+      })
+    )
+    return result
+  }, [data])
 
   if (error?.message) {
     return <ErrorMessage error={error} />
@@ -119,6 +139,10 @@ export function SessionDetails(props: SessionDetailsProps) {
             sessionId={props.id as string}
             onUpdateCurrentTime={setCurrentTime}
             onMetadataAvailable={setMetadata}
+            correlationMap={correlationMap}
+            onSelectNetworkCorrelation={(v) => {
+              setSelectedItem(v)
+            }}
           />
         )}
       </div>

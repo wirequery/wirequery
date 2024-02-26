@@ -1,0 +1,31 @@
+{
+  "name": "@wirequery/wirequery-js-core",
+  "version": "1.0.0",
+  "description": "WireQuery JS SDK Core",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wirequery/wirequery.git"
+  },
+  "keywords": [
+    "debugging",
+    "monitoring",
+    "logging",
+    "traffic-analysis",
+    "tracing",
+    "observability",
+    "distributed-tracing"
+  ],
+  "author": "Wouter Nederhof",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wirequery/wirequery/issues"
+  },
+  "homepage": "https://github.com/wirequery/wirequery#readme"
+}

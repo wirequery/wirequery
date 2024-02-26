@@ -1,7 +1,7 @@
 # JavaScript (Browser)
 
 Whenever you want to start a Session from the frontend, you need to have a Template with
-"Allow User Initiation" checked. Read more in the [Templates](https://wirequery.io/docs/features/templates) Feature
+"Allow User Initiation" checked. Read more in the [Templates](https://www.wirequery.io/docs/features/templates) Feature
 Chapter.
 
 When you want the user to be able to record a session, you basically want to call WireQuery twice:

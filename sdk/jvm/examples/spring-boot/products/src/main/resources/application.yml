@@ -2,13 +2,14 @@ server.port: 9101
 
 wirequery:
   connection:
-    secure: true
-    host: grpc.wirequery.io:443
-    appName: products
-    apiKey: 1/6cc07572-ea9f-468a-b6c4-fea745a4044d
+    secure: false
+    host: localhost:9090
+    appName: Products
+    apiKey: 1/9c47e299-4455-4f72-b7ab-5acd982eed02
   maskSettings:
     requestHeaders:
       - accountid
+      - wirequery-correlation-id
 
 #wirequery:
 #  connection:
