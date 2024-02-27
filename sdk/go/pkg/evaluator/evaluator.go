@@ -76,6 +76,16 @@ func Eval(queries *[]CompiledQuery, inputContext Context) ([]*proto.QueryReport,
 }
 
 func createContextObject(query CompiledQuery, context Context) map[string]interface{} {
+	metaData := map[string]interface{}{
+		"took":    context.EndTime - context.StartTime,
+		"traceId": context.TraceId,
+	}
+	if context.RequestHeaders["wirequery-request-correlation-id"] != nil {
+		metaData["requestCorrelationId"] = context.RequestHeaders["wirequery-request-correlation-id"][0]
+	}
+	if context.RequestHeaders["wirequery-recording-correlation-id"] != nil {
+		metaData["recordingCorrelationId"] = context.RequestHeaders["wirequery-recording-correlation-id"][0]
+	}
 	contextMap := map[string]interface{}{
 		"method":          context.Method,
 		"path":            query.Path,
@@ -87,8 +97,7 @@ func createContextObject(query CompiledQuery, context Context) map[string]interf
 		"responseBody":    context.ResponseBody,
 		"responseHeaders": context.ResponseHeaders,
 		"extensions":      context.Extensions,
-		"took":            context.EndTime - context.StartTime,
-		"traceId":         context.TraceId,
+		"metaData":        metaData,
 	}
 	return contextMap
 }

@@ -66,7 +66,7 @@ class WireQueryAdapter(
                                 try {
                                     queries = queries + createTraceableQuery(q)
                                 } catch (e: Exception) {
-                                    publishError(q.addQuery.queryId, "" + e.message, 0, 0, "")
+                                    publishError(q.addQuery.queryId, "" + e.message, 0, 0, "", "")
                                 }
 
                             q.hasRemoveQueryById() ->
@@ -144,6 +144,7 @@ class WireQueryAdapter(
                             .setStartTime(it.startTime)
                             .setEndTime(it.endTime)
                             .setTraceId(it.traceId)
+                            .let { if (it.requestCorrelationId != null) it.setRequestCorrelationId(it.requestCorrelationId) else it }
                             .setMessage(message)
                             .build(),
                     )
@@ -173,6 +174,7 @@ class WireQueryAdapter(
         startTime: Long,
         endTime: Long,
         traceId: String?,
+        requestCorrelationId: String?,
     ) {
         messageQueue +=
             QueryReport.newBuilder()
@@ -181,6 +183,7 @@ class WireQueryAdapter(
                 .setStartTime(startTime)
                 .setEndTime(endTime)
                 .let { if (traceId != null) it.setTraceId(traceId) else it }
+                .let { if (requestCorrelationId != null) it.setRequestCorrelationId(traceId) else it }
                 .build()
     }
 
@@ -190,6 +193,7 @@ class WireQueryAdapter(
         startTime: Long,
         endTime: Long,
         traceId: String?,
+        requestCorrelationId: String?,
     ) {
         messageQueue +=
             QueryReport.newBuilder()
@@ -198,6 +202,7 @@ class WireQueryAdapter(
                 .setStartTime(startTime)
                 .setEndTime(endTime)
                 .let { if (traceId != null) it.setTraceId(traceId) else it }
+                .let { if (requestCorrelationId != null) it.setRequestCorrelationId(traceId) else it }
                 .build()
     }
 

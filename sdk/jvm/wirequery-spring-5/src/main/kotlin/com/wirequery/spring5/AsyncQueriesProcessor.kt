@@ -25,10 +25,10 @@ class AsyncQueriesProcessor(
         queryLoader.getQueries().forEach { query ->
             try {
                 queryEvaluator.evaluate(query.compiledQuery, intercepted).forEach { result ->
-                    resultPublisher.publishResult(query, result, intercepted.startTime, intercepted.endTime, intercepted.traceId)
+                    resultPublisher.publishResult(query, result, intercepted.startTime, intercepted.endTime, intercepted.traceId, intercepted.requestCorrelationId)
                 }
             } catch (e: Exception) {
-                resultPublisher.publishError(query.queryId, "" + e.message, intercepted.startTime, intercepted.endTime, intercepted.traceId)
+                resultPublisher.publishError(query.queryId, "" + e.message, intercepted.startTime, intercepted.endTime, intercepted.traceId, intercepted.requestCorrelationId)
             }
         }
     }

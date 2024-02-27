@@ -133,6 +133,7 @@ class WirequeryServiceGrpcImpl(
                 startTime = it.startTime,
                 endTime = it.endTime,
                 traceId = it.traceId,
+                requestCorrelationId = it.requestCorrelationId,
             )
         }
     }

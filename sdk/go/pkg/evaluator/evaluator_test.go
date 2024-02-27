@@ -310,7 +310,7 @@ func Test_eval(t *testing.T) {
 				Message: "{\"result\":\"ghi\"}",
 			}},
 		}, {
-			name: "context contains headers, trace id, took and bodies",
+			name: "context contains headers, trace id, request and recording ids, took and bodies",
 			args: args{
 				queries: []CompiledQuery{{
 					QueryId: "qid",
@@ -331,7 +331,31 @@ func Test_eval(t *testing.T) {
 			},
 			want: []*wirequerypb.QueryReport{{
 				QueryId: "qid",
-				Message: "{\"result\":{\"extensions\":{},\"method\":\"\",\"path\":\"\",\"pathVariables\":null,\"queryParameters\":{},\"requestBody\":\"def\",\"requestHeaders\":{\"abc\":[\"def\"]},\"responseBody\":\"abc\",\"responseHeaders\":{\"def\":[\"abc\"]},\"statusCode\":0,\"took\":10,\"traceId\":\"123\"}}",
+				Message: "{\"result\":{\"extensions\":{},\"metaData\":{\"took\":10,\"traceId\":\"123\"},\"method\":\"\",\"path\":\"\",\"pathVariables\":null,\"queryParameters\":{},\"requestBody\":\"def\",\"requestHeaders\":{\"abc\":[\"def\"]},\"responseBody\":\"abc\",\"responseHeaders\":{\"def\":[\"abc\"]},\"statusCode\":0}}",
+			}},
+		}, {
+			name: "context contain correlation ids if they are set",
+			args: args{
+				queries: []CompiledQuery{{
+					QueryId: "qid",
+					AppName: "app",
+					Functions: []Function{
+						compileMapFunction("context"),
+					},
+				}},
+				context: Context{
+					RequestBody:     "def",
+					RequestHeaders:  map[string][]string{"abc": {"def"}, "wirequery-request-correlation-id": {"ghi"}, "wirequery-recording-correlation-id": {"jkl"}},
+					ResponseBody:    "abc",
+					ResponseHeaders: map[string][]string{"def": {"abc"}},
+					TraceId:         "123",
+					StartTime:       30,
+					EndTime:         40,
+				},
+			},
+			want: []*wirequerypb.QueryReport{{
+				QueryId: "qid",
+				Message: "{\"result\":{\"extensions\":{},\"metaData\":{\"recordingCorrelationId\":\"jkl\",\"requestCorrelationId\":\"ghi\",\"took\":10,\"traceId\":\"123\"},\"method\":\"\",\"path\":\"\",\"pathVariables\":null,\"queryParameters\":{},\"requestBody\":\"def\",\"requestHeaders\":{\"abc\":[\"def\"],\"wirequery-recording-correlation-id\":[\"jkl\"],\"wirequery-request-correlation-id\":[\"ghi\"]},\"responseBody\":\"abc\",\"responseHeaders\":{\"def\":[\"abc\"]},\"statusCode\":0}}",
 			}},
 		}, {
 			name: "filter errors are passed back",

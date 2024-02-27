@@ -16,5 +16,6 @@ data class QueryLog(
     val endTime: Long,
     val appName: String,
     val traceId: String?,
+    val requestCorrelationId: String?,
     val createdAt: OffsetDateTime,
 )

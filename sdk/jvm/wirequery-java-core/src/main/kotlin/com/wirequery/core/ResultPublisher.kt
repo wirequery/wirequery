@@ -17,6 +17,7 @@ interface ResultPublisher {
         startTime: Long,
         endTime: Long,
         traceId: String?,
+        requestCorrelationId: String?,
     )
 
     /**
@@ -28,5 +29,6 @@ interface ResultPublisher {
         startTime: Long,
         endTime: Long,
         traceId: String?,
+        requestCorrelationId: String?,
     )
 }

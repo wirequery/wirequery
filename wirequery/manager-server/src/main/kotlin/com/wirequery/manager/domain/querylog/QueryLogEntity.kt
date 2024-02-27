@@ -19,6 +19,7 @@ data class QueryLogEntity(
     val endTime: Long,
     val appName: String,
     val traceId: String?,
+    val requestCorrelationId: String?,
     val main: Boolean,
     @CreatedDate
     val createdAt: LocalDateTime? = null,

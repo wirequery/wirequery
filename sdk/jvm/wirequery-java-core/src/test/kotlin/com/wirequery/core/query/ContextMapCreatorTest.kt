@@ -77,6 +77,8 @@ internal class ContextMapCreatorTest {
                 startTime = 10,
                 endTime = 20,
                 traceId = "abc",
+                requestCorrelationId = "def",
+                recordingCorrelationId = "ghi",
             )
 
         val SOME_CONTEXT_MAP =
@@ -91,8 +93,12 @@ internal class ContextMapCreatorTest {
                 "requestHeaders" to mapOf("c" to listOf("d")),
                 "responseHeaders" to mapOf("e" to listOf("f")),
                 "extensions" to mapOf("a" to "someExtension"),
-                "took" to 10L,
-                "traceId" to "abc",
+                "metaData" to mapOf(
+                    "took" to 10L,
+                    "traceId" to "abc",
+                    "requestCorrelationId" to "def",
+                    "recordingCorrelationId" to "ghi",
+                )
             )
 
         val SOME_MASKED_REQUEST_BODY = mock<JsonNode>()
@@ -110,8 +116,12 @@ internal class ContextMapCreatorTest {
                 "requestHeaders" to mapOf("c" to listOf(MASKING_LABEL)),
                 "responseHeaders" to mapOf("e" to listOf(MASKING_LABEL)),
                 "extensions" to mapOf("a" to "someExtension"),
-                "took" to 10L,
-                "traceId" to "abc",
+                "metaData" to mapOf(
+                    "took" to 10L,
+                    "traceId" to "abc",
+                    "requestCorrelationId" to "def",
+                    "recordingCorrelationId" to "ghi",
+                )
             )
     }
 }

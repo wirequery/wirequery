@@ -54,6 +54,7 @@ class QueryLogListenerTest {
                     startTime = 10L,
                     endTime = 20L,
                     traceId = "abc",
+                    requestCorrelationId = "def",
                 ),
             ),
         )
@@ -79,6 +80,7 @@ class QueryLogListenerTest {
                     startTime = 10L,
                     endTime = 20L,
                     traceId = "abc",
+                    requestCorrelationId = "def",
                 ),
             ),
         )
@@ -90,6 +92,7 @@ class QueryLogListenerTest {
                 startTime = 10L,
                 endTime = 20L,
                 traceId = "abc",
+                requestCorrelationId = "def",
                 appName = "SomeName",
             ),
         )
@@ -113,6 +116,7 @@ class QueryLogListenerTest {
                 startTime = 10L,
                 endTime = 20L,
                 traceId = "abc",
+                requestCorrelationId = "def",
             )
 
         queryLogListener.onEvent(QueryEvent.QueryReportedEvent(this, queryReport))
@@ -142,6 +146,7 @@ class QueryLogListenerTest {
                     startTime = 10L,
                     endTime = 20L,
                     traceId = "abc",
+                    requestCorrelationId = "def",
                 ),
             ),
         )
@@ -153,6 +158,7 @@ class QueryLogListenerTest {
                 startTime = 10L,
                 endTime = 20L,
                 traceId = "abc",
+                requestCorrelationId = "def",
                 appName = "SomeName",
             ),
         )

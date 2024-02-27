@@ -40,6 +40,7 @@ class InterceptedQueryTrafficProcessor(
                 startTime = requestData.startTime,
                 endTime = clock.millis(),
                 traceId = traceProvider.traceId(),
+                requestCorrelationId = request.getHeader("wirequery-request-correlation-id")
             )
         traceCache.store(intercepted)
         asyncQueriesProcessor.execute(intercepted)

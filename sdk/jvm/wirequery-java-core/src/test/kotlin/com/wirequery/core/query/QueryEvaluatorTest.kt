@@ -162,6 +162,8 @@ internal class QueryEvaluatorTest {
                 startTime = 0,
                 endTime = 0,
                 traceId = "",
+                requestCorrelationId = "",
+                recordingCorrelationId = "",
             )
 
         val SOME_CONTEXT_MAP = mock<Map<String, Any>>()

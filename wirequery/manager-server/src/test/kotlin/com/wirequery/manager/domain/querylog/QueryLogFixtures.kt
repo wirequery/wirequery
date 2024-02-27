@@ -25,6 +25,7 @@ object QueryLogFixtures {
             startTime = 10L,
             endTime = 20L,
             traceId = "abc",
+            requestCorrelationId = "def",
             appName = "SomeName",
         )
 
@@ -36,6 +37,7 @@ object QueryLogFixtures {
             endTime = 20L,
             traceId = "abc",
             appName = "SomeName",
+            requestCorrelationId = "def",
             main = true,
         )
 
@@ -46,6 +48,7 @@ object QueryLogFixtures {
             startTime = 10L,
             endTime = 20L,
             traceId = "abc",
+            requestCorrelationId = "def",
             appName = "SomeName",
         )
 

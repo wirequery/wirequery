@@ -28,8 +28,12 @@ class ContextMapCreator(
         "requestHeaders" to intercepted.requestHeaders,
         "responseHeaders" to intercepted.responseHeaders,
         "extensions" to intercepted.extensions,
-        "took" to intercepted.endTime - intercepted.startTime,
-        "traceId" to intercepted.traceId,
+        "metaData" to mapOf(
+            "took" to intercepted.endTime - intercepted.startTime,
+            "traceId" to intercepted.traceId,
+            "requestCorrelationId" to intercepted.requestCorrelationId,
+            "recordingCorrelationId" to intercepted.recordingCorrelationId,
+        )
     )
         .filter { it.value != null }
         .map { it.key to it.value!! }
@@ -49,8 +53,12 @@ class ContextMapCreator(
         "requestHeaders" to headersMasker.maskRequestHeaders(intercepted.requestHeaders),
         "responseHeaders" to headersMasker.maskResponseHeaders(intercepted.responseHeaders),
         "extensions" to intercepted.extensions,
-        "took" to intercepted.endTime - intercepted.startTime,
-        "traceId" to intercepted.traceId,
+        "metaData" to mapOf(
+            "took" to intercepted.endTime - intercepted.startTime,
+            "traceId" to intercepted.traceId,
+            "requestCorrelationId" to intercepted.requestCorrelationId,
+            "recordingCorrelationId" to intercepted.recordingCorrelationId,
+        )
     )
         .filter { it.value != null }
         .map { it.key to it.value!! }

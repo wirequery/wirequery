@@ -16,6 +16,7 @@ type QueryLog {
     endTime: Float! # Floats in DGS handle ANY big number
     appName: String!
     traceId: String
+    requestCorrelationId: String
 }
 
 input QueryLogFilter { 

@@ -53,6 +53,7 @@ class QueryLogAggregationService(
             startTime = queryLog.startTime,
             endTime = queryLog.endTime,
             traceId = queryLog.traceId,
+            requestCorrelationId = queryLog.requestCorrelationId,
         )
     }
 

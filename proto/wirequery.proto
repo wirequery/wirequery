@@ -58,6 +58,7 @@ message QueryReport {
   int64 start_time = 3;
   int64 end_time = 4;
   string trace_id = 5;
+  string request_correlation_id = 6;
 }
 
 message Empty {

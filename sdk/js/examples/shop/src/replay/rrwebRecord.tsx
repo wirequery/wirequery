@@ -437,6 +437,7 @@ function initFetchObserver(
         ) {
             const req = new Request(url, init);
             req.headers.set('WireQuery-Request-Correlation-Id', crypto.randomUUID())
+            req.headers.set('WireQuery-Recording-Correlation-Id', (window as any).recordingCorrelationId)
             let res: Response | undefined;
             const networkRequest: Partial<NetworkRequest> = {};
             let after: number | undefined;

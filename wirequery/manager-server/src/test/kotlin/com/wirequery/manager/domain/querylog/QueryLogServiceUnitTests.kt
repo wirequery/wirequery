@@ -190,6 +190,7 @@ internal class QueryLogServiceUnitTests {
                     startTime = 10L,
                     endTime = 20L,
                     traceId = "abc",
+                    requestCorrelationId = "def",
                 ),
             )
 
@@ -204,6 +205,7 @@ internal class QueryLogServiceUnitTests {
                     endTime = 20,
                     appName = "app",
                     traceId = "abc",
+                    requestCorrelationId = "def",
                     createdAt = dateMock,
                 ),
             )

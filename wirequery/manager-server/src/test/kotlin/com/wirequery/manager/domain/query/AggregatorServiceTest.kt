@@ -66,6 +66,7 @@ internal class AggregatorServiceTest {
                 startTime = 10L,
                 endTime = 20L,
                 traceId = "abc",
+                requestCorrelationId = "def",
             )
 
         val VALUE2 =
@@ -76,6 +77,7 @@ internal class AggregatorServiceTest {
                 startTime = 10L,
                 endTime = 20L,
                 traceId = "abc",
+                requestCorrelationId = "def",
             )
 
         val QUERY_WITHOUT_AGGREGATOR =

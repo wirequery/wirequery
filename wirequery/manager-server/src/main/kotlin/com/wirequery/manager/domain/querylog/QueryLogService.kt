@@ -94,6 +94,7 @@ class QueryLogService(
                 startTime = input.startTime,
                 endTime = input.endTime,
                 traceId = input.traceId,
+                requestCorrelationId = input.requestCorrelationId,
                 appName = input.appName,
                 main = true,
             )
@@ -155,6 +156,7 @@ class QueryLogService(
                 endTime = storedQuery.endTime,
                 appName = storedQuery.appName,
                 traceId = storedQuery.traceId,
+                requestCorrelationId = storedQuery.requestCorrelationId,
                 main = false,
             )
 
@@ -195,6 +197,7 @@ class QueryLogService(
             endTime = entity.endTime,
             traceId = entity.traceId,
             appName = entity.appName,
+            requestCorrelationId = entity.requestCorrelationId,
             createdAt =
                 entity.createdAt!!
                     .atZone(ZoneId.systemDefault())
@@ -207,6 +210,7 @@ class QueryLogService(
         val startTime: Long,
         val endTime: Long,
         val traceId: String?,
+        val requestCorrelationId: String?,
         val appName: String,
     )
 

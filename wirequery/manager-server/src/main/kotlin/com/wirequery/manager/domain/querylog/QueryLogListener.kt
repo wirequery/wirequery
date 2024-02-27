@@ -58,6 +58,7 @@ class QueryLogListener(
                     startTime = queryReport.startTime,
                     endTime = queryReport.endTime,
                     traceId = queryReport.traceId,
+                    requestCorrelationId = queryReport.requestCorrelationId,
                     appName = queryReport.appName,
                 ),
             )

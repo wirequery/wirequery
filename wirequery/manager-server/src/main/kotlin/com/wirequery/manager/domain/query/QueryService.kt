@@ -96,6 +96,7 @@ class QueryService(
                     startTime = time,
                     endTime = time,
                     traceId = null,
+                    requestCorrelationId = null,
                 ),
             )
             sink.complete()

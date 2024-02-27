@@ -14,4 +14,5 @@ data class QueryReport(
     val startTime: Long,
     val endTime: Long,
     val traceId: String?,
+    val requestCorrelationId: String?,
 )

@@ -62,6 +62,7 @@ class QueryLogAggregationServiceTest {
                     startTime = 10L,
                     endTime = 20L,
                     traceId = "abc",
+                    requestCorrelationId = null,
                 ),
             ),
         )
@@ -98,6 +99,7 @@ class QueryLogAggregationServiceTest {
                     startTime = 10L,
                     endTime = 20L,
                     traceId = "abc",
+                    requestCorrelationId = "def",
                 ),
             ),
         )

@@ -75,6 +75,7 @@ internal class StatisticListenerUnitTests {
                     startTime = 0,
                     endTime = 0,
                     traceId = null,
+                    requestCorrelationId = null,
                 ),
             ),
         )
@@ -116,6 +117,7 @@ internal class StatisticListenerUnitTests {
                     startTime = 0,
                     endTime = 0,
                     traceId = null,
+                    requestCorrelationId = null,
                 ),
             ),
         )

@@ -35,6 +35,7 @@ export const Recorder = () => {
         },
       }),
     }).then((res) => res.json().then((json) => {
+      (window as any).recordingCorrelationId = json.correlationId
       setRecording(json);
     }));
     return record({

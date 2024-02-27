@@ -123,6 +123,7 @@ class QueryServiceTest {
                 startTime = 0,
                 endTime = 0,
                 traceId = null,
+                requestCorrelationId = null,
             ),
         )
     }
@@ -236,6 +237,7 @@ class QueryServiceTest {
                 startTime = 10,
                 endTime = 20,
                 traceId = "abc",
+                requestCorrelationId = null,
             )
     }
 }

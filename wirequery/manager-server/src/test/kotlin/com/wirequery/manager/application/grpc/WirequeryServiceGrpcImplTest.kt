@@ -224,12 +224,13 @@ class WirequeryServiceGrpcImplTest {
                             .setStartTime(START_TIME)
                             .setEndTime(END_TIME)
                             .setTraceId(TRACE_ID)
+                            .setRequestCorrelationId(REQUEST_CORRELATION_ID)
                             .build(),
                     ).build(),
                 mock(),
             )
 
-        verify(queryReportService).reportQueryResults(listOf(QueryReport(APP_NAME, QUERY_ID, MESSAGE, START_TIME, END_TIME, TRACE_ID)))
+        verify(queryReportService).reportQueryResults(listOf(QueryReport(APP_NAME, QUERY_ID, MESSAGE, START_TIME, END_TIME, TRACE_ID, REQUEST_CORRELATION_ID)))
     }
 
     private companion object {
@@ -243,6 +244,7 @@ class WirequeryServiceGrpcImplTest {
         const val START_TIME = 10L
         const val END_TIME = 20L
         const val TRACE_ID = "abc"
+        const val REQUEST_CORRELATION_ID = "def"
 
         val OPERATIONS = listOf(QueryParserService.Operation(name = "filter", celExpression = "true"))
         val AGGREGATOR_OPERATION = QueryParserService.Operation(name = "distinct", celExpression = "")
