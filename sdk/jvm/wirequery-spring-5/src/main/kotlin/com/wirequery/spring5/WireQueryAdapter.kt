@@ -66,7 +66,7 @@ class WireQueryAdapter(
                                 try {
                                     queries = queries + createTraceableQuery(q)
                                 } catch (e: Exception) {
-                                    publishError(q.addQuery.queryId, "" + e.message, 0, 0, "")
+                                    publishError(q.addQuery.queryId, "" + e.message, 0, 0, "", "")
                                 }
 
                             q.hasRemoveQueryById() ->
@@ -144,7 +144,7 @@ class WireQueryAdapter(
                             .setStartTime(it.startTime)
                             .setEndTime(it.endTime)
                             .setTraceId(it.traceId)
-                            .let { if (it.requestCorrelationId != null) it.setRequestCorrelationId(it.requestCorrelationId) }
+                            .let { if (it.requestCorrelationId != null) it.setRequestCorrelationId(it.requestCorrelationId) else it }
                             .setMessage(message)
                             .build(),
                     )
