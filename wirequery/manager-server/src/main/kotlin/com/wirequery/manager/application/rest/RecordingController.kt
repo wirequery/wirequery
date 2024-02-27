@@ -34,6 +34,7 @@ class RecordingController(
                 PublicRecordingSummary(
                     id = it.id,
                     secret = it.secret,
+                    correlationId = it.correlationId,
                 ),
             )
         }
@@ -75,5 +76,6 @@ class RecordingController(
     data class PublicRecordingSummary(
         val id: Int,
         val secret: String,
+        val correlationId: String,
     )
 }

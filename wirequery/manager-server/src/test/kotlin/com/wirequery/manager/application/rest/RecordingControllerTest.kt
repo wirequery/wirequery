@@ -66,6 +66,7 @@ class RecordingControllerTest {
                 content {
                     jsonPath("$.id") { value(RECORDING_FIXTURE_WITH_ID_1.id) }
                     jsonPath("$.secret") { value(RECORDING_FIXTURE_WITH_ID_1.secret) }
+                    jsonPath("$.correlationId") { value(RECORDING_FIXTURE_WITH_ID_1.correlationId) }
                 }
             }
     }

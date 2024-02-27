@@ -15,6 +15,7 @@ import com.wirequery.manager.domain.recording.Recording.StatusEnum.*
 import com.wirequery.manager.domain.recording.RecordingEvent.*
 import com.wirequery.manager.domain.session.SessionService
 import com.wirequery.manager.domain.session.SessionService.CreateSessionInput
+import com.wirequery.manager.domain.session.SessionService.CreateSessionInputFieldValue
 import com.wirequery.manager.domain.template.TemplateService
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.repository.findByIdOrNull
@@ -31,7 +32,7 @@ class RecordingService(
     private val recordingRepository: RecordingRepository,
     private val sessionService: SessionService,
     private val templateService: TemplateService,
-    private val recordingSecretGenerator: RecordingSecretGenerator,
+    private val recordingKeyGenerator: RecordingKeyGenerator,
     private val clock: Clock,
     private val publisher: ApplicationEventPublisher,
 ) {
@@ -69,14 +70,20 @@ class RecordingService(
             functionalError("Template with id ${input.templateId} does not allow user initiation.")
         }
 
+        val correlationId = recordingKeyGenerator.generateCorrelationId()
+
         val session =
             sessionService.create(
                 CreateSessionInput(
                     templateId = input.templateId,
                     variables =
-                        input.args.map {
-                            SessionService.CreateSessionInputFieldValue(it.key, it.value)
-                        },
+                        input.args.map { CreateSessionInputFieldValue(it.key, it.value) } +
+                            listOf(
+                                CreateSessionInputFieldValue(
+                                    "recordingCorrelationId",
+                                    correlationId,
+                                ),
+                            ),
                     endDate = OffsetDateTime.now(clock).plusSeconds(RECORDING_TIMEOUT.toLong()),
                 ),
                 draft = true,
@@ -87,10 +94,11 @@ class RecordingService(
                 sessionId = session.id,
                 templateId = input.templateId,
                 args = objectMapper.writeValueAsString(input.args),
-                secret = recordingSecretGenerator.generate(),
+                secret = recordingKeyGenerator.generateSecret(),
                 lookBackSecs = LOOKBACK_SECS_PLACEHOLDER,
                 timeoutSecs = RECORDING_TIMEOUT,
                 recording = "",
+                correlationId = correlationId,
                 status = ACTIVE,
             )
         val recording = toDomainObject(recordingRepository.save(recordingEntity))
@@ -202,6 +210,7 @@ class RecordingService(
             timeoutSecs = entity.timeoutSecs,
             recording = entity.recording,
             status = entity.status,
+            correlationId = entity.correlationId,
             createdAt =
                 entity.createdAt!!
                     .atZone(ZoneId.systemDefault())

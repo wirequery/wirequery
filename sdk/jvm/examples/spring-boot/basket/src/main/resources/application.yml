@@ -9,7 +9,8 @@ wirequery:
   maskSettings:
     requestHeaders:
       - accountid
-      - wirequery-correlation-id
+      - wirequery-recording-correlation-id
+      - wirequery-request-correlation-id
 
 #wirequery:
 #  connection:

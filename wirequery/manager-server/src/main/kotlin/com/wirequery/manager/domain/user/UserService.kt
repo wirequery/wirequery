@@ -36,9 +36,8 @@ class UserService(
     private val publisher: ApplicationEventPublisher,
     private val currentUserService: CurrentUserService,
     private val tenantService: TenantService,
-
     @Value("\${wirequery.admin.password:$DEFAULT_ADMIN_PASSWORD}")
-    private val defaultAdminPassword: String
+    private val defaultAdminPassword: String,
 ) {
     fun findById(id: Int): User? {
         return userRepository.findByIdOrNull(id)
@@ -212,9 +211,11 @@ class UserService(
         if (user?.password == NOT_INITIALIZED_PASSWORD) {
             val roles = roleService.createDefaultRoles()
             val adminRoleId = roles.single { it.name == ROLE_ADMIN_NAME }.id
-            userRepository.save(user.copy(
-                password = passwordEncoder.encode(defaultAdminPassword),
-                userRoles = setOf(UserEntity.UserRoleEntity(roleId = adminRoleId)))
+            userRepository.save(
+                user.copy(
+                    password = passwordEncoder.encode(defaultAdminPassword),
+                    userRoles = setOf(UserEntity.UserRoleEntity(roleId = adminRoleId)),
+                ),
             )
         }
     }

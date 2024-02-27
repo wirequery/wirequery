@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class RecordingSecretGenerator {
-    fun generate() = UUID.randomUUID().toString()
+class RecordingKeyGenerator {
+    fun generateSecret() = UUID.randomUUID().toString()
+
+    fun generateCorrelationId() = UUID.randomUUID().toString()
 }

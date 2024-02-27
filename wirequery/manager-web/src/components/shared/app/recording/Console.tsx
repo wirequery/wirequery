@@ -71,7 +71,7 @@ export const Console = (props: {
                   ? parsedPayload
                   : log.value.payload}
               </div>
-              <Divider />
+              <Divider mt={10} />
             </div>
           )
         })}

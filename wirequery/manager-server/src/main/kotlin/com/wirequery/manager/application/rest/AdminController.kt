@@ -7,10 +7,8 @@
 
 package com.wirequery.manager.application.rest
 
-import com.wirequery.manager.domain.authorisation.AuthorisationEnum
 import com.wirequery.manager.domain.authorisation.AuthorisationEnum.*
 import com.wirequery.manager.domain.role.RoleService
-import com.wirequery.manager.domain.role.RoleService.CreateRoleInput
 import com.wirequery.manager.domain.tenant.TenantRequestContext
 import com.wirequery.manager.domain.tenant.TenantService
 import com.wirequery.manager.domain.user.UserService

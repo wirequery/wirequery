@@ -84,7 +84,7 @@ export function RecordingPlayer(props: RecordingPlayerProps) {
             url: v.data.payload.requests[0].url,
             correlationId:
               v.data.payload.requests[0].requestHeaders?.[
-                'wirequery-correlation-id'
+                'wirequery-request-correlation-id'
               ],
             events: [
               {

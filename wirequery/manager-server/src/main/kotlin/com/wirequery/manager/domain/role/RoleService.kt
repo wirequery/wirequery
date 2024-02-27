@@ -133,21 +133,24 @@ class RoleService(
         const val ROLE_ADMIN_NAME = "Administrator"
         const val ROLE_DEVELOPER_NAME = "Developer"
 
-        val DEFAULT_ROLES = setOf(
-            ROLE_ADMIN_NAME to AuthorisationEnum.entries.map { it.name },
-            ROLE_DEVELOPER_NAME to AuthorisationEnum.entries
-                .asSequence()
-                .filter { it != AuthorisationEnum.DELETE_STORED_QUERY }
-                .filter { it != AuthorisationEnum.DELETE_SESSION }
-                .filter { it != AuthorisationEnum.DELETE_TEMPLATE }
-                .filter { it != AuthorisationEnum.DELETE_APPLICATION }
-                .filter { it != AuthorisationEnum.DELETE_GROUP }
-                .filter { it != AuthorisationEnum.MANAGE_USERS }
-                .filter { it != AuthorisationEnum.MANAGE_ROLES }
-                .filter { it != AuthorisationEnum.VIEW_AUDIT_LOGS }
-                .filter { it != AuthorisationEnum.UNQUARANTINE_APPLICATIONS }
-                .filter { it != AuthorisationEnum.MANAGE_QUARANTINE_RULES }
-                .map { it.name }
-                .toList())
+        val DEFAULT_ROLES =
+            setOf(
+                ROLE_ADMIN_NAME to AuthorisationEnum.entries.map { it.name },
+                ROLE_DEVELOPER_NAME to
+                    AuthorisationEnum.entries
+                        .asSequence()
+                        .filter { it != AuthorisationEnum.DELETE_STORED_QUERY }
+                        .filter { it != AuthorisationEnum.DELETE_SESSION }
+                        .filter { it != AuthorisationEnum.DELETE_TEMPLATE }
+                        .filter { it != AuthorisationEnum.DELETE_APPLICATION }
+                        .filter { it != AuthorisationEnum.DELETE_GROUP }
+                        .filter { it != AuthorisationEnum.MANAGE_USERS }
+                        .filter { it != AuthorisationEnum.MANAGE_ROLES }
+                        .filter { it != AuthorisationEnum.VIEW_AUDIT_LOGS }
+                        .filter { it != AuthorisationEnum.UNQUARANTINE_APPLICATIONS }
+                        .filter { it != AuthorisationEnum.MANAGE_QUARANTINE_RULES }
+                        .map { it.name }
+                        .toList(),
+            )
     }
 }

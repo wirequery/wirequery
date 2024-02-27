@@ -12,7 +12,6 @@ import com.wirequery.manager.domain.user.User
 import com.wirequery.manager.domain.user.UserEvent.UsersLoggedInEvent
 import com.wirequery.manager.domain.user.UserService
 import com.wirequery.manager.domain.user.UserService.*
-import com.wirequery.manager.domain.user.UserService.Companion.ADMIN_USERNAME
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.authentication.AuthenticationProvider

@@ -48,12 +48,7 @@ export const NetworkCalls = (props: {
             {new Date(call.events[0].start).toLocaleTimeString()} (
             {call.events[0].end - call.events[0].start}ms)
           </div>
-          <div
-            style={{
-              color: 'black',
-              background: '#FFF',
-            }}
-          >
+          <div style={{marginTop: 10, marginBottom: 10}}>
             <div>{call.url}</div>
             <div style={{ float: 'right', marginRight: '15px' }}>
               {props.correlationMap?.[call.correlationId] ? (
@@ -70,7 +65,7 @@ export const NetworkCalls = (props: {
                 <></>
               )}
             </div>
-            <div style={{ color: call.statusCode > 299 ? 'red' : 'black' }}>
+            <div style={{ color: call.statusCode > 299 ? 'red' : '' }}>
               {call.statusCode} {call.method}
             </div>
           </div>

@@ -21,16 +21,13 @@ import com.wirequery.manager.domain.user.UserFixtures.USER_ROLE_ENTITY_1
 import com.wirequery.manager.domain.user.UserService.Companion.ADMIN_USERNAME
 import com.wirequery.manager.domain.user.UserService.Companion.DEFAULT_ADMIN_PASSWORD
 import com.wirequery.manager.domain.user.UserService.Companion.NOT_INITIALIZED_PASSWORD
-import org.apache.catalina.User
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.lenient
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.*
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.data.relational.core.conversion.DbActionExecutionException
@@ -61,15 +58,16 @@ internal class UserServiceUnitTests {
 
     @BeforeEach
     fun init() {
-        userService = UserService(
-            userRepository,
-            roleService,
-            passwordEncoder,
-            publisher,
-            currentUserService,
-            tenantService,
-            DEFAULT_ADMIN_PASSWORD
-        )
+        userService =
+            UserService(
+                userRepository,
+                roleService,
+                passwordEncoder,
+                publisher,
+                currentUserService,
+                tenantService,
+                DEFAULT_ADMIN_PASSWORD,
+            )
 
         lenient().`when`(tenantService.tenantId).thenReturn(0)
 
@@ -372,7 +370,6 @@ internal class UserServiceUnitTests {
         assertThat(actual).isEqualTo(ROLE_FIXTURE_WITH_ID_1.authorisationNames)
     }
 
-
     @Test
     fun `initializeEnvironmentDefaultsOnFirstLoad initializes environment defaults on first load`() {
         whenever(userRepository.findByUsername(ADMIN_USERNAME))
@@ -387,10 +384,12 @@ internal class UserServiceUnitTests {
         userService.initializeEnvironmentDefaultsOnFirstLoad()
 
         verify(userRepository)
-            .save(USER_ENTITY_FIXTURE_WITH_ID_1.copy(
-                password = "some-encoded-password",
-                userRoles = setOf(UserEntity.UserRoleEntity(roleId = ROLE_FIXTURE_WITH_ID_1.id))
-            ))
+            .save(
+                USER_ENTITY_FIXTURE_WITH_ID_1.copy(
+                    password = "some-encoded-password",
+                    userRoles = setOf(UserEntity.UserRoleEntity(roleId = ROLE_FIXTURE_WITH_ID_1.id)),
+                ),
+            )
     }
 
     @Test

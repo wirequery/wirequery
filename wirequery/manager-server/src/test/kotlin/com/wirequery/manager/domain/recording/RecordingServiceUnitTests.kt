@@ -52,7 +52,7 @@ internal class RecordingServiceUnitTests {
     private lateinit var templateService: TemplateService
 
     @Mock
-    private lateinit var recordingSecretGenerator: RecordingSecretGenerator
+    private lateinit var recordingKeyGenerator: RecordingKeyGenerator
 
     @Mock
     private lateinit var clock: Clock
@@ -136,8 +136,11 @@ internal class RecordingServiceUnitTests {
         )
             .thenReturn(RECORDING_ENTITY_FIXTURE_WITH_ID_1)
 
-        whenever(recordingSecretGenerator.generate())
+        whenever(recordingKeyGenerator.generateSecret())
             .thenReturn(RECORDING_ENTITY_FIXTURE_1.secret)
+
+        whenever(recordingKeyGenerator.generateCorrelationId())
+            .thenReturn(RECORDING_ENTITY_FIXTURE_WITH_ID_1.correlationId)
 
         whenever(
             sessionService.create(
@@ -146,7 +149,7 @@ internal class RecordingServiceUnitTests {
                     variables =
                         START_RECORDING_FIXTURE_1.args.map {
                             CreateSessionInputFieldValue(it.key, it.value)
-                        },
+                        } + listOf(CreateSessionInputFieldValue("recordingCorrelationId", RECORDING_ENTITY_FIXTURE_WITH_ID_1.correlationId)),
                     endDate = OffsetDateTime.now(clock).plusSeconds(RECORDING_TIMEOUT.toLong()),
                 ),
                 true,

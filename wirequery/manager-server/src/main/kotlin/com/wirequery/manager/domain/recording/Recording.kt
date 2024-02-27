@@ -19,6 +19,7 @@ data class Recording(
     val timeoutSecs: Int,
     val recording: String,
     val status: StatusEnum,
+    val correlationId: String,
     val createdAt: OffsetDateTime,
     val updatedAt: OffsetDateTime? = null,
 ) {

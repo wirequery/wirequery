@@ -33,6 +33,7 @@ object RecordingFixtures {
             timeoutSecs = RECORDING_TIMEOUT,
             recording = "",
             status = ACTIVE,
+            correlationId = "123-456",
             createdAt = OFFSET_DATE_TIME_FIXTURE,
         )
 
@@ -46,6 +47,7 @@ object RecordingFixtures {
             lookBackSecs = LOOKBACK_SECS_PLACEHOLDER,
             timeoutSecs = RECORDING_TIMEOUT,
             recording = "",
+            correlationId = "123-456",
             status = ACTIVE,
         )
 

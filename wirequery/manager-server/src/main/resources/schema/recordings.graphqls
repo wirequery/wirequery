@@ -15,6 +15,7 @@ type Recording {
     sessionId: Int!
     templateId: Int
     recording: String!
+    correlationId: String!
     session: Session
     template: Template
     createdAt: DateTime!

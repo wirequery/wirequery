@@ -24,6 +24,7 @@ data class RecordingEntity(
     val timeoutSecs: Int,
     val recording: String,
     val status: StatusEnum,
+    val correlationId: String,
     @CreatedDate
     val createdAt: LocalDateTime? = null,
     @LastModifiedDate
