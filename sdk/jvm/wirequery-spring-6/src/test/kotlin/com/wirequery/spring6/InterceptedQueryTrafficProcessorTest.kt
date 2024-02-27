@@ -60,7 +60,11 @@ internal class InterceptedQueryTrafficProcessorTest {
         whenever(request.requestURI).thenReturn("/abc")
 
         whenever(request.headerNames)
-            .thenReturn(Collections.enumeration(listOf("Accept", "traceparent")))
+            .thenReturn(
+                Collections.enumeration(
+                    listOf("Accept", "traceparent", "wirequery-request-correlation-id", "wirequery-recording-correlation-id"),
+                ),
+            )
 
         doReturn(Collections.enumeration(listOf("application/json")))
             .whenever(request).getHeaders("Accept")
@@ -68,11 +72,24 @@ internal class InterceptedQueryTrafficProcessorTest {
         doReturn(Collections.enumeration(listOf("00-abc-def")))
             .whenever(request).getHeaders("traceparent")
 
+        doReturn(Collections.enumeration(listOf("def")))
+            .whenever(request).getHeaders("wirequery-request-correlation-id")
+
+        doReturn(Collections.enumeration(listOf("ghi")))
+            .whenever(request).getHeaders("wirequery-recording-correlation-id")
+
+        doReturn("def")
+            .whenever(request).getHeader("wirequery-request-correlation-id")
+
+        doReturn("ghi")
+            .whenever(request).getHeader("wirequery-recording-correlation-id")
+
         whenever(response.headerNames)
             .thenReturn(listOf("Content-Type"))
 
-        whenever(response.getHeaders("Content-Type"))
-            .thenReturn(listOf("application/json"))
+        doReturn(listOf("application/json"))
+            .whenever(response)
+            .getHeaders("Content-Type")
 
         whenever(response.status).thenReturn(200)
         whenever(response.headerNames).thenReturn(listOf("Content-Type"))
@@ -93,13 +110,21 @@ internal class InterceptedQueryTrafficProcessorTest {
                 path = "/abc",
                 queryParameters = mapOf("a" to listOf("b")),
                 requestBody = "hello",
-                requestHeaders = mapOf("Accept" to listOf("application/json"), "traceparent" to listOf("00-abc-def")),
+                requestHeaders =
+                    mapOf(
+                        "Accept" to listOf("application/json"),
+                        "traceparent" to listOf("00-abc-def"),
+                        "wirequery-request-correlation-id" to listOf("def"),
+                        "wirequery-recording-correlation-id" to listOf("ghi"),
+                    ),
                 responseBody = "world",
                 responseHeaders = mapOf("Content-Type" to listOf("application/json")),
                 extensions = mapOf("some-extension" to someValueNode),
                 startTime = 10,
                 endTime = 20,
                 traceId = "abc",
+                requestCorrelationId = "def",
+                recordingCorrelationId = "ghi",
             )
 
         interceptedQueryTrafficProcessor.processInterceptedTraffic(request, response)

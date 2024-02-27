@@ -46,7 +46,7 @@ export function SessionDetails(props: SessionDetailsProps) {
               startTime
               endTime
               traceId
-              message
+              requestCorrelationId
             }
           }
         }
@@ -65,9 +65,8 @@ export function SessionDetails(props: SessionDetailsProps) {
     const result: any = {}
     data?.session?.storedQuerys?.forEach((storedQuery) =>
       storedQuery.queryLogs.forEach((queryLog) => {
-        if (queryLog.message) {
-          const correlationId = JSON.parse(queryLog.message)?.result
-            ?.requestHeaders?.['wirequery-request-correlation-id']?.[0]
+        if (queryLog.requestCorrelationId) {
+          const correlationId = queryLog.requestCorrelationId
           if (correlationId) {
             result[correlationId] = {
               storedQueryId: storedQuery.id,
