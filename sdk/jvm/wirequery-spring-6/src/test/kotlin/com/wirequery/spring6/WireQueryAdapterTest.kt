@@ -342,7 +342,7 @@ internal class WireQueryAdapterTest {
         whenever(objectMapper.writeValueAsString(mapOf("result" to SOME_RESULT)))
             .thenReturn(SOME_MESSAGE)
 
-        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null)
+        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null, null)
 
         verify(wireQueryStub, times(0))
             .reportQueryResults(any(), any())
@@ -353,7 +353,7 @@ internal class WireQueryAdapterTest {
         whenever(objectMapper.writeValueAsString(mapOf("error" to SOME_ERROR)))
             .thenReturn(SOME_MESSAGE)
 
-        wireQueryAdapter.publishError(SOME_QUERY_ID_1, SOME_ERROR, 0, 0, null)
+        wireQueryAdapter.publishError(SOME_QUERY_ID_1, SOME_ERROR, 0, 0, null, null)
 
         verify(wireQueryStub, times(0))
             .reportQueryResults(any(), any())
@@ -373,8 +373,8 @@ internal class WireQueryAdapterTest {
         whenever(objectMapper.writeValueAsString(mapOf("error" to SOME_ERROR)))
             .thenReturn(SOME_ERROR_MESSAGE)
 
-        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null)
-        wireQueryAdapter.publishError(SOME_QUERY_ID_2, SOME_ERROR, 0, 0, null)
+        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null, null)
+        wireQueryAdapter.publishError(SOME_QUERY_ID_2, SOME_ERROR, 0, 0, null, null)
 
         wireQueryAdapter.schedulePublishing()
 
@@ -425,7 +425,7 @@ internal class WireQueryAdapterTest {
 
         wireQueryAdapter.schedulePublishing()
 
-        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null)
+        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null, null)
         wireQueryAdapter.schedulePublishing()
 
         val resultQueryReport =
@@ -458,10 +458,10 @@ internal class WireQueryAdapterTest {
         whenever(objectMapper.writeValueAsString(mapOf("result" to SOME_RESULT)))
             .thenReturn(SOME_MESSAGE)
 
-        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null)
+        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null, null)
         wireQueryAdapter.schedulePublishing()
 
-        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null)
+        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null, null)
         wireQueryAdapter.schedulePublishing()
 
         wireQueryAdapter.schedulePublishing()
@@ -497,10 +497,10 @@ internal class WireQueryAdapterTest {
         whenever(objectMapper.writeValueAsString(mapOf("result" to SOME_RESULT)))
             .thenReturn(SOME_MESSAGE)
 
-        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null)
+        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null, null)
         wireQueryAdapter.schedulePublishing()
 
-        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null)
+        wireQueryAdapter.publishResult(TraceableQuery(SOME_QUERY_ID_1, mock()), SOME_RESULT, 0, 0, null, null)
         wireQueryAdapter.schedulePublishing()
 
         wireQueryAdapter.schedulePublishing()
