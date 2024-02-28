@@ -45,6 +45,7 @@ object SessionFixtures {
                     ),
                 ),
             endDate = OFFSET_DATE_TIME_FIXTURE,
+            recordingCorrelationId = "abc",
         )
 
     val SESSION_ENTITY_FIXTURE_WITH_ID_1 =

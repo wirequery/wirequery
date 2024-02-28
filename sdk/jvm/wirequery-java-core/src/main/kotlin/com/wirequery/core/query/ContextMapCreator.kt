@@ -34,7 +34,7 @@ class ContextMapCreator(
                 "traceId" to intercepted.traceId,
                 "requestCorrelationId" to intercepted.requestCorrelationId,
                 "recordingCorrelationId" to intercepted.recordingCorrelationId,
-            ),
+            ).filterNot { it.value == null },
     )
         .filter { it.value != null }
         .map { it.key to it.value!! }
@@ -60,7 +60,7 @@ class ContextMapCreator(
                 "traceId" to intercepted.traceId,
                 "requestCorrelationId" to intercepted.requestCorrelationId,
                 "recordingCorrelationId" to intercepted.recordingCorrelationId,
-            ),
+            ).filterNot { it.value == null },
     )
         .filter { it.value != null }
         .map { it.key to it.value!! }

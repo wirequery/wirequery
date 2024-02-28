@@ -230,7 +230,9 @@ class WirequeryServiceGrpcImplTest {
                 mock(),
             )
 
-        verify(queryReportService).reportQueryResults(listOf(QueryReport(APP_NAME, QUERY_ID, MESSAGE, START_TIME, END_TIME, TRACE_ID, REQUEST_CORRELATION_ID)))
+        verify(
+            queryReportService,
+        ).reportQueryResults(listOf(QueryReport(APP_NAME, QUERY_ID, MESSAGE, START_TIME, END_TIME, TRACE_ID, REQUEST_CORRELATION_ID)))
     }
 
     private companion object {

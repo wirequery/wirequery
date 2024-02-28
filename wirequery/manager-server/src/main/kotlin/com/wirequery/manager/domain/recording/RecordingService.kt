@@ -76,15 +76,9 @@ class RecordingService(
             sessionService.create(
                 CreateSessionInput(
                     templateId = input.templateId,
-                    variables =
-                        input.args.map { CreateSessionInputFieldValue(it.key, it.value) } +
-                            listOf(
-                                CreateSessionInputFieldValue(
-                                    "recordingCorrelationId",
-                                    correlationId,
-                                ),
-                            ),
+                    variables = input.args.map { CreateSessionInputFieldValue(it.key, it.value) },
                     endDate = OffsetDateTime.now(clock).plusSeconds(RECORDING_TIMEOUT.toLong()),
+                    recordingCorrelationId = correlationId,
                 ),
                 draft = true,
             )

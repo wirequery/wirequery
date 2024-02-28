@@ -149,8 +149,9 @@ internal class RecordingServiceUnitTests {
                     variables =
                         START_RECORDING_FIXTURE_1.args.map {
                             CreateSessionInputFieldValue(it.key, it.value)
-                        } + listOf(CreateSessionInputFieldValue("recordingCorrelationId", RECORDING_ENTITY_FIXTURE_WITH_ID_1.correlationId)),
+                        },
                     endDate = OffsetDateTime.now(clock).plusSeconds(RECORDING_TIMEOUT.toLong()),
+                    recordingCorrelationId = RECORDING_ENTITY_FIXTURE_WITH_ID_1.correlationId,
                 ),
                 true,
             ),

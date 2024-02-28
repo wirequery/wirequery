@@ -67,6 +67,6 @@ class QueryLogAggregationService(
     }
 
     companion object {
-        val IRRELEVANT_FOR_AGGREGATOR = "IRRELEVANT FOR AGGREGATOR"
+        const val IRRELEVANT_FOR_AGGREGATOR = "IRRELEVANT FOR AGGREGATOR"
     }
 }

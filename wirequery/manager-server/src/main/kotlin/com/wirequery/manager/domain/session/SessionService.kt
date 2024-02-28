@@ -59,8 +59,8 @@ class SessionService(
 
         val sessionEntity =
             SessionEntity(
-                name = interpolate(template.nameTemplate, template.fields, input.variables),
-                description = interpolate(template.descriptionTemplate, template.fields, input.variables),
+                name = interpolate(template.nameTemplate, template.fields, input.variables, input.recordingCorrelationId),
+                description = interpolate(template.descriptionTemplate, template.fields, input.variables, input.recordingCorrelationId),
                 draft = draft,
             )
 
@@ -71,9 +71,9 @@ class SessionService(
                 storedQueryService.create(
                     CreateStoredQueryInput(
                         sessionId = session.id,
-                        name = interpolate(templateQuery.nameTemplate, template.fields, input.variables),
+                        name = interpolate(templateQuery.nameTemplate, template.fields, input.variables, input.recordingCorrelationId),
                         type = StoredQuery.Type.valueOf(templateQuery.type.name),
-                        query = interpolate(templateQuery.queryTemplate, template.fields, input.variables),
+                        query = interpolate(templateQuery.queryTemplate, template.fields, input.variables, input.recordingCorrelationId),
                         queryLimit = templateQuery.queryLimit,
                         endDate = input.endDate,
                     ),
@@ -95,8 +95,9 @@ class SessionService(
         template: String,
         fields: List<Template.Field>,
         variables: List<CreateSessionInputFieldValue>,
+        recordingCorrelationId: String?,
     ): String {
-        var updatedTemplate = template
+        var updatedTemplate = template.replace("{{recordingCorrelationId}}", "\"" + recordingCorrelationId + "\"")
         fields.forEach { field ->
             val variable = variables.singleOrNull { it.key == field.key }
             if (variable != null) {
@@ -168,6 +169,7 @@ class SessionService(
         val templateId: Int,
         val variables: List<CreateSessionInputFieldValue>,
         val endDate: OffsetDateTime,
+        val recordingCorrelationId: String?,
     )
 
     data class CreateSessionInputFieldValue(
