@@ -48,7 +48,7 @@ export const NetworkCalls = (props: {
             {new Date(call.events[0].start).toLocaleTimeString()} (
             {call.events[0].end - call.events[0].start}ms)
           </div>
-          <div style={{marginTop: 10, marginBottom: 10}}>
+          <div style={{ marginTop: 10, marginBottom: 10 }}>
             <div>{call.url}</div>
             <div style={{ float: 'right', marginRight: '15px' }}>
               {props.correlationMap?.[call.correlationId] ? (
