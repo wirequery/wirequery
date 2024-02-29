@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@wirequery/wirequery-js-core": "0.0.4",
     "@mantine/core": "^7.1.5",
     "@mantine/hooks": "^7.1.5",
     "@next/font": "13.5.5",

@@ -1,12 +1,22 @@
 {
   "name": "@wirequery/wirequery-js-core",
-  "version": "1.0.0",
+  "version": "0.0.4",
   "description": "WireQuery JS SDK Core",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "devDependencies": {
+    "rrweb": "^2.0.0-alpha.11",
+    "rrweb-snapshot": "^2.0.0-alpha.11",
+    "typescript": "5.0.3"
+  },
   "directories": {
     "example": "examples"
   },
   "scripts": {
+    "compile": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

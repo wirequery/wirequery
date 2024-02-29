@@ -5,69 +5,38 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { getRecordNetworkPlugin } from "@/replay/rrwebRecord";
-import { Affix, rem } from "@mantine/core";
-import { useState } from "react";
-import { getRecordConsolePlugin, record } from "rrweb";
+import {Affix, rem} from "@mantine/core";
+import {useState} from "react";
+import {Recorder as RecorderClass} from "@wirequery/wirequery-js-core";
 
-const events: any = [];
 const wireQueryBackendPath = 'http://localhost:8080';
 
+const recorder = new RecorderClass(wireQueryBackendPath, 1, '1/f2e74d68-f70e-48bd-94dc-ce889f612d73')
+
 export const Recorder = () => {
-  const [recording, setRecording] = useState<any | undefined>(undefined)
+    const [recording, setRecording] = useState<any | undefined>(undefined)
 
-  const start = () => {
-    const destructor = startRecording()
-    return () => destructor?.();
-  };
+    const start = () => {
+        recorder
+            .startRecording({ accountId: '123' })
+            .then(() => {
+                setRecording(true) })
+    };
 
-  const startRecording = () => {
-    fetch(`${wireQueryBackendPath}/api/v1/recordings`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        templateId: 1, // Debug Session by Account Id
-        apiKey: '1/f2e74d68-f70e-48bd-94dc-ce889f612d73',
-        args: {
-          accountId: "123",
-        },
-      }),
-    }).then((res) => res.json().then((json) => {
-      (window as any).recordingCorrelationId = json.correlationId
-      setRecording(json);
-    }));
-    return record({
-      emit: (event) => {
-        events.push(event);
-      },
-      plugins: [getRecordConsolePlugin(), getRecordNetworkPlugin({ recordHeaders: true })],
-    });
-  };
+    const send = () => {
+        if (recording) {
+            recorder.stopRecording()
+                .then(() => {
+                    setRecording(false)
+                })
+        }
+    };
 
-  const send = () => {
-    if (recording) {
-      setRecording(undefined);
-      fetch(`${wireQueryBackendPath}/api/v1/recordings/${recording.id}/finish`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          secret: recording.secret,
-          recording: JSON.stringify(events),
-          context: {},
-        }),
-      });
-    }
-  };
-
-  return (
-    <Affix position={{ bottom: 0, right: rem(20) }}>
-      {recording
-        ? <button onClick={send}>Done</button>
-        : <button onClick={start}>Start Recording</button>}
-    </Affix>
-  );
+    return (
+        <Affix position={{bottom: 0, right: rem(20)}}>
+            {recording
+                ? <button onClick={send}>Done</button>
+                : <button onClick={start}>Start Recording</button>}
+        </Affix>
+    );
 };
