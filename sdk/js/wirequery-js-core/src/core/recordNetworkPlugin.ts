@@ -316,7 +316,6 @@ function initXhrObserver(
     'open',
     (originalOpen: any) => {
       // @ts-ignore
-      const x: any = this
       return function (
         method: string,
         url: string | URL,
@@ -324,8 +323,12 @@ function initXhrObserver(
         username?: string | null,
         password?: string | null,
       ) {
-        const xhr = x as XMLHttpRequest;
+        const xhr = this as XMLHttpRequest;
         const req = new Request(url);
+        if ((window as any).recordingCorrelationId) {
+          req.headers.set('wirequery-request-correlation-id', crypto.randomUUID())
+          req.headers.set('wirequery-recording-correlation-id', (window as any).recordingCorrelationId)
+        }
         const networkRequest: Partial<NetworkRequest> = {};
         let after: number | undefined;
         let before: number | undefined;
@@ -457,6 +460,10 @@ function initFetchObserver(
         });
         if (recordRequestHeaders) {
           networkRequest.requestHeaders = requestHeaders;
+        } else {
+          if (requestHeaders['wirequery-request-correlation-id']) {
+            networkRequest.requestHeaders = {'wirequery-request-correlation-id': requestHeaders['wirequery-request-correlation-id']};
+          }
         }
         if (shouldRecordBody('request', options.recordBody, requestHeaders)) {
           if (req.body === undefined || req.body === null) {

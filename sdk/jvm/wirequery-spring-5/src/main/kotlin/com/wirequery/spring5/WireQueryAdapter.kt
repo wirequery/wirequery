@@ -183,7 +183,7 @@ class WireQueryAdapter(
                 .setStartTime(startTime)
                 .setEndTime(endTime)
                 .let { if (traceId != null) it.setTraceId(traceId) else it }
-                .let { if (requestCorrelationId != null) it.setRequestCorrelationId(traceId) else it }
+                .let { if (requestCorrelationId != null) it.setRequestCorrelationId(requestCorrelationId) else it }
                 .build()
     }
 
@@ -202,7 +202,7 @@ class WireQueryAdapter(
                 .setStartTime(startTime)
                 .setEndTime(endTime)
                 .let { if (traceId != null) it.setTraceId(traceId) else it }
-                .let { if (requestCorrelationId != null) it.setRequestCorrelationId(traceId) else it }
+                .let { if (requestCorrelationId != null) it.setRequestCorrelationId(requestCorrelationId) else it }
                 .build()
     }
 

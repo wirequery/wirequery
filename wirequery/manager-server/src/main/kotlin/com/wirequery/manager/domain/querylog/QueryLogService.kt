@@ -118,7 +118,7 @@ class QueryLogService(
         jdbcTemplate.update {
             val ps =
                 it.prepareStatement(
-                    "INSERT INTO query_logs (stored_query_id, message, start_time, end_time, app_name, trace_id, created_at, main) VALUES (?, ?, ?, ?, ?, ?, ?, TRUE)",
+                    "INSERT INTO query_logs (stored_query_id, message, start_time, end_time, app_name, trace_id, request_correlation_id, created_at, main) VALUES (?, ?, ?, ?, ?, ?, ?, ?, TRUE)",
                 )
             ps.setInt(1, input.storedQueryId)
             ps.setString(2, input.message)
@@ -126,7 +126,8 @@ class QueryLogService(
             ps.setLong(4, input.endTime)
             ps.setString(5, input.appName)
             ps.setString(6, queryLogEntity.traceId)
-            ps.setTimestamp(7, ts)
+            ps.setString(7, queryLogEntity.requestCorrelationId)
+            ps.setTimestamp(8, ts)
             ps
         }
 
@@ -140,7 +141,7 @@ class QueryLogService(
         return queryLog
     }
 
-    /** Stores as non-tracing log. */
+    /** Stores as tracing log. */
     fun putTrace(storedQuery: QueryReport): QueryLog? {
         val storedQueryId = storedQuery.queryId.split(":")[1].toInt()
 
@@ -167,7 +168,7 @@ class QueryLogService(
         jdbcTemplate.update {
             val ps =
                 it.prepareStatement(
-                    "INSERT INTO query_logs (stored_query_id, message, start_time, end_time, app_name, trace_id, created_at, main) VALUES (?, ?, ?, ?, ?, ?, ?, FALSE)",
+                    "INSERT INTO query_logs (stored_query_id, message, start_time, end_time, app_name, trace_id, request_correlation_id, created_at, main) VALUES (?, ?, ?, ?, ?, ?, ?, ?, FALSE)",
                 )
             ps.setInt(1, queryLogEntity.storedQueryId)
             ps.setString(2, queryLogEntity.message)
@@ -175,7 +176,8 @@ class QueryLogService(
             ps.setLong(4, queryLogEntity.endTime)
             ps.setString(5, queryLogEntity.appName)
             ps.setString(6, queryLogEntity.traceId)
-            ps.setTimestamp(7, ts)
+            ps.setString(7, queryLogEntity.requestCorrelationId)
+            ps.setTimestamp(8, ts)
             ps
         }
 
