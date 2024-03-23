@@ -9,7 +9,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { ApplicationForm } from '@components/ce/app/application/ApplicationForm'
 import { Client, Provider } from 'urql'
 import { fromValue } from 'wonka'
-import { ApplicationFormQuery } from '@generated/graphql'
+import { ApplicationFormQuery, CreateApplicationMutation } from '@generated/graphql'
 
 describe('ApplicationForm', () => {
   const application = {
@@ -73,7 +73,7 @@ describe('ApplicationForm', () => {
       })
     )
     executeMutation.mockReturnValue(
-      fromValue<{ data: ApplicationFormQuery }>({
+      fromValue<{ data: CreateApplicationMutation }>({
         data: {},
       })
     )
