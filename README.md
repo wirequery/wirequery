@@ -40,7 +40,7 @@ If you wish to install WireQuery on a server, please follow the [Server Installa
 
 ## SDKs
 
-WireQuery's SDKs are offered in the following variants:
+In order to capture data from your applications and feeding it to WireQuery, you need to connect your application to WireQuery using an SDK. WireQuery's SDKs are offered in the following variants:
 
 | Technology                  | Description                                                       | Notes                                                        | Resources                                            |
 |-----------------------------|-------------------------------------------------------------------|--------------------------------------------------------------|------------------------------------------------------|
