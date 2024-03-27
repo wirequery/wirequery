@@ -16,6 +16,8 @@ Since the video-like recordings and network calls may contain sensitive informat
 privacy in mind. In most cases, minimum effort is required to strip all sensitive data from your frontend and backend
 systems.
 
+If you have any questions or feedback, feel free to raise an Issue.
+
 ⭐ If you like WireQuery, please consider giving it a star. Your support can help the project grow and deliver exciting
 features.
 
