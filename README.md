@@ -4,9 +4,10 @@
 
 # WireQuery
 
-WireQuery is a full-stack session replay tool. Using WireQuery, you can see how a user experiences an issue through a
-video-like frontend recording. Combined with an overview of the network calls to the backend (including network calls
-further upstream and their actual payload), you get a holistic overview of how an issue came into existence.
+WireQuery is world's first *full-stack* session replay and network exploration tool. Using WireQuery, you can see how a
+user experiences an issue through a video-like frontend recording. Combined with an overview of the network calls to
+the backend (including network calls further upstream and their actual payload), you get a holistic overview
+of how an issue came into existence.
 
 Some issues, however, can only be found on the backend, before users have reported them with a video-like
 recording. Through a specialized “network query language” called WQL, you can easily start your investigation from the
