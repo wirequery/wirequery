@@ -51,11 +51,11 @@ const useStyles = createStyles((theme) => {
     },
 
     feedbackButton: {
-      backgroundColor: theme.colors?.purple?.[4],
+      backgroundColor: theme.colors?.blue?.[4],
     },
 
     header: {
-      backgroundColor: theme.colors?.purple?.[7],
+      backgroundColor: theme.colors?.blue?.[7],
       color:
         theme.colorScheme === 'dark'
           ? theme.colors.gray[0]

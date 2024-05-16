@@ -95,7 +95,7 @@ function App({
               <MantineProvider
                 theme={{
                   colorScheme,
-                  primaryColor: 'purple',
+                  primaryColor: 'blue',
                   primaryShade: 4,
                   defaultRadius: 0,
                   components: {
@@ -126,18 +126,6 @@ function App({
                       '#950439',
                       '#640226',
                       '#320113',
-                    ],
-                    purple: [
-                      '#EDEBF9',
-                      '#CCC7F0',
-                      '#ABA3E6',
-                      '#8B7FDC',
-                      '#6A5BD2',
-                      '#4937C8',
-                      '#3B2CA0',
-                      '#2C2178',
-                      '#1D1650',
-                      '#0F0B28',
                     ],
                     blue: [
                       '#EAEEFA',

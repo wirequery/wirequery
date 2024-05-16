@@ -7,6 +7,7 @@
 
 package com.example.basket.entry
 
+import com.wirequery.core.annotations.Unmask
 import org.springframework.web.bind.annotation.*
 
 @CrossOrigin
@@ -39,6 +40,7 @@ class EntryController(
         return entryService.removeFromBasket(accountId, productId)
     }
 
+    @Unmask
     data class EntryInput(
         val quantity: Int,
     )

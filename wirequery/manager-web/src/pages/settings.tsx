@@ -17,7 +17,7 @@ export default function Settings() {
       <DashboardLayout active="Settings">
         <ActionIcon
           style={{ float: 'right' }}
-          color="purple"
+          color="blue"
           variant="filled"
           onClick={() => toggleColorScheme()}
           size={30}

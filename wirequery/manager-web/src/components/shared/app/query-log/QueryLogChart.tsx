@@ -61,7 +61,7 @@ export const QueryLogChart = (props: QueryLogChartProps) => {
           enabled: false,
         },
       },
-      colors: [(theme.colors as any)?.purple?.[6]],
+      colors: [(theme.colors as any)?.blue?.[6]],
       xaxis: {
         type: 'datetime',
         labels: {

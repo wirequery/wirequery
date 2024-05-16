@@ -94,12 +94,12 @@ export const SessionTimeline: React.FC<TimelineProps> = ({
       .enter()
       .append('rect')
       .attr('cursor', 'pointer')
-      .attr('stroke', theme.colors?.purple?.[5])
+      .attr('stroke', theme.colors?.blue?.[5])
       .attr('stroke-width', '5px')
       .attr('x', (event: any) => xScale(event.start))
       .attr('width', (event: any) => event.end - event.start)
       .attr('height', yScale.bandwidth() / 2 - 4)
-      .attr('fill', theme.colors?.purple?.[5])
+      .attr('fill', theme.colors?.blue?.[5])
       .on('mouseup', (clickEvent: any, event: any) => {
         event.onClick?.(
           xScale.invert(d3.pointer(clickEvent, svg.node() as SVGSVGElement)[0])

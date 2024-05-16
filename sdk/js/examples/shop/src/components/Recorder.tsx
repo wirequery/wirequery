@@ -11,7 +11,7 @@ import {Recorder as RecorderClass} from "@wirequery/wirequery-js-core";
 
 const wireQueryBackendPath = 'http://localhost:8080';
 
-const recorder = new RecorderClass(wireQueryBackendPath, 1, '1/f2e74d68-f70e-48bd-94dc-ce889f612d73')
+const recorder = new RecorderClass(wireQueryBackendPath, 1, '1/961a08c1-9c4d-44e9-acab-956cd337f6a7')
 
 export const Recorder = () => {
     const [recording, setRecording] = useState<any | undefined>(undefined)

@@ -100,7 +100,7 @@ export function ItemList<T>(props: ItemListProps<T>) {
         <ActionIcon
           title="Filter"
           mt={'xl'}
-          color="purple"
+          color="blue"
           size="sm"
           variant="outline"
           onClick={() => setFilterModalOpened(true)}

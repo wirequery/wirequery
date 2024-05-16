@@ -5,7 +5,7 @@ wirequery:
     secure: false
     host: localhost:9090
     appName: Basket
-    apiKey: 1/ba847fe6-803e-463c-80ef-ea162dab85ba # Usually this should be injected as an environment variable
+    apiKey: 1/d7c50218-bc6a-45a7-80a8-0e2a3c95d82c # Usually this should be injected as an environment variable
   maskSettings:
     requestHeaders:
       - accountid

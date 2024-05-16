@@ -21,7 +21,7 @@ export const LogTree = (props: {
   const customTheme = {
     ...atelierForest,
     base00: colorScheme !== 'dark' ? theme.white : theme.colors.dark[8],
-    base0D: (theme.colors as any)?.purple?.[5],
+    base0D: (theme.colors as any)?.blue?.[5],
   }
 
   return (

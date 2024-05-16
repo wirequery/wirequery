@@ -31,8 +31,8 @@ const useStyles = createStyles((theme) => {
       fontWeight: 600,
       color:
         theme.colorScheme == 'dark'
-          ? theme.colors.purple?.[3]
-          : theme.colors.purple?.[5],
+          ? theme.colors.blue?.[3]
+          : theme.colors.blue?.[5],
     },
   }
 })
@@ -46,7 +46,7 @@ export const Item = (props: ItemProps) => {
         <ActionIcon
           title="Delete"
           mt={'xs'}
-          color="purple"
+          color="blue"
           radius="xl"
           size="sm"
           style={{ float: 'right' }}

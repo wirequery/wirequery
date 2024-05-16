@@ -49,7 +49,7 @@ class EntryService(
         if (accountToProductIdToQuantity[accountId] == null) {
             accountToProductIdToQuantity[accountId] = mutableMapOf()
         }
-        val currentQuantity = accountToProductIdToQuantity[accountId]!!.get(productId) ?: 0
+        val currentQuantity = accountToProductIdToQuantity[accountId]!![productId] ?: 0
         accountToProductIdToQuantity[accountId]!![productId] = currentQuantity + quantity
     }
 

@@ -5,7 +5,7 @@ wirequery:
     secure: false
     host: localhost:9090
     appName: Products
-    apiKey: 1/9c47e299-4455-4f72-b7ab-5acd982eed02
+    apiKey: 1/2ccfed75-9785-4ed3-a133-5ef94425cd7a
   maskSettings:
     requestHeaders:
       - accountid

@@ -195,7 +195,7 @@ export function StatisticList() {
             subtitle: {
               text: 'Total number of Instant Queries',
             },
-            colors: [(theme.colors as any)?.purple?.[6]],
+            colors: [(theme.colors as any)?.blue?.[6]],
             xaxis: {
               type: 'datetime',
             },
@@ -226,7 +226,7 @@ export function StatisticList() {
             subtitle: {
               text: 'Total number of Instant Query Log Events',
             },
-            colors: [(theme.colors as any)?.purple?.[6]],
+            colors: [(theme.colors as any)?.blue?.[6]],
             xaxis: {
               type: 'datetime',
             },
@@ -257,7 +257,7 @@ export function StatisticList() {
             subtitle: {
               text: 'Counted as chunks of 4KB.',
             },
-            colors: [(theme.colors as any)?.purple?.[6]],
+            colors: [(theme.colors as any)?.blue?.[6]],
             xaxis: {
               type: 'datetime',
             },
@@ -291,7 +291,7 @@ export function StatisticList() {
             subtitle: {
               text: 'Total number of Query Log Events',
             },
-            colors: [(theme.colors as any)?.purple?.[6]],
+            colors: [(theme.colors as any)?.blue?.[6]],
             xaxis: {
               type: 'datetime',
             },
@@ -322,7 +322,7 @@ export function StatisticList() {
             subtitle: {
               text: 'Counted as chunks of 4KB.',
             },
-            colors: [(theme.colors as any)?.purple?.[6]],
+            colors: [(theme.colors as any)?.blue?.[6]],
             xaxis: {
               type: 'datetime',
             },
@@ -354,7 +354,7 @@ export function StatisticList() {
             subtitle: {
               text: 'Total number of Started Recordings',
             },
-            colors: [(theme.colors as any)?.purple?.[6]],
+            colors: [(theme.colors as any)?.blue?.[6]],
             xaxis: {
               type: 'datetime',
             },
