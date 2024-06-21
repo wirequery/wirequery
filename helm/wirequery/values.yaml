@@ -25,8 +25,8 @@ wirequery-backend:
     dbMigrateJdbcUrl: "jdbc:postgresql://wirequery-postgresql:5432/wirequery"
     redisHostName: wirequery-redis-master
     redisPort: "6379"
-    dbUser: wirequery-multitenant
-    dbPassword: wirequery-multitenant
+    dbUser: wirequery
+    dbPassword: wirequery
     dbUrl: "jdbc:postgresql://wirequery-postgresql:5432/wirequery"
     adminEnabled: "true"
     tenantId: "0"
